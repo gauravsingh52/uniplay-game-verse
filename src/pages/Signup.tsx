@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
@@ -6,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Gamepad } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from '@/lib/supabase'; // Import supabase client
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -16,7 +16,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!agreedToTerms) {
@@ -28,27 +28,70 @@ const Signup = () => {
       return;
     }
     
+    if (!email || !password) {
+      toast({
+        title: "Missing information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsLoading(true);
     
-    // Simulate registration
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      // Register user with Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: name,
+          }
+        }
+      });
       
-      // In a real app, this would register the user in a backend
-      if (name && email && password) {
+      if (error) throw error;
+      
+      if (data.user) {
         toast({
           title: "Account created successfully",
           description: "Welcome to UNIGAMES!",
         });
+        
+        // Store additional user info in profiles table if needed
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert([
+            { 
+              id: data.user.id, 
+              full_name: name,
+              created_at: new Date().toISOString() 
+            }
+          ]);
+        
+        if (profileError) {
+          console.error("Error creating profile:", profileError);
+        }
+        
         navigate('/dashboard');
       } else {
+        // Email confirmation might be required
         toast({
-          title: "Registration failed",
-          description: "Please fill in all required fields.",
-          variant: "destructive",
+          title: "Verification email sent",
+          description: "Please check your email to verify your account.",
         });
       }
-    }, 1500);
+    } catch (error: any) {
+      toast({
+        title: "Registration failed",
+        description: error.message || "An error occurred during registration.",
+        variant: "destructive",
+      });
+      console.error("Signup error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -173,10 +216,54 @@ const Signup = () => {
             </div>
             
             <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" type="button" className="border-muted">
+              <Button 
+                variant="outline" 
+                type="button" 
+                className="border-muted"
+                onClick={async () => {
+                  try {
+                    const { error } = await supabase.auth.signInWithOAuth({
+                      provider: 'google',
+                      options: {
+                        redirectTo: `${window.location.origin}/dashboard`
+                      }
+                    });
+                    if (error) throw error;
+                  } catch (error) {
+                    console.error("Google auth error:", error);
+                    toast({
+                      title: "Google login failed",
+                      description: "Unable to sign in with Google at this time.",
+                      variant: "destructive",
+                    });
+                  }
+                }}
+              >
                 Google
               </Button>
-              <Button variant="outline" type="button" className="border-muted">
+              <Button 
+                variant="outline" 
+                type="button" 
+                className="border-muted"
+                onClick={async () => {
+                  try {
+                    const { error } = await supabase.auth.signInWithOAuth({
+                      provider: 'discord',
+                      options: {
+                        redirectTo: `${window.location.origin}/dashboard`
+                      }
+                    });
+                    if (error) throw error;
+                  } catch (error) {
+                    console.error("Discord auth error:", error);
+                    toast({
+                      title: "Discord login failed",
+                      description: "Unable to sign in with Discord at this time.",
+                      variant: "destructive",
+                    });
+                  }
+                }}
+              >
                 Discord
               </Button>
             </div>

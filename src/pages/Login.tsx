@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Gamepad } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from '@/lib/supabase'; // Import supabase client
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,29 +16,75 @@ const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!email || !password) {
+      toast({
+        title: "Missing information",
+        description: "Please enter both email and password.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsLoading(true);
     
-    // Simulate authentication
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      // Authenticate with Supabase
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       
-      // In a real app, this would verify credentials from a backend
-      if (email && password) {
-        toast({
-          title: "Logged in successfully",
-          description: "Welcome back to UNIGAMES!",
-        });
-        navigate('/dashboard');
-      } else {
-        toast({
-          title: "Login failed",
-          description: "Please check your credentials and try again.",
-          variant: "destructive",
-        });
-      }
-    }, 1500);
+      if (error) throw error;
+      
+      toast({
+        title: "Logged in successfully",
+        description: "Welcome back to UNIGAMES!",
+      });
+      
+      navigate('/dashboard');
+    } catch (error: any) {
+      toast({
+        title: "Login failed",
+        description: error.message || "Please check your credentials and try again.",
+        variant: "destructive",
+      });
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    if (!email) {
+      toast({
+        title: "Email required",
+        description: "Please enter your email address to reset your password.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Password reset email sent",
+        description: "Check your email for a link to reset your password.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Reset failed",
+        description: error.message || "Unable to send reset email. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -77,9 +124,13 @@ const Login = () => {
                 <label htmlFor="password" className="text-sm font-medium">
                   Password
                 </label>
-                <a href="#" className="text-sm text-unigames-purple hover:underline">
+                <button 
+                  type="button" 
+                  className="text-sm text-unigames-purple hover:underline"
+                  onClick={handlePasswordReset}
+                >
                   Forgot password?
-                </a>
+                </button>
               </div>
               <Input
                 id="password"
@@ -123,10 +174,54 @@ const Login = () => {
             </div>
             
             <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" type="button" className="border-muted">
+              <Button 
+                variant="outline" 
+                type="button" 
+                className="border-muted"
+                onClick={async () => {
+                  try {
+                    const { error } = await supabase.auth.signInWithOAuth({
+                      provider: 'google',
+                      options: {
+                        redirectTo: `${window.location.origin}/dashboard`
+                      }
+                    });
+                    if (error) throw error;
+                  } catch (error) {
+                    console.error("Google auth error:", error);
+                    toast({
+                      title: "Google login failed",
+                      description: "Unable to sign in with Google at this time.",
+                      variant: "destructive",
+                    });
+                  }
+                }}
+              >
                 Google
               </Button>
-              <Button variant="outline" type="button" className="border-muted">
+              <Button 
+                variant="outline" 
+                type="button" 
+                className="border-muted"
+                onClick={async () => {
+                  try {
+                    const { error } = await supabase.auth.signInWithOAuth({
+                      provider: 'discord',
+                      options: {
+                        redirectTo: `${window.location.origin}/dashboard`
+                      }
+                    });
+                    if (error) throw error;
+                  } catch (error) {
+                    console.error("Discord auth error:", error);
+                    toast({
+                      title: "Discord login failed",
+                      description: "Unable to sign in with Discord at this time.",
+                      variant: "destructive",
+                    });
+                  }
+                }}
+              >
                 Discord
               </Button>
             </div>

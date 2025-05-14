@@ -1,16 +1,68 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Search, User, Gamepad } from "lucide-react";
+import { Search, User, Gamepad, LogOut } from "lucide-react";
 import SearchBar from './SearchBar';
+import { supabase } from '@/lib/supabase';
+import { useToast } from "@/hooks/use-toast";
 
 const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Check for active session on load
+    const checkSession = async () => {
+      setLoading(true);
+      try {
+        const { data } = await supabase.auth.getSession();
+        setUser(data.session?.user || null);
+      } catch (error) {
+        console.error("Session check error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkSession();
+
+    // Listen for auth state changes
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, []);
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of your account."
+      });
+      
+      navigate('/');
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast({
+        title: "Logout failed",
+        description: "An error occurred while logging out.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -30,9 +82,11 @@ const Navbar = () => {
           <Link to="/browse" className="text-gray-300 hover:text-white transition-colors">
             Browse
           </Link>
-          <Link to="/dashboard" className="text-gray-300 hover:text-white transition-colors">
-            Library
-          </Link>
+          {user && (
+            <Link to="/dashboard" className="text-gray-300 hover:text-white transition-colors">
+              Library
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center space-x-4">
@@ -51,21 +105,48 @@ const Navbar = () => {
             </Button>
           )}
           
-          <Button 
-            variant="ghost" 
-            className="text-gray-300 hover:text-white ml-2"
-            onClick={() => navigate('/login')}
-          >
-            Login
-          </Button>
-          
-          <Button 
-            variant="default" 
-            className="bg-unigames-purple hover:bg-unigames-purple/80 ml-2 button-glow"
-            onClick={() => navigate('/signup')}
-          >
-            Sign Up
-          </Button>
+          {!loading && (
+            <>
+              {user ? (
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="ghost"
+                    className="text-gray-300 hover:text-white"
+                    onClick={() => navigate('/dashboard')}
+                  >
+                    <User className="h-5 w-5 mr-2" />
+                    Profile
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="text-gray-300 hover:text-white"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="h-5 w-5 mr-2" />
+                    Logout
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <Button 
+                    variant="ghost" 
+                    className="text-gray-300 hover:text-white ml-2"
+                    onClick={() => navigate('/login')}
+                  >
+                    Login
+                  </Button>
+                  
+                  <Button 
+                    variant="default" 
+                    className="bg-unigames-purple hover:bg-unigames-purple/80 ml-2 button-glow"
+                    onClick={() => navigate('/signup')}
+                  >
+                    Sign Up
+                  </Button>
+                </>
+              )}
+            </>
+          )}
         </div>
       </div>
     </nav>
