@@ -1,44 +1,17 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Search, User, Gamepad, LogOut } from "lucide-react";
 import SearchBar from './SearchBar';
-import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 
 const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  useEffect(() => {
-    // Check for active session on load
-    const checkSession = async () => {
-      setLoading(true);
-      try {
-        const { data } = await supabase.auth.getSession();
-        setUser(data.session?.user || null);
-      } catch (error) {
-        console.error("Session check error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkSession();
-
-    // Listen for auth state changes
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => {
-      authListener?.subscription.unsubscribe();
-    };
-  }, []);
+  const { user, isLoading, signOut } = useAuth();
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -46,15 +19,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      
-      toast({
-        title: "Logged out successfully",
-        description: "You have been logged out of your account."
-      });
-      
-      navigate('/');
+      await signOut();
     } catch (error) {
       console.error("Logout error:", error);
       toast({
@@ -105,7 +70,7 @@ const Navbar = () => {
             </Button>
           )}
           
-          {!loading && (
+          {!isLoading && (
             <>
               {user ? (
                 <div className="flex items-center space-x-2">

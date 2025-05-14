@@ -1,20 +1,29 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Gamepad } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from '@/lib/supabase'; // Import supabase client
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/lib/supabase';
 
 const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { signUp, isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    // If user is already authenticated, redirect to dashboard
+    if (isAuthenticated && !isLoading) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, isLoading, navigate]);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,71 +37,20 @@ const Signup = () => {
       return;
     }
     
-    if (!email || !password) {
-      toast({
-        title: "Missing information",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    setIsLoading(true);
-    
-    try {
-      // Register user with Supabase Auth
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: name,
-          }
-        }
-      });
-      
-      if (error) throw error;
-      
-      if (data.user) {
-        toast({
-          title: "Account created successfully",
-          description: "Welcome to UNIGAMES!",
-        });
-        
-        // Store additional user info in profiles table if needed
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert([
-            { 
-              id: data.user.id, 
-              full_name: name,
-              created_at: new Date().toISOString() 
-            }
-          ]);
-        
-        if (profileError) {
-          console.error("Error creating profile:", profileError);
-        }
-        
-        navigate('/dashboard');
-      } else {
-        // Email confirmation might be required
-        toast({
-          title: "Verification email sent",
-          description: "Please check your email to verify your account.",
-        });
-      }
-    } catch (error: any) {
-      toast({
-        title: "Registration failed",
-        description: error.message || "An error occurred during registration.",
-        variant: "destructive",
-      });
-      console.error("Signup error:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    await signUp(email, password, name);
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-unigames-purple"></div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return null; // Will redirect in useEffect
+  }
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">

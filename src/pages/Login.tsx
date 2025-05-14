@@ -1,60 +1,32 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Gamepad } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from '@/lib/supabase'; // Import supabase client
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/lib/supabase';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { signIn, isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    // If user is already authenticated, redirect to dashboard
+    if (isAuthenticated && !isLoading) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, isLoading, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!email || !password) {
-      toast({
-        title: "Missing information",
-        description: "Please enter both email and password.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    setIsLoading(true);
-    
-    try {
-      // Authenticate with Supabase
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      
-      if (error) throw error;
-      
-      toast({
-        title: "Logged in successfully",
-        description: "Welcome back to UNIGAMES!",
-      });
-      
-      navigate('/dashboard');
-    } catch (error: any) {
-      toast({
-        title: "Login failed",
-        description: error.message || "Please check your credentials and try again.",
-        variant: "destructive",
-      });
-      console.error("Login error:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    await signIn(email, password);
   };
 
   const handlePasswordReset = async () => {
@@ -86,6 +58,18 @@ const Login = () => {
       });
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-unigames-purple"></div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return null; // Will redirect in useEffect
+  }
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
