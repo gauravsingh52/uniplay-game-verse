@@ -5,21 +5,16 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+// Check if variables exist before creating client
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error(
-    'Missing Supabase environment variables. Please check your .env file or Lovable secrets.'
+    'Missing Supabase environment variables. Please check your Lovable project secrets.'
   );
 }
 
-// Create Supabase client
-export const supabase = createClient(
-  supabaseUrl || 'https://placeholder-url.supabase.co', 
-  supabaseAnonKey || 'placeholder-key'
-);
+// Create a more robust Supabase client that won't try to connect if credentials missing
+export const supabase = !supabaseUrl || !supabaseAnonKey 
+  ? null 
+  : createClient(supabaseUrl, supabaseAnonKey);
 
-// Add this check to help with debugging
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn(
-    'IMPORTANT: Supabase client was initialized with placeholder values. Authentication will not work correctly until proper environment variables are provided.'
-  );
-}
+// Modify the main.tsx file to show an error message if Supabase is not configured
