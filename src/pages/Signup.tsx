@@ -14,6 +14,7 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [socialAuthLoading, setSocialAuthLoading] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { signUp, isAuthenticated, isLoading } = useAuth();
@@ -38,6 +39,42 @@ const Signup = () => {
     }
     
     await signUp(email, password, name);
+  };
+
+  const handleSocialAuth = async (provider: 'google' | 'discord') => {
+    try {
+      setSocialAuthLoading(provider);
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: provider,
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          }
+        }
+      });
+      
+      if (error) throw error;
+      
+      // If no error and we have a URL, we can redirect
+      if (data?.url) {
+        // Redirect happens automatically
+        window.location.href = data.url;
+      } else {
+        throw new Error('No redirect URL provided by authentication service');
+      }
+    } catch (error: any) {
+      console.error(`${provider} auth error:`, error);
+      toast({
+        title: `${provider.charAt(0).toUpperCase() + provider.slice(1)} login failed`,
+        description: error.message || `Unable to sign in with ${provider}. Please check if ${provider} authentication is enabled in your Supabase settings.`,
+        variant: "destructive",
+      });
+    } finally {
+      setSocialAuthLoading(null);
+    }
   };
 
   if (isLoading) {
@@ -177,51 +214,25 @@ const Signup = () => {
               <Button 
                 variant="outline" 
                 type="button" 
-                className="border-muted"
-                onClick={async () => {
-                  try {
-                    const { error } = await supabase.auth.signInWithOAuth({
-                      provider: 'google',
-                      options: {
-                        redirectTo: `${window.location.origin}/dashboard`
-                      }
-                    });
-                    if (error) throw error;
-                  } catch (error) {
-                    console.error("Google auth error:", error);
-                    toast({
-                      title: "Google login failed",
-                      description: "Unable to sign in with Google at this time.",
-                      variant: "destructive",
-                    });
-                  }
-                }}
+                className="border-muted flex items-center justify-center"
+                onClick={() => handleSocialAuth('google')}
+                disabled={socialAuthLoading !== null}
               >
+                {socialAuthLoading === 'google' ? (
+                  <div className="animate-spin h-4 w-4 border-t-2 border-b-2 border-unigames-purple rounded-full mr-2"></div>
+                ) : null}
                 Google
               </Button>
               <Button 
                 variant="outline" 
                 type="button" 
-                className="border-muted"
-                onClick={async () => {
-                  try {
-                    const { error } = await supabase.auth.signInWithOAuth({
-                      provider: 'discord',
-                      options: {
-                        redirectTo: `${window.location.origin}/dashboard`
-                      }
-                    });
-                    if (error) throw error;
-                  } catch (error) {
-                    console.error("Discord auth error:", error);
-                    toast({
-                      title: "Discord login failed",
-                      description: "Unable to sign in with Discord at this time.",
-                      variant: "destructive",
-                    });
-                  }
-                }}
+                className="border-muted flex items-center justify-center"
+                onClick={() => handleSocialAuth('discord')}
+                disabled={socialAuthLoading !== null}
               >
+                {socialAuthLoading === 'discord' ? (
+                  <div className="animate-spin h-4 w-4 border-t-2 border-b-2 border-unigames-purple rounded-full mr-2"></div>
+                ) : null}
                 Discord
               </Button>
             </div>
