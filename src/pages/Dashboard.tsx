@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,12 +8,19 @@ import {
 } from "lucide-react";
 import Navbar from '@/components/Navbar';
 import { gamesData } from '@/data/gamesData';
+import { useAuth } from '@/hooks/useAuth';
 
 const Dashboard = () => {
   // In a real app, these would be fetched from an API
   const recentlyPlayed = gamesData.slice(0, 4);
   const favorites = gamesData.slice(5, 9);
   const [activeTab, setActiveTab] = useState('recent');
+  const { user } = useAuth(); // Get the authenticated user
+  
+  // Get the user's name from metadata or email if not available
+  const userName = user?.user_metadata?.full_name || 
+                   user?.user_metadata?.name ||
+                   (user?.email ? user.email.split('@')[0] : 'User');
 
   return (
     <div className="min-h-screen bg-background">
@@ -30,7 +36,7 @@ const Dashboard = () => {
                   <User className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <div>
-                  <h2 className="font-medium">John Doe</h2>
+                  <h2 className="font-medium">{userName}</h2>
                   <p className="text-sm text-muted-foreground">Free Plan</p>
                 </div>
               </div>

@@ -12,6 +12,11 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, isLoading, signOut } = useAuth();
+  
+  // Get the user's name from metadata or email if not available
+  const userName = user?.user_metadata?.full_name || 
+                   user?.user_metadata?.name ||
+                   (user?.email ? user.email.split('@')[0] : 'Profile');
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -80,7 +85,7 @@ const Navbar = () => {
                     onClick={() => navigate('/dashboard')}
                   >
                     <User className="h-5 w-5 mr-2" />
-                    Profile
+                    {userName}
                   </Button>
                   <Button
                     variant="ghost"
