@@ -64,6 +64,36 @@ const Settings = () => {
           
           {/* Main content */}
           <div className="space-y-8">
+            {/* Account Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Account Information</CardTitle>
+                <CardDescription>
+                  Your account details and user information
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">User ID</Label>
+                  <div className="p-2 bg-muted rounded-md text-sm font-mono truncate">
+                    {user?.id || 'Not available'}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Email</Label>
+                  <div className="p-2 bg-muted rounded-md text-sm truncate">
+                    {user?.email || 'Not available'}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Account Created</Label>
+                  <div className="p-2 bg-muted rounded-md text-sm">
+                    {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'Not available'}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          
             {/* Profile Settings */}
             <Card>
               <CardHeader>
@@ -110,6 +140,7 @@ const Settings = () => {
                   <Label>Theme</Label>
                   <RadioGroup 
                     defaultValue={theme} 
+                    value={theme}
                     onValueChange={(value) => setTheme(value as 'dark' | 'light')}
                     className="flex space-x-4"
                   >

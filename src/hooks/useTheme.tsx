@@ -25,11 +25,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Update theme class on document and store preference
     const root = window.document.documentElement;
     
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
+    root.classList.remove('dark', 'light');
+    root.classList.add(theme);
     
     localStorage.setItem('theme', theme);
   }, [theme]);

@@ -1,26 +1,38 @@
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  User, LogOut, Clock, Gamepad, Bookmark, 
+  User, Clock, Gamepad, Bookmark, 
   Heart, Bell, Settings, Play
 } from "lucide-react";
 import Navbar from '@/components/Navbar';
 import { gamesData } from '@/data/gamesData';
 import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   // In a real app, these would be fetched from an API
   const recentlyPlayed = gamesData.slice(0, 4);
   const favorites = gamesData.slice(5, 9);
   const [activeTab, setActiveTab] = useState('recent');
-  const { user } = useAuth(); // Get the authenticated user
+  const { user, signOut } = useAuth(); // Get the authenticated user
+  const navigate = useNavigate();
   
   // Get the user's name from metadata or email if not available
   const userName = user?.user_metadata?.full_name || 
                    user?.user_metadata?.name ||
                    (user?.email ? user.email.split('@')[0] : 'User');
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -68,13 +80,7 @@ const Dashboard = () => {
                 <Button 
                   variant="ghost" 
                   className="w-full justify-start"
-                >
-                  <Bell className="mr-3 h-5 w-5" />
-                  Notifications
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  className="w-full justify-start"
+                  onClick={() => navigate('/settings')}
                 >
                   <Settings className="mr-3 h-5 w-5" />
                   Settings
@@ -82,8 +88,12 @@ const Dashboard = () => {
               </nav>
               
               <div className="pt-4 border-t border-border">
-                <Button variant="ghost" className="w-full justify-start text-destructive">
-                  <LogOut className="mr-3 h-5 w-5" />
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-start text-destructive"
+                  onClick={handleLogout}
+                >
+                  <User className="mr-3 h-5 w-5" />
                   Sign Out
                 </Button>
               </div>
@@ -101,7 +111,7 @@ const Dashboard = () => {
             
             {/* Main content */}
             <div>
-              <h1 className="text-3xl font-bold mb-8">Your Dashboard</h1>
+              <h1 className="text-3xl font-bold mb-8">Welcome, {userName}</h1>
               
               <Tabs defaultValue="recent" value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="mb-8">

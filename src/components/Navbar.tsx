@@ -2,7 +2,23 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Search, User, Gamepad, LogOut, Settings, Moon, Sun } from "lucide-react";
+import { 
+  Search, 
+  User, 
+  Gamepad, 
+  LogOut, 
+  Settings, 
+  Moon, 
+  Sun 
+} from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import SearchBar from './SearchBar';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
@@ -20,6 +36,8 @@ const Navbar = () => {
                    user?.user_metadata?.name ||
                    (user?.email ? user.email.split('@')[0] : 'Profile');
 
+  const userEmail = user?.email || '';
+
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
@@ -27,6 +45,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await signOut();
+      navigate('/');
     } catch (error) {
       console.error("Logout error:", error);
       toast({
@@ -46,20 +65,20 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <Gamepad className="h-8 w-8 text-unigames-purple" />
-          <span className="text-2xl font-bold text-white font-mono">
+          <span className="text-2xl font-bold text-foreground font-mono">
             UNI<span className="text-unigames-purple">GAMES</span>
           </span>
         </Link>
 
         <div className="hidden md:flex items-center space-x-6">
-          <Link to="/" className="text-gray-300 hover:text-white transition-colors">
+          <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
             Home
           </Link>
-          <Link to="/browse" className="text-gray-300 hover:text-white transition-colors">
+          <Link to="/browse" className="text-muted-foreground hover:text-foreground transition-colors">
             Browse
           </Link>
           {user && (
-            <Link to="/dashboard" className="text-gray-300 hover:text-white transition-colors">
+            <Link to="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
               Library
             </Link>
           )}
@@ -70,7 +89,7 @@ const Navbar = () => {
             variant="ghost" 
             size="icon" 
             onClick={toggleTheme}
-            className="text-gray-300 hover:text-white"
+            className="text-muted-foreground hover:text-foreground"
             title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -85,7 +104,7 @@ const Navbar = () => {
               variant="ghost" 
               size="icon" 
               onClick={toggleSearch}
-              className="text-gray-300 hover:text-white"
+              className="text-muted-foreground hover:text-foreground"
             >
               <Search className="h-5 w-5" />
             </Button>
@@ -94,35 +113,36 @@ const Navbar = () => {
           {!isLoading && (
             <>
               {user ? (
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="ghost"
-                    className="text-gray-300 hover:text-white"
-                    onClick={() => navigate('/dashboard')}
-                  >
-                    <User className="h-5 w-5 mr-2" />
-                    {userName}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="text-gray-300 hover:text-white"
-                    onClick={() => navigate('/settings')}
-                  >
-                    <Settings className="h-5 w-5" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="text-gray-300 hover:text-white"
-                    onClick={handleLogout}
-                  >
-                    <LogOut className="h-5 w-5" />
-                  </Button>
-                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="text-muted-foreground hover:text-foreground flex items-center gap-2 pl-2 pr-3">
+                      <User className="h-5 w-5" />
+                      <span>{userName}</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuLabel>
+                      <div className="font-medium">{userName}</div>
+                      <div className="text-xs text-muted-foreground truncate">{userEmail}</div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                      <Gamepad className="mr-2 h-4 w-4" /> My Library
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/settings')}>
+                      <Settings className="mr-2 h-4 w-4" /> Settings
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>
+                      <LogOut className="mr-2 h-4 w-4" /> Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               ) : (
                 <>
                   <Button 
                     variant="ghost" 
-                    className="text-gray-300 hover:text-white ml-2"
+                    className="text-muted-foreground hover:text-foreground"
                     onClick={() => navigate('/login')}
                   >
                     Login
@@ -130,7 +150,7 @@ const Navbar = () => {
                   
                   <Button 
                     variant="default" 
-                    className="bg-unigames-purple hover:bg-unigames-purple/80 ml-2 button-glow"
+                    className="bg-unigames-purple hover:bg-unigames-purple/80 button-glow"
                     onClick={() => navigate('/signup')}
                   >
                     Sign Up
