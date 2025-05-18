@@ -2,16 +2,18 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Search, User, Gamepad, LogOut } from "lucide-react";
+import { Search, User, Gamepad, LogOut, Settings, Moon, Sun } from "lucide-react";
 import SearchBar from './SearchBar';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
+import { useTheme } from "@/hooks/useTheme";
 
 const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, isLoading, signOut } = useAuth();
+  const { theme, setTheme } = useTheme();
   
   // Get the user's name from metadata or email if not available
   const userName = user?.user_metadata?.full_name || 
@@ -33,6 +35,10 @@ const Navbar = () => {
         variant: "destructive"
       });
     }
+  };
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   return (
@@ -60,6 +66,16 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleTheme}
+            className="text-gray-300 hover:text-white"
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </Button>
+          
           {isSearchOpen ? (
             <div className="w-64">
               <SearchBar onClose={toggleSearch} />
@@ -90,10 +106,16 @@ const Navbar = () => {
                   <Button
                     variant="ghost"
                     className="text-gray-300 hover:text-white"
+                    onClick={() => navigate('/settings')}
+                  >
+                    <Settings className="h-5 w-5" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="text-gray-300 hover:text-white"
                     onClick={handleLogout}
                   >
-                    <LogOut className="h-5 w-5 mr-2" />
-                    Logout
+                    <LogOut className="h-5 w-5" />
                   </Button>
                 </div>
               ) : (
