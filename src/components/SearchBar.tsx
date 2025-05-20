@@ -28,7 +28,7 @@ const SearchBar = ({ onClose, fullWidth = false }: SearchBarProps) => {
         id: game.id,
         title: game.title,
         thumbnail: game.thumbnail
-      }));
+      })).slice(0, 8);
       setResults(searchResults);
     } else {
       setResults([]);
@@ -37,12 +37,8 @@ const SearchBar = ({ onClose, fullWidth = false }: SearchBarProps) => {
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && query.length > 0) {
-      if (results.length > 0) {
-        // Navigate to first result
-        navigate(`/game/${results[0].id}`);
-      } else {
-        navigate(`/search?q=${encodeURIComponent(query)}`);
-      }
+      navigate(`/search?q=${encodeURIComponent(query)}`);
+      setResults([]);
       if (onClose) onClose();
     } else if (e.key === 'Escape') {
       if (onClose) onClose();
@@ -87,6 +83,13 @@ const SearchBar = ({ onClose, fullWidth = false }: SearchBarProps) => {
     }, 100);
   };
 
+  const handleSearchPage = () => {
+    if (query.length > 0) {
+      navigate(`/search?q=${encodeURIComponent(query)}`);
+      if (onClose) onClose();
+    }
+  };
+
   return (
     <div className={`relative ${fullWidth ? 'w-full' : ''}`} ref={searchRef}>
       <div className="relative">
@@ -102,7 +105,13 @@ const SearchBar = ({ onClose, fullWidth = false }: SearchBarProps) => {
           className="pl-10 pr-10 py-2 bg-background/60 border-muted transition-all duration-300 focus-within:border-unigames-purple"
           autoFocus
         />
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <button 
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground" 
+          onClick={handleSearchPage}
+          aria-label="Search"
+        >
+          <Search className="h-4 w-4" />
+        </button>
         {onClose && (
           <button 
             onClick={onClose}
@@ -128,18 +137,15 @@ const SearchBar = ({ onClose, fullWidth = false }: SearchBarProps) => {
               <span className="truncate">{result.title}</span>
             </div>
           ))}
-          {results.length > 5 && (
+          {results.length > 0 && (
             <div className="p-2 text-center border-t border-border">
               <Button 
                 variant="ghost" 
                 size="sm" 
                 className="w-full text-unigames-purple hover:text-unigames-purple/80"
-                onClick={() => {
-                  navigate(`/search?q=${encodeURIComponent(query)}`);
-                  if (onClose) onClose();
-                }}
+                onClick={handleSearchPage}
               >
-                View all {results.length} results
+                View all results for "{query}"
               </Button>
             </div>
           )}

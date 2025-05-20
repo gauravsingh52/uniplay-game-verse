@@ -18,6 +18,7 @@ import Browse from "./pages/Browse";
 import Categories from "./pages/Categories";
 import Trending from "./pages/Trending";
 import CategoryGames from "./pages/CategoryGames";
+import Search from "./pages/Search";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const AppRoutes = () => (
     <Route path="/categories" element={<Categories />} />
     <Route path="/trending" element={<Trending />} />
     <Route path="/category/:categoryName" element={<CategoryGames />} />
+    <Route path="/search" element={<Search />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
 );

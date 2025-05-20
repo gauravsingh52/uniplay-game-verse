@@ -1,20 +1,25 @@
 
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
-import { getGamesByCategory } from '@/data/gamesData';
+import { getGamesByCategory, getAllCategories } from '@/data/gamesData';
 import GameCard from '@/components/GameCard';
 import { Button } from '@/components/ui/button';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Filter, ArrowLeft } from 'lucide-react';
+import CategoryFilter from '@/components/CategoryFilter';
 
 const CategoryGames = () => {
   const { categoryName } = useParams<{ categoryName: string }>();
   const [games, setGames] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState(categoryName || 'All');
+  const navigate = useNavigate();
   
   useEffect(() => {
     if (categoryName) {
       setLoading(true);
+      setSelectedCategory(categoryName);
+      
       // Simulate loading delay
       setTimeout(() => {
         const categoryGames = getGamesByCategory(categoryName);
@@ -23,6 +28,14 @@ const CategoryGames = () => {
       }, 300);
     }
   }, [categoryName]);
+  
+  const handleCategorySelect = (category: string) => {
+    if (category === 'All') {
+      navigate('/browse');
+    } else {
+      navigate(`/category/${category}`);
+    }
+  };
   
   return (
     <div className="min-h-screen bg-background">
@@ -37,8 +50,23 @@ const CategoryGames = () => {
           <span className="font-medium">{categoryName}</span>
         </div>
         
-        <h1 className="text-3xl font-bold mb-2">{categoryName} Games</h1>
-        <p className="text-muted-foreground mb-8">Browse our collection of {categoryName?.toLowerCase()} games</p>
+        <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">{categoryName} Games</h1>
+            <p className="text-muted-foreground">Browse our collection of {categoryName?.toLowerCase()} games</p>
+          </div>
+          
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4" /> Back
+          </Button>
+        </div>
+        
+        <CategoryFilter selectedCategory={selectedCategory} onSelectCategory={handleCategorySelect} />
         
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
@@ -55,11 +83,16 @@ const CategoryGames = () => {
                 <Button onClick={() => window.history.back()}>Go Back</Button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                {games.map((game) => (
-                  <GameCard key={game.id} game={game} />
-                ))}
-              </div>
+              <>
+                <div className="mb-4 text-sm text-muted-foreground">
+                  Showing {games.length} {games.length === 1 ? 'game' : 'games'}
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                  {games.map((game) => (
+                    <GameCard key={game.id} game={game} />
+                  ))}
+                </div>
+              </>
             )}
           </>
         )}
