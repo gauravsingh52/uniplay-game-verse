@@ -90,12 +90,14 @@ const Navbar = () => {
   return (
     <nav className="py-4 px-4 md:px-8 border-b border-border bg-card/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
       <div className="container mx-auto flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2 z-20">
-          <Gamepad className="h-8 w-8 text-unigames-purple" />
-          <span className="text-2xl font-bold text-foreground font-mono">
-            UNI<span className="text-unigames-purple">GAMES</span>
-          </span>
-        </Link>
+        <div className="flex items-center z-20">
+          <Link to="/" className="flex items-center space-x-2">
+            <Gamepad className="h-8 w-8 text-unigames-purple" />
+            <span className="text-2xl font-bold text-foreground font-mono">
+              UNI<span className="text-unigames-purple">GAMES</span>
+            </span>
+          </Link>
+        </div>
 
         {/* Mobile menu button */}
         <button 
