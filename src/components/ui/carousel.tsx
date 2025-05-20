@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
@@ -27,7 +26,6 @@ type CarouselContextProps = {
   scrollNext: () => void
   canScrollPrev: boolean
   canScrollNext: boolean
-  selectedIndex: number
 } & CarouselProps
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null)
@@ -67,7 +65,6 @@ const Carousel = React.forwardRef<
     )
     const [canScrollPrev, setCanScrollPrev] = React.useState(false)
     const [canScrollNext, setCanScrollNext] = React.useState(false)
-    const [selectedIndex, setSelectedIndex] = React.useState(0)
 
     const onSelect = React.useCallback((api: CarouselApi) => {
       if (!api) {
@@ -76,7 +73,6 @@ const Carousel = React.forwardRef<
 
       setCanScrollPrev(api.canScrollPrev())
       setCanScrollNext(api.canScrollNext())
-      setSelectedIndex(api.selectedScrollSnap())
     }, [])
 
     const scrollPrev = React.useCallback(() => {
@@ -134,7 +130,6 @@ const Carousel = React.forwardRef<
           scrollNext,
           canScrollPrev,
           canScrollNext,
-          selectedIndex,
         }}
       >
         <div
@@ -255,40 +250,6 @@ const CarouselNext = React.forwardRef<
 })
 CarouselNext.displayName = "CarouselNext"
 
-const CarouselDots = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  const { api, selectedIndex } = useCarousel()
-  
-  if (!api) return null;
-  
-  const slideCount = api.slideNodes().length;
-  
-  return (
-    <div 
-      ref={ref} 
-      className={cn("flex justify-center gap-1 mt-2", className)}
-      {...props}
-    >
-      {Array.from({ length: slideCount }).map((_, index) => (
-        <button
-          key={index}
-          className={cn(
-            "w-2 h-2 rounded-full transition-all",
-            selectedIndex === index 
-              ? "bg-primary scale-125" 
-              : "bg-muted hover:bg-primary/50"
-          )}
-          onClick={() => api.scrollTo(index)}
-          aria-label={`Go to slide ${index + 1}`}
-        />
-      ))}
-    </div>
-  )
-})
-CarouselDots.displayName = "CarouselDots"
-
 export {
   type CarouselApi,
   Carousel,
@@ -296,5 +257,4 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-  CarouselDots,
 }

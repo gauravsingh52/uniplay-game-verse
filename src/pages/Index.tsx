@@ -1,10 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import GameCarousel from '@/components/GameCarousel';
 import GameCard from '@/components/GameCard';
 import CategoryFilter from '@/components/CategoryFilter';
 import SearchBar from '@/components/SearchBar';
-import Slideshow from '@/components/Slideshow';
 import { Button } from "@/components/ui/button";
 import { getFeaturedGames, getGamesByCategory, getAllCategories, gamesData } from '@/data/gamesData';
 import { ArrowRight, Gamepad, Star, Play, TrendingUp } from 'lucide-react';
@@ -52,47 +52,80 @@ const Index = () => {
     navigate('/browse');
   };
 
-  // Slideshow slides
-  const slides = [
-    {
-      image: "/lovable-uploads/3b79c05c-6715-4da5-97d5-4622a92d4974.png",
-      title: "Start Playing Now",
-      description: "Hundreds of games available instantly in your browser",
-      buttonText: "Play Now",
-      buttonAction: () => navigate('/browse'),
-      position: "center" as const,
-    },
-    {
-      image: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-      title: "Featured Games",
-      description: "Check out our selection of premium titles ready to play",
-      buttonText: "Explore Featured",
-      buttonAction: () => navigate('/browse'),
-      position: "left" as const,
-    },
-    {
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-      title: "New Releases",
-      description: "Dive into the latest additions to our games collection",
-      buttonText: "See What's New",
-      buttonAction: () => navigate('/browse'),
-      position: "right" as const,
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       
-      {/* Hero section with Slideshow */}
+      {/* Hero section */}
       <section className="pt-24 pb-8 px-4 md:px-8 hero-gradient">
         <div className="container mx-auto">
-          <div className="py-12">
-            <Slideshow 
-              slides={slides} 
-              autoplayInterval={7000}
-              className="shadow-2xl"
-            />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-12">
+            <div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+                Play Instantly.<br />
+                No Downloads.
+              </h1>
+              <p className="text-lg text-gray-300 mb-8">
+                Access premium games directly in your browser. No installations, no waiting. Just click and play.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  size="lg" 
+                  className="bg-unigames-purple hover:bg-unigames-purple/80 button-glow"
+                  onClick={handleBrowseAll}
+                >
+                  <Play className="mr-2 h-4 w-4" /> Start Playing
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="border-unigames-purple text-unigames-purple hover:bg-unigames-purple/10"
+                  onClick={() => navigate('/categories')}
+                >
+                  <Gamepad className="mr-2 h-4 w-4" /> Browse Categories
+                </Button>
+              </div>
+            </div>
+            <div className="hidden lg:flex relative justify-center">
+              <div className="absolute -top-20 -right-20 w-64 h-64 bg-unigames-purple/20 rounded-full filter blur-3xl"></div>
+              <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-unigames-blue/20 rounded-full filter blur-3xl"></div>
+              
+              {/* Game cards floating animation */}
+              <div className="relative">
+                {/* Main game card */}
+                <div className="relative z-30 animate-float bg-card rounded-xl overflow-hidden shadow-xl border border-border">
+                  <img
+                    src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
+                    alt="Gaming"
+                    className="w-full h-64 object-cover"
+                  />
+                  <div className="p-4">
+                    <h3 className="font-bold">Start Playing Now</h3>
+                    <p className="text-sm text-muted-foreground">Hundreds of games available</p>
+                  </div>
+                </div>
+                
+                {/* Background floating cards */}
+                <div className="absolute top-20 -left-20 z-10 rotate-[-10deg] animate-float delay-300 hidden md:block">
+                  <div className="bg-card w-40 h-40 rounded-lg overflow-hidden shadow-lg border border-border">
+                    <img
+                      src="https://images.unsplash.com/photo-1585620385456-4759f9b5c7d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                      alt="Game"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div className="absolute bottom-10 -right-10 z-10 rotate-[10deg] animate-float delay-500 hidden md:block">
+                  <div className="bg-card w-32 h-32 rounded-lg overflow-hidden shadow-lg border border-border">
+                    <img
+                      src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                      alt="Game"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           
           <div className="w-full md:w-2/3 lg:w-1/2 mx-auto mt-6 mb-12">
