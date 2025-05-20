@@ -28,7 +28,7 @@ const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user, isLoading, signOut } = useAuth();
+  const { user, isLoading, signOut, isAuthenticated } = useAuth();
   const { theme, setTheme } = useTheme();
   
   // Get the user's name from metadata or email if not available
@@ -37,7 +37,7 @@ const Navbar = () => {
                    (user?.email ? user.email.split('@')[0] : 'Profile');
 
   const userEmail = user?.email || '';
-
+  
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
@@ -45,7 +45,6 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await signOut();
-      navigate('/');
     } catch (error) {
       console.error("Logout error:", error);
       toast({
@@ -77,7 +76,7 @@ const Navbar = () => {
           <Link to="/browse" className="text-muted-foreground hover:text-foreground transition-colors">
             Browse
           </Link>
-          {user && (
+          {isAuthenticated && (
             <Link to="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
               Library
             </Link>
@@ -112,12 +111,12 @@ const Navbar = () => {
           
           {!isLoading && (
             <>
-              {user ? (
+              {isAuthenticated && user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="text-muted-foreground hover:text-foreground flex items-center gap-2 pl-2 pr-3">
                       <User className="h-5 w-5" />
-                      <span>{userName}</span>
+                      <span className="max-w-[120px] truncate">{userName}</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">

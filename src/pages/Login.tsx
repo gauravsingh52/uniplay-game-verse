@@ -64,10 +64,14 @@ const Login = () => {
     try {
       setSocialAuthLoading(provider);
       
+      // Get the current origin for proper redirect
+      const redirectTo = `${window.location.origin}/dashboard`;
+      console.log(`OAuth redirecting to: ${redirectTo}`);
+
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: provider,
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: redirectTo,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -91,7 +95,6 @@ const Login = () => {
         description: error.message || `Unable to sign in with ${provider}. Please check if ${provider} authentication is enabled in your Supabase settings.`,
         variant: "destructive",
       });
-    } finally {
       setSocialAuthLoading(null);
     }
   };
