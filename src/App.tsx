@@ -14,6 +14,10 @@ import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
+import Browse from "./pages/Browse";
+import Categories from "./pages/Categories";
+import Trending from "./pages/Trending";
+import CategoryGames from "./pages/CategoryGames";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +30,10 @@ const AppRoutes = () => (
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/settings" element={<Settings />} />
     <Route path="/reset-password" element={<ResetPassword />} />
+    <Route path="/browse" element={<Browse />} />
+    <Route path="/categories" element={<Categories />} />
+    <Route path="/trending" element={<Trending />} />
+    <Route path="/category/:categoryName" element={<CategoryGames />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
 );
