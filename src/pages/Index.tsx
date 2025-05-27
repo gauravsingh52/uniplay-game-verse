@@ -5,6 +5,7 @@ import GameCard from '@/components/GameCard';
 import CategoryFilter from '@/components/CategoryFilter';
 import SearchBar from '@/components/SearchBar';
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { getFeaturedGames, getGamesByCategory, getAllCategories, gamesData } from '@/data/gamesData';
 import { ArrowRight, Gamepad, Star, Play, TrendingUp, Zap, Users, Clock, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';

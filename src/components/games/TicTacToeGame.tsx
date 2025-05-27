@@ -8,8 +8,8 @@ interface TicTacToeGameProps {
   onClose: () => void;
 }
 
-type Player = 'X' | 'O' | null;
-type Board = Player[];
+type Player = 'X' | 'O' | 'draw' | null;
+type Board = (Exclude<Player, 'draw'>)[];
 
 const TicTacToeGame = ({ onClose }: TicTacToeGameProps) => {
   const [board, setBoard] = useState<Board>(Array(9).fill(null));
@@ -30,7 +30,7 @@ const TicTacToeGame = ({ onClose }: TicTacToeGameProps) => {
       }
     }
 
-    return squares.every(square => square !== null) ? 'draw' as Player : null;
+    return squares.every(square => square !== null) ? 'draw' : null;
   };
 
   const handleClick = (index: number) => {
