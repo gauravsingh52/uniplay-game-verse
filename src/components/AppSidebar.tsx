@@ -40,6 +40,11 @@ export function AppSidebar() {
   const { user, signOut, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
+  // Only show sidebar for authenticated users
+  if (!isAuthenticated) {
+    return null;
+  }
+
   const userName = user?.user_metadata?.full_name || 
                    user?.user_metadata?.name ||
                    (user?.email ? user.email.split('@')[0] : 'Guest');
@@ -81,63 +86,8 @@ export function AppSidebar() {
     { title: "Help & Support", url: "/help", icon: HelpCircle },
   ];
 
-  if (!isAuthenticated) {
-    return (
-      <Sidebar>
-        <SidebarHeader className="p-4">
-          <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-foreground font-mono">
-              UNI<span className="text-unigames-purple">GAMES</span>
-            </span>
-          </div>
-        </SidebarHeader>
-        
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Navigation</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {navigationItems.slice(0, 4).map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <Link to={item.url}>
-                        <item.icon className="h-4 w-4" />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-          
-          <SidebarSeparator />
-          
-          <SidebarGroup>
-            <SidebarGroupContent>
-              <div className="p-4 space-y-3">
-                <h3 className="text-sm font-medium">Join UNIGAMES</h3>
-                <p className="text-xs text-muted-foreground">
-                  Sign up to track your progress, save favorites, and access premium features.
-                </p>
-                <div className="space-y-2">
-                  <Button asChild className="w-full bg-unigames-purple hover:bg-unigames-purple/80">
-                    <Link to="/signup">Sign Up</Link>
-                  </Button>
-                  <Button asChild variant="outline" className="w-full">
-                    <Link to="/login">Sign In</Link>
-                  </Button>
-                </div>
-              </div>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-      </Sidebar>
-    );
-  }
-
   return (
-    <Sidebar>
+    <Sidebar side="right" className="border-l border-border">
       <SidebarHeader className="p-4">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-r from-unigames-purple to-unigames-blue flex items-center justify-center">

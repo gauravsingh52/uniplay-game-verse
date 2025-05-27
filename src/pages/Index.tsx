@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import GameCarousel from '@/components/GameCarousel';
@@ -11,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { Badge } from "@/components/ui/badge";
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from '@/components/AppSidebar';
+import { useAuth } from '@/hooks/useAuth';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -18,6 +20,7 @@ const Index = () => {
   const featuredGames = getFeaturedGames();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const { isAuthenticated } = useAuth();
 
   // Get trending games (for this demo, sort by highest rating)
   const trendingGames = [...gamesData]
@@ -56,13 +59,13 @@ const Index = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
-        <AppSidebar />
         <SidebarInset className="flex-1">
           <div className="flex flex-col min-h-screen">
-            <div className="flex items-center gap-2 px-4 py-2 border-b border-border">
-              <SidebarTrigger className="-ml-1" />
-              <div className="flex-1" />
-            </div>
+            {isAuthenticated && (
+              <div className="flex items-center justify-end gap-2 px-4 py-2 border-b border-border">
+                <SidebarTrigger className="-mr-1" />
+              </div>
+            )}
             
             <Navbar />
             
@@ -345,6 +348,7 @@ const Index = () => {
             </footer>
           </div>
         </SidebarInset>
+        <AppSidebar />
       </div>
     </SidebarProvider>
   );

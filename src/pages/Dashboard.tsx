@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -38,12 +39,11 @@ const Dashboard = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
-        <AppSidebar />
         <SidebarInset className="flex-1">
           <div className="flex flex-col min-h-screen">
-            <div className="flex items-center gap-2 px-4 py-2 border-b border-border">
-              <SidebarTrigger className="-ml-1" />
-              <div className="flex-1" />
+            <div className="flex items-center justify-between px-4 py-2 border-b border-border">
+              <div />
+              <SidebarTrigger className="-mr-1" />
             </div>
             
             <Navbar />
@@ -212,6 +212,7 @@ const Dashboard = () => {
             </div>
           </div>
         </SidebarInset>
+        <AppSidebar />
       </div>
     </SidebarProvider>
   );
