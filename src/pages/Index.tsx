@@ -7,7 +7,7 @@ import CategoryFilter from '@/components/CategoryFilter';
 import SearchBar from '@/components/SearchBar';
 import { Button } from "@/components/ui/button";
 import { getFeaturedGames, getGamesByCategory, getAllCategories, gamesData } from '@/data/gamesData';
-import { ArrowRight, Gamepad, Star, Play, TrendingUp } from 'lucide-react';
+import { ArrowRight, Gamepad, Star, Play, TrendingUp, Zap, Users, Clock, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Badge } from "@/components/ui/badge";
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
@@ -69,80 +69,176 @@ const Index = () => {
             
             <Navbar />
             
-            {/* Hero section */}
-            <section className="pt-24 pb-8 px-4 md:px-8 hero-gradient">
-              <div className="container mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-12">
-                  <div>
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-                      Play Instantly.<br />
-                      No Downloads.
-                    </h1>
-                    <p className="text-lg text-gray-300 mb-8">
-                      Access premium games directly in your browser. No installations, no waiting. Just click and play.
-                    </p>
+            {/* Enhanced Hero section */}
+            <section className="relative pt-24 pb-16 px-4 md:px-8 overflow-hidden">
+              {/* Animated background gradients */}
+              <div className="absolute inset-0 bg-gradient-to-br from-unigames-purple/10 via-background to-unigames-blue/10"></div>
+              <div className="absolute top-0 left-1/4 w-96 h-96 bg-unigames-purple/5 rounded-full filter blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-unigames-blue/5 rounded-full filter blur-3xl animate-pulse delay-1000"></div>
+              
+              <div className="container mx-auto relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center py-16">
+                  {/* Left content */}
+                  <div className="space-y-8 animate-fade-in">
+                    {/* Hero badge */}
+                    <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-unigames-purple/20 to-unigames-blue/20 backdrop-blur-sm border border-unigames-purple/30 rounded-full px-4 py-2 text-sm font-medium">
+                      <Zap className="w-4 h-4 text-unigames-purple animate-pulse" />
+                      <span>Instant Gaming Experience</span>
+                    </div>
+                    
+                    {/* Main heading with enhanced typography */}
+                    <div className="space-y-4">
+                      <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+                        <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
+                          Play Instantly.
+                        </span>
+                        <br />
+                        <span className="bg-gradient-to-r from-unigames-purple to-unigames-blue bg-clip-text text-transparent">
+                          No Downloads.
+                        </span>
+                      </h1>
+                      <p className="text-xl text-gray-300 leading-relaxed max-w-xl">
+                        Access premium games directly in your browser. No installations, no waiting. 
+                        Just click and play with our cutting-edge cloud gaming technology.
+                      </p>
+                    </div>
+                    
+                    {/* Feature highlights */}
+                    <div className="flex flex-wrap gap-6 text-sm text-gray-400">
+                      <div className="flex items-center space-x-2">
+                        <Clock className="w-4 h-4 text-unigames-purple" />
+                        <span>Instant Access</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Users className="w-4 h-4 text-unigames-blue" />
+                        <span>1M+ Players</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Shield className="w-4 h-4 text-unigames-cyan" />
+                        <span>100% Secure</span>
+                      </div>
+                    </div>
+                    
+                    {/* Enhanced action buttons */}
                     <div className="flex flex-col sm:flex-row gap-4">
                       <Button 
                         size="lg" 
-                        className="bg-unigames-purple hover:bg-unigames-purple/80 button-glow"
+                        className="group bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80 text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                         onClick={handleBrowseAll}
                       >
-                        <Play className="mr-2 h-4 w-4" /> Start Playing
+                        <Play className="mr-2 h-5 w-5 group-hover:animate-pulse" /> 
+                        Start Playing Now
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
                       <Button 
                         variant="outline" 
                         size="lg" 
-                        className="border-unigames-purple text-unigames-purple hover:bg-unigames-purple/10"
+                        className="group border-2 border-unigames-purple/50 bg-background/50 backdrop-blur-sm text-unigames-purple hover:bg-unigames-purple/10 hover:border-unigames-purple font-semibold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105"
                         onClick={() => navigate('/categories')}
                       >
-                        <Gamepad className="mr-2 h-4 w-4" /> Browse Categories
+                        <Gamepad className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" /> 
+                        Browse Categories
+                      </Button>
+                    </div>
+                    
+                    {/* Additional CTA */}
+                    <div className="pt-4">
+                      <Button 
+                        variant="ghost"
+                        className="text-gray-400 hover:text-unigames-purple transition-colors duration-300"
+                        onClick={() => navigate('/about')}
+                      >
+                        Learn More About Our Platform
+                        <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                   </div>
-                  <div className="hidden lg:flex relative justify-center">
-                    <div className="absolute -top-20 -right-20 w-64 h-64 bg-unigames-purple/20 rounded-full filter blur-3xl"></div>
-                    <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-unigames-blue/20 rounded-full filter blur-3xl"></div>
-                    
-                    {/* Game cards floating animation */}
-                    <div className="relative">
-                      {/* Main game card */}
-                      <div className="relative z-30 animate-float bg-card rounded-xl overflow-hidden shadow-xl border border-border">
+                  
+                  {/* Right content - Enhanced floating cards */}
+                  <div className="hidden lg:flex relative justify-center items-center">
+                    {/* Main showcase card */}
+                    <div className="relative z-30 group">
+                      <div className="absolute -inset-4 bg-gradient-to-r from-unigames-purple/20 to-unigames-blue/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                      <div className="relative bg-card/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-2xl border border-border/50 transform group-hover:scale-105 transition-all duration-500 animate-float">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-unigames-purple to-unigames-blue"></div>
                         <img
                           src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
-                          alt="Gaming"
+                          alt="Gaming showcase"
                           className="w-full h-64 object-cover"
                         />
-                        <div className="p-4">
-                          <h3 className="font-bold">Start Playing Now</h3>
-                          <p className="text-sm text-muted-foreground">Hundreds of games available</p>
+                        <div className="p-6 space-y-4">
+                          <div className="flex items-center justify-between">
+                            <h3 className="font-bold text-xl">Premium Gaming</h3>
+                            <Badge className="bg-unigames-purple/20 text-unigames-purple border-unigames-purple/30">
+                              HD Quality
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Experience console-quality games with zero latency
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-1">
+                              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                              <span className="text-sm font-medium">4.9/5</span>
+                            </div>
+                            <span className="text-xs text-muted-foreground">1000+ Games</span>
+                          </div>
                         </div>
                       </div>
-                      
-                      {/* Background floating cards */}
-                      <div className="absolute top-20 -left-20 z-10 rotate-[-10deg] animate-float delay-300 hidden md:block">
-                        <div className="bg-card w-40 h-40 rounded-lg overflow-hidden shadow-lg border border-border">
-                          <img
-                            src="https://images.unsplash.com/photo-1585620385456-4759f9b5c7d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
-                            alt="Game"
-                            className="w-full h-full object-cover"
-                          />
+                    </div>
+                    
+                    {/* Floating accent cards */}
+                    <div className="absolute top-16 -left-20 z-10 rotate-[-15deg] animate-float delay-300 hidden xl:block">
+                      <div className="bg-card/70 backdrop-blur-sm w-48 h-32 rounded-xl overflow-hidden shadow-lg border border-border/30 hover:scale-110 transition-transform duration-300">
+                        <div className="h-full bg-gradient-to-br from-unigames-purple/20 to-unigames-blue/20 flex items-center justify-center">
+                          <div className="text-center">
+                            <Gamepad className="h-8 w-8 mx-auto mb-2 text-unigames-purple" />
+                            <p className="text-sm font-medium">Instant Play</p>
+                          </div>
                         </div>
                       </div>
-                      <div className="absolute bottom-10 -right-10 z-10 rotate-[10deg] animate-float delay-500 hidden md:block">
-                        <div className="bg-card w-32 h-32 rounded-lg overflow-hidden shadow-lg border border-border">
-                          <img
-                            src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
-                            alt="Game"
-                            className="w-full h-full object-cover"
-                          />
+                    </div>
+                    
+                    <div className="absolute bottom-12 -right-16 z-10 rotate-[12deg] animate-float delay-500 hidden xl:block">
+                      <div className="bg-card/70 backdrop-blur-sm w-40 h-28 rounded-xl overflow-hidden shadow-lg border border-border/30 hover:scale-110 transition-transform duration-300">
+                        <div className="h-full bg-gradient-to-br from-unigames-cyan/20 to-unigames-pink/20 flex items-center justify-center">
+                          <div className="text-center">
+                            <Users className="h-6 w-6 mx-auto mb-1 text-unigames-cyan" />
+                            <p className="text-xs font-medium">1M+ Players</p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 
-                <div className="w-full md:w-2/3 lg:w-1/2 mx-auto mt-6 mb-12">
-                  <SearchBar fullWidth={true} />
+                {/* Enhanced search section */}
+                <div className="w-full max-w-2xl mx-auto mt-12 mb-8 animate-fade-in delay-300">
+                  <div className="relative group">
+                    <div className="absolute -inset-2 bg-gradient-to-r from-unigames-purple/20 to-unigames-blue/20 rounded-2xl blur-lg group-hover:blur-xl transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
+                    <div className="relative">
+                      <SearchBar fullWidth={true} />
+                    </div>
+                  </div>
+                  <p className="text-center text-sm text-gray-400 mt-4">
+                    Search from over 1000+ premium games
+                  </p>
+                </div>
+                
+                {/* Trust indicators */}
+                <div className="flex items-center justify-center space-x-8 mt-16 opacity-60">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-unigames-purple">1M+</div>
+                    <div className="text-xs text-gray-400">Active Players</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-unigames-blue">1000+</div>
+                    <div className="text-xs text-gray-400">Games Available</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-unigames-cyan">24/7</div>
+                    <div className="text-xs text-gray-400">Support</div>
+                  </div>
                 </div>
               </div>
             </section>
