@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -78,6 +77,7 @@ const Navbar = () => {
   const navigationItems = [
     { path: '/', label: 'Home' },
     { path: '/browse', label: 'Browse' },
+    { path: '/games', label: 'Games' },
     { path: '/categories', label: 'Categories' },
     { path: '/trending', label: 'Trending' },
   ];

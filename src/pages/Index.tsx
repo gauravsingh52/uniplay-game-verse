@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import GameCarousel from '@/components/GameCarousel';
@@ -124,20 +123,20 @@ const Index = () => {
                       <Button 
                         size="lg" 
                         className="group bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80 text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                        onClick={handleBrowseAll}
+                        onClick={() => navigate('/games')}
                       >
                         <Play className="mr-2 h-5 w-5 group-hover:animate-pulse" /> 
-                        Start Playing Now
+                        Play Classic Games
                         <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
                       <Button 
                         variant="outline" 
                         size="lg" 
                         className="group border-2 border-unigames-purple/50 bg-background/50 backdrop-blur-sm text-unigames-purple hover:bg-unigames-purple/10 hover:border-unigames-purple font-semibold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105"
-                        onClick={() => navigate('/categories')}
+                        onClick={handleBrowseAll}
                       >
                         <Gamepad className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" /> 
-                        Browse Categories
+                        Browse Cloud Games
                       </Button>
                     </div>
                     
@@ -146,9 +145,9 @@ const Index = () => {
                       <Button 
                         variant="ghost"
                         className="text-gray-400 hover:text-unigames-purple transition-colors duration-300"
-                        onClick={() => navigate('/about')}
+                        onClick={() => navigate('/categories')}
                       >
-                        Learn More About Our Platform
+                        Explore Game Categories
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
@@ -250,8 +249,50 @@ const Index = () => {
               </div>
             </section>
             
-            {/* Trending Now */}
+            {/* Classic Games Section */}
             <section className="py-12 px-4 md:px-8 bg-muted/30">
+              <div className="container mx-auto">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h2 className="text-2xl font-bold">Classic Arcade Games</h2>
+                    <p className="text-muted-foreground">Play timeless games right in your browser</p>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    className="text-unigames-purple hover:text-unigames-purple/80"
+                    onClick={() => navigate('/games')}
+                  >
+                    View All <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                  {[
+                    { name: 'Snake Classic', emoji: '🐍', desc: 'Eat food, grow longer!' },
+                    { name: 'Flappy Bird', emoji: '🐦', desc: 'Navigate through pipes' },
+                    { name: 'Tic Tac Toe', emoji: '⭕', desc: 'Classic 3x3 strategy' },
+                    { name: 'Memory Match', emoji: '🧠', desc: 'Find matching pairs' }
+                  ].map((game, index) => (
+                    <Card key={index} className="group hover:shadow-lg transition-all duration-300 cursor-pointer" onClick={() => navigate('/games')}>
+                      <CardContent className="p-6 text-center">
+                        <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                          {game.emoji}
+                        </div>
+                        <h3 className="font-semibold mb-2">{game.name}</h3>
+                        <p className="text-sm text-muted-foreground mb-4">{game.desc}</p>
+                        <Button size="sm" className="bg-unigames-purple hover:bg-unigames-purple/80">
+                          <Play className="h-3 w-3 mr-1" />
+                          Play Now
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </section>
+            
+            {/* Trending Now */}
+            <section className="py-12 px-4 md:px-8">
               <div className="container mx-auto">
                 <div className="flex justify-between items-center mb-6">
                   <div>
@@ -291,7 +332,7 @@ const Index = () => {
             </section>
             
             {/* Newest Games */}
-            <section className="py-12 px-4 md:px-8">
+            <section className="py-12 px-4 md:px-8 bg-muted/30">
               <div className="container mx-auto">
                 <div className="flex justify-between items-center mb-6">
                   <div>
@@ -331,7 +372,7 @@ const Index = () => {
             </section>
             
             {/* Game Categories */}
-            <section className="py-12 px-4 md:px-8 bg-muted/30">
+            <section className="py-12 px-4 md:px-8">
               <div className="container mx-auto">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-bold">Browse by Category</h2>
@@ -415,6 +456,7 @@ const Index = () => {
                       <h3 className="font-semibold mb-2">Platform</h3>
                       <ul className="space-y-1">
                         <li><Button variant="link" onClick={() => navigate('/browse')} className="text-gray-400 hover:text-white p-0 h-auto">Browse Games</Button></li>
+                        <li><Button variant="link" onClick={() => navigate('/games')} className="text-gray-400 hover:text-white p-0 h-auto">Classic Games</Button></li>
                         <li><Button variant="link" onClick={() => navigate('/categories')} className="text-gray-400 hover:text-white p-0 h-auto">Categories</Button></li>
                         <li><Button variant="link" onClick={() => navigate('/trending')} className="text-gray-400 hover:text-white p-0 h-auto">Trending</Button></li>
                       </ul>

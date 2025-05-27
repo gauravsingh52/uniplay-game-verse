@@ -20,6 +20,7 @@ import Categories from "./pages/Categories";
 import Trending from "./pages/Trending";
 import CategoryGames from "./pages/CategoryGames";
 import Search from "./pages/Search";
+import Games from "./pages/Games";
 
 // Create QueryClient instance outside of component to ensure stability
 const queryClient = new QueryClient({
@@ -45,6 +46,7 @@ const AppRoutes = () => (
     <Route path="/trending" element={<Trending />} />
     <Route path="/category/:categoryName" element={<CategoryGames />} />
     <Route path="/search" element={<Search />} />
+    <Route path="/games" element={<Games />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
 );
