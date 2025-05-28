@@ -1,9 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import GameCarousel from '@/components/GameCarousel';
 import GameCard from '@/components/GameCard';
 import CategoryFilter from '@/components/CategoryFilter';
 import SearchBar from '@/components/SearchBar';
+import WorkingGamesSection from '@/components/WorkingGamesSection';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getFeaturedGames, getGamesByCategory, getAllCategories, gamesData } from '@/data/gamesData';
@@ -242,6 +244,9 @@ const Index = () => {
                 </div>
               </div>
             </section>
+            
+            {/* Working Games Section - NEW! */}
+            <WorkingGamesSection />
             
             {/* Featured Games */}
             <section className="py-12 px-4 md:px-8">
