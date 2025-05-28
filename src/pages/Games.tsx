@@ -11,6 +11,10 @@ import SnakeGame from '@/components/games/SnakeGame';
 import FlappyBirdGame from '@/components/games/FlappyBirdGame';
 import TicTacToeGame from '@/components/games/TicTacToeGame';
 import MemoryMatchGame from '@/components/games/MemoryMatchGame';
+import Game2048 from '@/components/games/Game2048';
+import PongGame from '@/components/games/PongGame';
+import BrickBreakerGame from '@/components/games/BrickBreakerGame';
+import TetrisGame from '@/components/games/TetrisGame';
 
 const Games = () => {
   const [selectedGame, setSelectedGame] = useState<MiniGame | null>(null);
@@ -47,6 +51,14 @@ const Games = () => {
         return <TicTacToeGame onClose={closeGameModal} />;
       case 'memory-match':
         return <MemoryMatchGame onClose={closeGameModal} />;
+      case '2048':
+        return <Game2048 onClose={closeGameModal} />;
+      case 'pong':
+        return <PongGame onClose={closeGameModal} />;
+      case 'brick-breaker':
+        return <BrickBreakerGame onClose={closeGameModal} />;
+      case 'tetris':
+        return <TetrisGame onClose={closeGameModal} />;
       default:
         return (
           <div className="text-center py-8">
@@ -56,14 +68,14 @@ const Games = () => {
     }
   };
 
-  const categories = ['all', 'arcade', 'puzzle', 'strategy', 'action'];
+  const categories = ['all', 'arcade', 'puzzle', 'strategy', 'action', 'sports', 'racing'];
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       
       <div className="pt-24 pb-16 px-4 md:px-8">
-        <div className="container mx-auto">
+        <div className="container mx-auto max-w-7xl">
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
@@ -77,7 +89,7 @@ const Games = () => {
           </div>
 
           {/* Filters */}
-          <div className="flex items-center gap-4 mb-8 flex-wrap">
+          <div className="flex items-center gap-4 mb-8 flex-wrap justify-center">
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-medium">Category:</span>
@@ -100,16 +112,16 @@ const Games = () => {
             <div className="mb-12">
               <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <Star className="h-6 w-6 text-yellow-500" />
-                Play Now
+                Play Now ({activeGames.length} Games)
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
                 {activeGames.map((game) => (
                   <Card key={game.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden">
                     <div className="relative">
                       <img
                         src={game.thumbnail}
                         alt={game.title}
-                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-32 sm:h-40 md:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       <Button
@@ -121,19 +133,19 @@ const Games = () => {
                         Play Now
                       </Button>
                     </div>
-                    <CardHeader className="pb-2">
+                    <CardHeader className="pb-2 p-3">
                       <div className="flex justify-between items-start">
-                        <CardTitle className="text-lg">{game.title}</CardTitle>
+                        <CardTitle className="text-sm md:text-base line-clamp-1">{game.title}</CardTitle>
                         <Badge variant="outline" className="text-xs">
                           {game.difficulty}
                         </Badge>
                       </div>
-                      <CardDescription className="text-sm">
+                      <CardDescription className="text-xs md:text-sm line-clamp-2">
                         {game.description}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="pt-0">
-                      <div className="flex justify-between items-center text-sm text-muted-foreground">
+                    <CardContent className="pt-0 p-3">
+                      <div className="flex justify-between items-center text-xs md:text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <Clock className="h-3 w-3" />
                           {game.playTime}
@@ -155,28 +167,28 @@ const Games = () => {
               <h2 className="text-2xl font-bold mb-6 text-muted-foreground">
                 Coming Soon
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
                 {comingSoonGames.map((game) => (
                   <Card key={game.id} className="opacity-60 relative overflow-hidden">
                     <div className="relative">
                       <img
                         src={game.thumbnail}
                         alt={game.title}
-                        className="w-full h-48 object-cover grayscale"
+                        className="w-full h-32 sm:h-40 md:h-48 object-cover grayscale"
                       />
                       <div className="absolute inset-0 bg-black/40" />
                       <Badge className="absolute top-4 left-4 bg-orange-500">
                         Coming Soon
                       </Badge>
                     </div>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-lg">{game.title}</CardTitle>
-                      <CardDescription className="text-sm">
+                    <CardHeader className="pb-2 p-3">
+                      <CardTitle className="text-sm md:text-base">{game.title}</CardTitle>
+                      <CardDescription className="text-xs md:text-sm">
                         {game.description}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="pt-0">
-                      <div className="flex justify-between items-center text-sm text-muted-foreground">
+                    <CardContent className="pt-0 p-3">
+                      <div className="flex justify-between items-center text-xs md:text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <Clock className="h-3 w-3" />
                           {game.playTime}
@@ -196,7 +208,7 @@ const Games = () => {
 
       {/* Game Modal */}
       <Dialog open={isGameModalOpen} onOpenChange={setIsGameModalOpen}>
-        <DialogContent className="max-w-4xl h-[80vh] p-0">
+        <DialogContent className="max-w-6xl h-[90vh] p-0">
           <DialogHeader className="p-6 pb-0">
             <DialogTitle className="text-2xl font-bold">
               {selectedGame?.title}

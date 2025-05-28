@@ -69,26 +69,26 @@ const Index = () => {
             
             <Navbar />
             
-            {/* Enhanced Hero section */}
-            <section className="relative pt-24 pb-16 px-4 md:px-8 overflow-hidden">
+            {/* Enhanced Hero section with better mobile responsiveness */}
+            <section className="relative pt-16 md:pt-24 pb-8 md:pb-16 px-4 md:px-8 overflow-hidden">
               {/* Animated background gradients */}
               <div className="absolute inset-0 bg-gradient-to-br from-unigames-purple/10 via-background to-unigames-blue/10"></div>
-              <div className="absolute top-0 left-1/4 w-96 h-96 bg-unigames-purple/5 rounded-full filter blur-3xl animate-pulse"></div>
-              <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-unigames-blue/5 rounded-full filter blur-3xl animate-pulse delay-1000"></div>
+              <div className="absolute top-0 left-1/4 w-48 md:w-96 h-48 md:h-96 bg-unigames-purple/5 rounded-full filter blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-0 right-1/4 w-40 md:w-80 h-40 md:h-80 bg-unigames-blue/5 rounded-full filter blur-3xl animate-pulse delay-1000"></div>
               
-              <div className="container mx-auto relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center py-16">
+              <div className="container mx-auto relative z-10 max-w-7xl">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center py-8 lg:py-16">
                   {/* Left content */}
-                  <div className="space-y-8 animate-fade-in">
+                  <div className="space-y-6 md:space-y-8 animate-fade-in text-center lg:text-left">
                     {/* Hero badge */}
-                    <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-unigames-purple/20 to-unigames-blue/20 backdrop-blur-sm border border-unigames-purple/30 rounded-full px-4 py-2 text-sm font-medium">
+                    <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-unigames-purple/20 to-unigames-blue/20 backdrop-blur-sm border border-unigames-purple/30 rounded-full px-3 md:px-4 py-2 text-sm font-medium">
                       <Zap className="w-4 h-4 text-unigames-purple animate-pulse" />
                       <span>Instant Gaming Experience</span>
                     </div>
                     
                     {/* Main heading with enhanced typography */}
                     <div className="space-y-4">
-                      <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+                      <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight">
                         <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
                           Play Instantly.
                         </span>
@@ -97,14 +97,14 @@ const Index = () => {
                           No Downloads.
                         </span>
                       </h1>
-                      <p className="text-xl text-gray-300 leading-relaxed max-w-xl">
+                      <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-xl mx-auto lg:mx-0">
                         Access premium games directly in your browser. No installations, no waiting. 
                         Just click and play with our cutting-edge cloud gaming technology.
                       </p>
                     </div>
                     
                     {/* Feature highlights */}
-                    <div className="flex flex-wrap gap-6 text-sm text-gray-400">
+                    <div className="flex flex-wrap gap-4 md:gap-6 text-sm text-gray-400 justify-center lg:justify-start">
                       <div className="flex items-center space-x-2">
                         <Clock className="w-4 h-4 text-unigames-purple" />
                         <span>Instant Access</span>
@@ -120,23 +120,23 @@ const Index = () => {
                     </div>
                     
                     {/* Enhanced action buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                       <Button 
                         size="lg" 
-                        className="group bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80 text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                        className="group bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80 text-white font-semibold px-6 md:px-8 py-3 md:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                         onClick={() => navigate('/games')}
                       >
-                        <Play className="mr-2 h-5 w-5 group-hover:animate-pulse" /> 
+                        <Play className="mr-2 h-4 md:h-5 w-4 md:w-5 group-hover:animate-pulse" /> 
                         Play Classic Games
                         <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
                       <Button 
                         variant="outline" 
                         size="lg" 
-                        className="group border-2 border-unigames-purple/50 bg-background/50 backdrop-blur-sm text-unigames-purple hover:bg-unigames-purple/10 hover:border-unigames-purple font-semibold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105"
+                        className="group border-2 border-unigames-purple/50 bg-background/50 backdrop-blur-sm text-unigames-purple hover:bg-unigames-purple/10 hover:border-unigames-purple font-semibold px-6 md:px-8 py-3 md:py-4 rounded-xl transition-all duration-300 transform hover:scale-105"
                         onClick={handleBrowseAll}
                       >
-                        <Gamepad className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" /> 
+                        <Gamepad className="mr-2 h-4 md:h-5 w-4 md:w-5 group-hover:rotate-12 transition-transform" /> 
                         Browse Cloud Games
                       </Button>
                     </div>
@@ -213,7 +213,7 @@ const Index = () => {
                 </div>
                 
                 {/* Enhanced search section */}
-                <div className="w-full max-w-2xl mx-auto mt-12 mb-8 animate-fade-in delay-300">
+                <div className="w-full max-w-2xl mx-auto mt-8 md:mt-12 mb-6 md:mb-8 animate-fade-in delay-300">
                   <div className="relative group">
                     <div className="absolute -inset-2 bg-gradient-to-r from-unigames-purple/20 to-unigames-blue/20 rounded-2xl blur-lg group-hover:blur-xl transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
                     <div className="relative">
@@ -226,17 +226,17 @@ const Index = () => {
                 </div>
                 
                 {/* Trust indicators */}
-                <div className="flex items-center justify-center space-x-8 mt-16 opacity-60">
+                <div className="flex items-center justify-center space-x-4 md:space-x-8 mt-8 md:mt-16 opacity-60">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-unigames-purple">1M+</div>
+                    <div className="text-xl md:text-2xl font-bold text-unigames-purple">1M+</div>
                     <div className="text-xs text-gray-400">Active Players</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-unigames-blue">1000+</div>
+                    <div className="text-xl md:text-2xl font-bold text-unigames-blue">1000+</div>
                     <div className="text-xs text-gray-400">Games Available</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-unigames-cyan">24/7</div>
+                    <div className="text-xl md:text-2xl font-bold text-unigames-cyan">24/7</div>
                     <div className="text-xs text-gray-400">Support</div>
                   </div>
                 </div>
@@ -250,24 +250,24 @@ const Index = () => {
               </div>
             </section>
             
-            {/* Classic Games Section */}
-            <section className="py-12 px-4 md:px-8 bg-muted/30">
-              <div className="container mx-auto">
-                <div className="flex justify-between items-center mb-6">
+            {/* Classic Games Section with better mobile layout */}
+            <section className="py-8 md:py-12 px-4 md:px-8 bg-muted/30">
+              <div className="container mx-auto max-w-7xl">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                   <div>
-                    <h2 className="text-2xl font-bold">Classic Arcade Games</h2>
-                    <p className="text-muted-foreground">Play timeless games right in your browser</p>
+                    <h2 className="text-xl md:text-2xl font-bold">Classic Arcade Games</h2>
+                    <p className="text-muted-foreground text-sm md:text-base">Play timeless games right in your browser</p>
                   </div>
                   <Button 
                     variant="ghost" 
-                    className="text-unigames-purple hover:text-unigames-purple/80"
+                    className="text-unigames-purple hover:text-unigames-purple/80 self-start md:self-auto"
                     onClick={() => navigate('/games')}
                   >
                     View All <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                   {[
                     { name: 'Snake Classic', emoji: '🐍', desc: 'Eat food, grow longer!' },
                     { name: 'Flappy Bird', emoji: '🐦', desc: 'Navigate through pipes' },
@@ -275,13 +275,13 @@ const Index = () => {
                     { name: 'Memory Match', emoji: '🧠', desc: 'Find matching pairs' }
                   ].map((game, index) => (
                     <Card key={index} className="group hover:shadow-lg transition-all duration-300 cursor-pointer" onClick={() => navigate('/games')}>
-                      <CardContent className="p-6 text-center">
-                        <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <CardContent className="p-4 md:p-6 text-center">
+                        <div className="text-3xl md:text-4xl mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300">
                           {game.emoji}
                         </div>
-                        <h3 className="font-semibold mb-2">{game.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-4">{game.desc}</p>
-                        <Button size="sm" className="bg-unigames-purple hover:bg-unigames-purple/80">
+                        <h3 className="font-semibold mb-2 text-sm md:text-base">{game.name}</h3>
+                        <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4">{game.desc}</p>
+                        <Button size="sm" className="bg-unigames-purple hover:bg-unigames-purple/80 text-xs md:text-sm">
                           <Play className="h-3 w-3 mr-1" />
                           Play Now
                         </Button>
