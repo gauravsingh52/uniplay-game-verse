@@ -298,8 +298,7 @@ const PongGame = ({ onClose }: PongGameProps) => {
             style={{ 
               width: `${canvasSize.width}px`, 
               height: `${canvasSize.height}px`,
-              maxWidth: '100%',
-              height: 'auto'
+              maxWidth: '100%'
             }}
           />
 
