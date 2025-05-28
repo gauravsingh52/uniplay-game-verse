@@ -1,17 +1,18 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import GameCarousel from '@/components/GameCarousel';
 import GameCard from '@/components/GameCard';
 import CategoryFilter from '@/components/CategoryFilter';
 import SearchBar from '@/components/SearchBar';
-import WorkingGamesSection from '@/components/WorkingGamesSection';
+import EnhancedWorkingGamesSection from '@/components/EnhancedWorkingGamesSection';
+import { UserProfileSystem } from '@/components/UserProfileSystem';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { getFeaturedGames, getGamesByCategory, getAllCategories, gamesData } from '@/data/gamesData';
-import { ArrowRight, Gamepad, Star, Play, TrendingUp, Zap, Users, Clock, Shield } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { Badge } from "@/components/ui/badge";
+import { getFeaturedGames, getGamesByCategory, getAllCategories, gamesData } from '@/data/gamesData';
+import { ArrowRight, Gamepad, Star, Play, TrendingUp, Zap, Users, Clock, Shield, Bell, Gift } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from '@/components/AppSidebar';
 import { useAuth } from '@/hooks/useAuth';
@@ -19,6 +20,7 @@ import { useAuth } from '@/hooks/useAuth';
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [filteredGames, setFilteredGames] = useState(gamesData);
+  const [showNotification, setShowNotification] = useState(false);
   const featuredGames = getFeaturedGames();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -43,9 +45,12 @@ const Index = () => {
   }, [selectedCategory]);
 
   useEffect(() => {
-    // Simulate loading delay
+    // Simulate loading delay and show welcome notification
     const timer = setTimeout(() => {
       setLoading(false);
+      setShowNotification(true);
+      // Hide notification after 5 seconds
+      setTimeout(() => setShowNotification(false), 5000);
     }, 800);
     return () => clearTimeout(timer);
   }, []);
@@ -64,14 +69,38 @@ const Index = () => {
         <SidebarInset className="flex-1">
           <div className="flex flex-col min-h-screen">
             {isAuthenticated && (
-              <div className="flex items-center justify-end gap-2 px-4 py-2 border-b border-border">
+              <div className="flex items-center justify-between gap-2 px-4 py-2 border-b border-border">
                 <SidebarTrigger className="-mr-1" />
+                <ThemeToggle />
               </div>
             )}
             
             <Navbar />
             
-            {/* Enhanced Hero section with better mobile responsiveness */}
+            {/* Welcome Notification */}
+            {showNotification && (
+              <div className="fixed top-20 right-4 z-50 animate-fade-in">
+                <Card className="bg-gradient-to-r from-unigames-purple to-unigames-blue text-white shadow-2xl">
+                  <CardContent className="p-4 flex items-center gap-3">
+                    <Gift className="h-5 w-5" />
+                    <div>
+                      <p className="font-semibold">Welcome to UNIGAMES!</p>
+                      <p className="text-sm opacity-90">Discover 8+ working games with achievements!</p>
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-white hover:bg-white/20"
+                      onClick={() => setShowNotification(false)}
+                    >
+                      ×
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+            
+            {/* Enhanced Hero section */}
             <section className="relative pt-16 md:pt-24 pb-8 md:pb-16 px-4 md:px-8 overflow-hidden">
               {/* Animated background gradients */}
               <div className="absolute inset-0 bg-gradient-to-br from-unigames-purple/10 via-background to-unigames-blue/10"></div>
@@ -85,23 +114,22 @@ const Index = () => {
                     {/* Hero badge */}
                     <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-unigames-purple/20 to-unigames-blue/20 backdrop-blur-sm border border-unigames-purple/30 rounded-full px-3 md:px-4 py-2 text-sm font-medium">
                       <Zap className="w-4 h-4 text-unigames-purple animate-pulse" />
-                      <span>Instant Gaming Experience</span>
+                      <span>NEW: Achievement System & Social Features!</span>
                     </div>
                     
                     {/* Main heading with enhanced typography */}
                     <div className="space-y-4">
                       <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight">
                         <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
-                          Play Instantly.
+                          Game. Achieve.
                         </span>
                         <br />
                         <span className="bg-gradient-to-r from-unigames-purple to-unigames-blue bg-clip-text text-transparent">
-                          No Downloads.
+                          Dominate.
                         </span>
                       </h1>
                       <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                        Access premium games directly in your browser. No installations, no waiting. 
-                        Just click and play with our cutting-edge cloud gaming technology.
+                        Play premium games, unlock achievements, compete with friends, and track your progress in the ultimate browser gaming platform.
                       </p>
                     </div>
                     
@@ -109,15 +137,15 @@ const Index = () => {
                     <div className="flex flex-wrap gap-4 md:gap-6 text-sm text-gray-400 justify-center lg:justify-start">
                       <div className="flex items-center space-x-2">
                         <Clock className="w-4 h-4 text-unigames-purple" />
-                        <span>Instant Access</span>
+                        <span>Instant Play</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Users className="w-4 h-4 text-unigames-blue" />
-                        <span>1M+ Players</span>
+                        <span>Social Features</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Shield className="w-4 h-4 text-unigames-cyan" />
-                        <span>100% Secure</span>
+                        <span>Achievements</span>
                       </div>
                     </div>
                     
@@ -129,7 +157,7 @@ const Index = () => {
                         onClick={() => navigate('/games')}
                       >
                         <Play className="mr-2 h-4 md:h-5 w-4 md:w-5 group-hover:animate-pulse" /> 
-                        Play Classic Games
+                        Start Gaming Now
                         <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
                       <Button 
@@ -139,7 +167,7 @@ const Index = () => {
                         onClick={handleBrowseAll}
                       >
                         <Gamepad className="mr-2 h-4 md:h-5 w-4 md:w-5 group-hover:rotate-12 transition-transform" /> 
-                        Browse Cloud Games
+                        Explore Games
                       </Button>
                     </div>
                     
@@ -156,7 +184,7 @@ const Index = () => {
                     </div>
                   </div>
                   
-                  {/* Right content - Enhanced floating cards */}
+                  {/* Right content - Enhanced floating cards with new features */}
                   <div className="hidden lg:flex relative justify-center items-center">
                     {/* Main showcase card */}
                     <div className="relative z-30 group">
@@ -165,25 +193,25 @@ const Index = () => {
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-unigames-purple to-unigames-blue"></div>
                         <img
                           src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
-                          alt="Gaming showcase"
+                          alt="Enhanced gaming showcase"
                           className="w-full h-64 object-cover"
                         />
                         <div className="p-6 space-y-4">
                           <div className="flex items-center justify-between">
-                            <h3 className="font-bold text-xl">Premium Gaming</h3>
+                            <h3 className="font-bold text-xl">Social Gaming Hub</h3>
                             <Badge className="bg-unigames-purple/20 text-unigames-purple border-unigames-purple/30">
-                              HD Quality
+                              NEW
                             </Badge>
                           </div>
                           <p className="text-sm text-muted-foreground">
-                            Experience console-quality games with zero latency
+                            Achievements, leaderboards, and social features
                           </p>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-1">
                               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                              <span className="text-sm font-medium">4.9/5</span>
+                              <span className="text-sm font-medium">5.0/5</span>
                             </div>
-                            <span className="text-xs text-muted-foreground">1000+ Games</span>
+                            <span className="text-xs text-muted-foreground">8+ Games</span>
                           </div>
                         </div>
                       </div>
@@ -223,35 +251,67 @@ const Index = () => {
                     </div>
                   </div>
                   <p className="text-center text-sm text-gray-400 mt-4">
-                    Search from over 1000+ premium games
+                    Search from 8+ premium working games with achievements
                   </p>
                 </div>
                 
-                {/* Trust indicators */}
+                {/* Enhanced trust indicators */}
                 <div className="flex items-center justify-center space-x-4 md:space-x-8 mt-8 md:mt-16 opacity-60">
                   <div className="text-center">
-                    <div className="text-xl md:text-2xl font-bold text-unigames-purple">1M+</div>
-                    <div className="text-xs text-gray-400">Active Players</div>
+                    <div className="text-xl md:text-2xl font-bold text-unigames-purple">100%</div>
+                    <div className="text-xs text-gray-400">Working Games</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-xl md:text-2xl font-bold text-unigames-blue">1000+</div>
+                    <div className="text-xl md:text-2xl font-bold text-unigames-blue">8+</div>
                     <div className="text-xs text-gray-400">Games Available</div>
                   </div>
                   <div className="text-center">
                     <div className="text-xl md:text-2xl font-bold text-unigames-cyan">24/7</div>
-                    <div className="text-xs text-gray-400">Support</div>
+                    <div className="text-xs text-gray-400">Instant Access</div>
                   </div>
                 </div>
               </div>
             </section>
             
-            {/* Working Games Section - NEW! */}
-            <WorkingGamesSection />
+            {/* Enhanced Working Games Section */}
+            <EnhancedWorkingGamesSection />
+            
+            {/* User Profile Section - Only show if user has played games */}
+            <section className="py-8 px-4 md:px-8 bg-muted/30">
+              <div className="container mx-auto max-w-4xl">
+                <UserProfileSystem />
+              </div>
+            </section>
             
             {/* Featured Games */}
             <section className="py-12 px-4 md:px-8">
               <div className="container mx-auto">
-                <GameCarousel games={featuredGames} title="Featured Games" />
+                <GameCarousel games={featuredGames} title="Featured Cloud Games" />
+              </div>
+            </section>
+            
+            {/* Daily Challenge Section */}
+            <section className="py-8 md:py-12 px-4 md:px-8 bg-gradient-to-r from-unigames-purple/10 to-unigames-blue/10">
+              <div className="container mx-auto max-w-4xl text-center">
+                <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-sm border border-yellow-500/30 rounded-full px-4 py-2 text-sm font-medium mb-4">
+                  <Star className="w-4 h-4 text-yellow-500" />
+                  <span>Daily Challenge</span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">Game of the Day: Snake Classic</h2>
+                <p className="text-muted-foreground mb-6">Beat today's high score of 150 and earn the Daily Champion badge!</p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <Button 
+                    size="lg" 
+                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600"
+                    onClick={() => navigate('/games')}
+                  >
+                    <Play className="mr-2 h-5 w-5" />
+                    Accept Challenge
+                  </Button>
+                  <div className="text-sm text-muted-foreground">
+                    Challenge resets in: <span className="font-bold text-foreground">12h 34m</span>
+                  </div>
+                </div>
               </div>
             </section>
             

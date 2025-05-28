@@ -1,0 +1,167 @@
+
+/* Mobile-First Gaming Optimizations */
+
+/* Touch-friendly interactions */
+@media (max-width: 768px) {
+  /* Ensure all buttons are touch-friendly */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Game cards mobile optimization */
+  .game-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .game-card:active {
+    transform: scale(0.98);
+  }
+  
+  /* Modal full-screen on mobile */
+  .game-modal {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border-radius: 0;
+  }
+  
+  /* Search input mobile styling */
+  .search-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Navigation drawer */
+  .mobile-nav {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Game grid responsive */
+  .games-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+  
+  @media (min-width: 480px) {
+    .games-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  /* Profile section mobile */
+  .profile-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  /* Achievement badges mobile */
+  .achievements-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  
+  /* Theme toggle mobile positioning */
+  .theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 50;
+  }
+  
+  /* Notification positioning */
+  .notification {
+    position: fixed;
+    top: 4rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 60;
+  }
+  
+  /* Game modal controls */
+  .game-controls {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    z-index: 70;
+  }
+  
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Optimize text sizes */
+  .responsive-text-sm {
+    font-size: 0.875rem;
+  }
+  
+  .responsive-text-base {
+    font-size: 1rem;
+  }
+  
+  .responsive-text-lg {
+    font-size: 1.125rem;
+  }
+  
+  /* Card hover effects on mobile (tap) */
+  .card-mobile:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Loading states */
+  .loading-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+  
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  
+  /* Safe area handling for iOS */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* PWA specific styles */
+@media (display-mode: standalone) {
+  .pwa-header {
+    padding-top: 2rem;
+  }
+}
+
+/* Landscape mobile optimizations */
+@media (max-width: 768px) and (orientation: landscape) {
+  .game-modal {
+    height: 100vh;
+  }
+  
+  .hero-section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .profile-section {
+    padding: 1rem;
+  }
+}
