@@ -175,7 +175,7 @@ const Index = () => {
             </div>
             <div className="group">
               <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
-                <1s
+                &lt;1s
               </div>
               <p className="text-sm text-muted-foreground">Load Time</p>
             </div>
