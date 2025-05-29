@@ -31,11 +31,21 @@ const gameComponentMap = {
 };
 
 const GameLoadingFallback = () => (
-  <div className="flex flex-col items-center justify-center h-full space-y-4">
-    <Gamepad2 className="h-16 w-16 text-unigames-purple animate-pulse" />
+  <div className="flex flex-col items-center justify-center h-full min-h-[400px] space-y-4">
+    <Gamepad2 className="h-16 w-16 text-primary animate-pulse" />
     <div className="text-center">
       <h3 className="text-lg font-semibold mb-2">Loading Game...</h3>
       <p className="text-muted-foreground">Please wait while we prepare your game</p>
+    </div>
+  </div>
+);
+
+const GameNotFound = ({ gameId }: { gameId: string }) => (
+  <div className="flex flex-col items-center justify-center h-full min-h-[400px] space-y-4">
+    <Gamepad2 className="h-16 w-16 text-muted-foreground" />
+    <div className="text-center">
+      <h3 className="text-lg font-semibold mb-2">Game Not Available</h3>
+      <p className="text-muted-foreground">Game "{gameId}" is currently being developed</p>
     </div>
   </div>
 );
@@ -44,20 +54,15 @@ export default function LazyGameLoader({ gameId, onClose }: LazyGameLoaderProps)
   const GameComponent = gameComponentMap[gameId as keyof typeof gameComponentMap];
 
   if (!GameComponent) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full space-y-4">
-        <Gamepad2 className="h-16 w-16 text-muted-foreground" />
-        <div className="text-center">
-          <h3 className="text-lg font-semibold mb-2">Game Not Available</h3>
-          <p className="text-muted-foreground">This game is currently being developed</p>
-        </div>
-      </div>
-    );
+    console.warn(`Game component not found for gameId: ${gameId}`);
+    return <GameNotFound gameId={gameId} />;
   }
 
   return (
-    <Suspense fallback={<GameLoadingFallback />}>
-      <GameComponent onClose={onClose} />
-    </Suspense>
+    <div className="w-full h-full min-h-[400px]">
+      <Suspense fallback={<GameLoadingFallback />}>
+        <GameComponent onClose={onClose} />
+      </Suspense>
+    </div>
   );
 }
