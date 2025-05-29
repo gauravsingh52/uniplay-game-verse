@@ -79,157 +79,70 @@
 }
 
 @layer components {
-  .glow-effect {
-    @apply relative overflow-hidden;
-  }
-
-  .glow-effect::after {
-    content: "";
-    @apply absolute -inset-1 rounded-lg opacity-0 transition-opacity duration-300 bg-gradient-to-r from-unigames-purple to-unigames-blue;
-    z-index: -1;
-    filter: blur(20px);
-  }
-
-  .glow-effect:hover::after {
-    @apply opacity-70;
-  }
-
   .game-card {
-    @apply bg-card rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg relative;
+    @apply bg-card rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg;
   }
 
-  .game-card::before {
-    content: "";
-    @apply absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity duration-300;
-    z-index: 1;
-  }
-
-  .game-card:hover::before {
-    @apply opacity-100;
-  }
-
-  .hero-gradient {
-    @apply bg-gradient-to-br from-unigames-purple/20 via-unigames-dark to-unigames-blue/20;
-  }
-
-  .button-glow {
-    @apply relative overflow-hidden;
-  }
-
-  .button-glow::after {
-    content: "";
-    @apply absolute -inset-1 rounded-lg opacity-0 transition-opacity duration-300 bg-unigames-purple;
-    z-index: -1;
-    filter: blur(15px);
-  }
-
-  .button-glow:hover::after {
-    @apply opacity-70;
-  }
-
-  /* Enhanced responsive utilities */
-  .line-clamp-1 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-  }
-
-  .line-clamp-2 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
-
-  /* Game modal responsive fixes */
-  .game-modal-content {
-    @apply w-full h-full;
-    max-height: calc(90vh - 120px);
-  }
-
-  /* Enhanced animations */
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-float.delay-300 {
-    animation-delay: 300ms;
-  }
-
-  .animate-float.delay-500 {
-    animation-delay: 500ms;
-  }
-
-  /* Mobile-first breakpoint system */
-  .xs\:grid-cols-2 {
-    @media (min-width: 475px) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  /* Touch-friendly sizing */
+  /* Mobile optimizations */
   .touch-target {
     @apply min-h-[44px] min-w-[44px];
   }
 
-  /* Enhanced focus states for accessibility */
+  /* Responsive grid */
+  .games-grid {
+    @apply grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  /* Focus states for accessibility */
   .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-unigames-purple;
-  }
-
-  /* Smooth scroll behavior */
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /* Game container responsive sizing */
-  .game-container {
-    @apply w-full h-full;
-    min-height: 300px;
-  }
-
-  @media (min-width: 768px) {
-    .game-container {
-      min-height: 400px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .game-container {
-      min-height: 500px;
-    }
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary;
   }
 }
 
-/* Additional responsive utilities */
-@layer utilities {
-  .text-responsive {
-    @apply text-sm md:text-base;
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
   }
-
-  .text-responsive-lg {
-    @apply text-base md:text-lg lg:text-xl;
+  
+  input, select, textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
   }
-
-  .text-responsive-xl {
-    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl;
+  
+  .game-modal {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border-radius: 0;
   }
+}
 
-  .padding-responsive {
-    @apply p-2 sm:p-4 md:p-6;
-  }
+/* Smooth animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
 
-  .margin-responsive {
-    @apply m-2 sm:m-4 md:m-6;
-  }
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
 
-  .gap-responsive {
-    @apply gap-2 sm:gap-4 md:gap-6;
+/* Ensure proper scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Game container responsive sizing */
+.game-container {
+  @apply w-full h-full;
+  min-height: 300px;
+}
+
+@media (min-width: 768px) {
+  .game-container {
+    min-height: 400px;
   }
 }
