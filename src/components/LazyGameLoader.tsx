@@ -1,3 +1,4 @@
+
 import { lazy, Suspense } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Gamepad2 } from 'lucide-react';
