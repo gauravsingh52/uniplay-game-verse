@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +17,7 @@ import { BrainBreakTimer } from './BrainBreakTimer';
 import { UserProfileSystem } from './UserProfileSystem';
 
 // Game components
+import BubbleBopGame from '@/components/games/BubbleBopGame';
 import SnakeGame from '@/components/games/SnakeGame';
 import FlappyBirdGame from '@/components/games/FlappyBirdGame';
 import TicTacToeGame from '@/components/games/TicTacToeGame';
@@ -110,6 +110,7 @@ export function EnhancedGamesPage() {
     if (!selectedGame) return null;
 
     const gameComponents: { [key: string]: JSX.Element } = {
+      'bubble-bop': <BubbleBopGame onClose={closeGameModal} />,
       'snake': <SnakeGame onClose={closeGameModal} />,
       'flappy-bird': <FlappyBirdGame onClose={closeGameModal} />,
       'tic-tac-toe': <TicTacToeGame onClose={closeGameModal} />,

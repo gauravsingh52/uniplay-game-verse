@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import { gamesData } from '@/data/gamesData';
@@ -15,6 +14,7 @@ import { Play, Clock, TrendingUp, Star, Gamepad, Eye, Volume2, Zap, Users, Troph
 import { useNavigate } from 'react-router-dom';
 
 // Game components
+import BubbleBopGame from '@/components/games/BubbleBopGame';
 import SnakeGame from '@/components/games/SnakeGame';
 import FlappyBirdGame from '@/components/games/FlappyBirdGame';
 import TicTacToeGame from '@/components/games/TicTacToeGame';
@@ -70,6 +70,7 @@ const Trending = () => {
     if (!selectedGame) return null;
 
     const gameComponents: { [key: string]: JSX.Element } = {
+      'bubble-bop': <BubbleBopGame onClose={closeGameModal} />,
       'snake': <SnakeGame onClose={closeGameModal} />,
       'flappy-bird': <FlappyBirdGame onClose={closeGameModal} />,
       'tic-tac-toe': <TicTacToeGame onClose={closeGameModal} />,

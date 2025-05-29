@@ -21,6 +21,17 @@ export function VoiceCommands() {
 
   const commands: VoiceCommand[] = [
     {
+      command: "play bubble bop",
+      action: () => {
+        navigate('/games');
+        setTimeout(() => {
+          const event = new CustomEvent('playGame', { detail: { gameId: 'bubble-bop' } });
+          window.dispatchEvent(event);
+        }, 100);
+      },
+      description: "Opens Bubble Bop game"
+    },
+    {
       command: "play snake",
       action: () => {
         navigate('/games');
@@ -60,7 +71,7 @@ export function VoiceCommands() {
     {
       command: "surprise me",
       action: () => {
-        const games = ['snake', 'flappy-bird', 'tetris', '2048', 'pong'];
+        const games = ['bubble-bop', 'snake', 'flappy-bird', 'tetris', '2048', 'pong'];
         const randomGame = games[Math.floor(Math.random() * games.length)];
         navigate('/games');
         setTimeout(() => {
@@ -137,7 +148,7 @@ export function VoiceCommands() {
       setIsListening(true);
       toast({
         title: "Listening for voice commands...",
-        description: "Say a command like 'play snake' or 'go home'",
+        description: "Say a command like 'play bubble bop' or 'go home'",
       });
     }
   };

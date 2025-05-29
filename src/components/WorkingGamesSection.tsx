@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +7,7 @@ import { Play, Clock, Star, Gamepad2, X } from "lucide-react";
 import { workingGames, WorkingGame } from '@/data/workingGamesData';
 
 // Game components
+import BubbleBopGame from '@/components/games/BubbleBopGame';
 import SnakeGame from '@/components/games/SnakeGame';
 import FlappyBirdGame from '@/components/games/FlappyBirdGame';
 import TicTacToeGame from '@/components/games/TicTacToeGame';
@@ -35,6 +35,7 @@ const WorkingGamesSection = () => {
     if (!selectedGame) return null;
 
     const gameComponents: { [key: string]: JSX.Element } = {
+      'bubble-bop': <BubbleBopGame onClose={closeGameModal} />,
       'snake': <SnakeGame onClose={closeGameModal} />,
       'flappy-bird': <FlappyBirdGame onClose={closeGameModal} />,
       'tic-tac-toe': <TicTacToeGame onClose={closeGameModal} />,
