@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,10 @@ import { workingGames, WorkingGame } from '@/data/workingGamesData';
 
 // Game components
 import BubbleBopGame from '@/components/games/BubbleBopGame';
+import ZooZoomGame from '@/components/games/ZooZoomGame';
+import JellyStackGame from '@/components/games/JellyStackGame';
+import SnailSprintGame from '@/components/games/SnailSprintGame';
+import PlantPanicGame from '@/components/games/PlantPanicGame';
 import SnakeGame from '@/components/games/SnakeGame';
 import FlappyBirdGame from '@/components/games/FlappyBirdGame';
 import TicTacToeGame from '@/components/games/TicTacToeGame';
@@ -16,10 +21,6 @@ import Game2048 from '@/components/games/Game2048';
 import PongGame from '@/components/games/PongGame';
 import BrickBreakerGame from '@/components/games/BrickBreakerGame';
 import TetrisGame from '@/components/games/TetrisGame';
-import ZooZoomGame from '@/components/games/ZooZoomGame';
-import JellyStackGame from '@/components/games/JellyStackGame';
-import SnailSprintGame from '@/components/games/SnailSprintGame';
-import PlantPanicGame from '@/components/games/PlantPanicGame';
 
 const WorkingGamesSection = () => {
   const [selectedGame, setSelectedGame] = useState<WorkingGame | null>(null);
@@ -40,11 +41,6 @@ const WorkingGamesSection = () => {
 
     const gameComponents: { [key: string]: JSX.Element } = {
       'bubble-bop': <BubbleBopGame onClose={closeGameModal} />,
-      'toast-escape': <ToastEscapeGame onClose={closeGameModal} />,
-      'flap-n-nap': <FlapNapGame onClose={closeGameModal} />,
-      'pixel-jumper': <PixelJumperGame onClose={closeGameModal} />,
-      'cloud-hop': <CloudHopGame onClose={closeGameModal} />,
-      'color-rush': <ColorRushGame onClose={closeGameModal} />,
       'zoo-zoom': <ZooZoomGame onClose={closeGameModal} />,
       'jelly-stack': <JellyStackGame onClose={closeGameModal} />,
       'snail-sprint': <SnailSprintGame onClose={closeGameModal} />,
