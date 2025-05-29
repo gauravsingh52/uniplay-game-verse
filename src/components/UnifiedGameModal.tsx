@@ -25,19 +25,14 @@ export default function UnifiedGameModal({
 }: UnifiedGameModalProps) {
   if (!game) return null;
 
-  const handleClose = () => {
-    console.log('Closing game modal for:', game.title);
-    onClose();
-  };
-
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-[95vw] md:max-w-6xl h-[90vh] p-0 overflow-hidden game-modal">
-        <DialogHeader className="p-4 md:p-6 pb-2 flex-shrink-0 border-b bg-background/95 backdrop-blur-sm">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-[95vw] md:max-w-6xl h-[90vh] p-0 overflow-hidden">
+        <DialogHeader className="p-4 md:p-6 pb-0 flex-shrink-0 border-b">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl md:text-2xl font-bold flex items-center gap-2">
               {game.title}
-              <Badge className="bg-green-500 hover:bg-green-500 text-white">
+              <Badge className="bg-green-500 hover:bg-green-500">
                 <div className="w-2 h-2 bg-white rounded-full mr-1 animate-pulse"></div>
                 LIVE
               </Badge>
@@ -50,8 +45,7 @@ export default function UnifiedGameModal({
                   e.stopPropagation();
                   onFavorite(game.id);
                 }}
-                className="touch-target hover:bg-muted"
-                title="Add to favorites"
+                className="touch-target"
               >
                 <Heart className={`h-4 w-4 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
               </Button>
@@ -62,25 +56,23 @@ export default function UnifiedGameModal({
                   e.stopPropagation();
                   onShare(game);
                 }}
-                className="touch-target hover:bg-muted"
-                title="Share game"
+                className="touch-target"
               >
                 <Share className="h-4 w-4" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
-                onClick={handleClose}
-                className="touch-target hover:bg-muted"
-                title="Close game"
+                onClick={onClose}
+                className="touch-target"
               >
                 <X className="h-4 w-4" />
               </Button>
             </div>
           </div>
         </DialogHeader>
-        <div className="flex-1 overflow-hidden bg-background">
-          <LazyGameLoader gameId={game.id} onClose={handleClose} />
+        <div className="flex-1 overflow-hidden">
+          <LazyGameLoader gameId={game.id} onClose={onClose} />
         </div>
       </DialogContent>
     </Dialog>
