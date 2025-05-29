@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +12,11 @@ import ZooZoomGame from '@/components/games/ZooZoomGame';
 import JellyStackGame from '@/components/games/JellyStackGame';
 import SnailSprintGame from '@/components/games/SnailSprintGame';
 import PlantPanicGame from '@/components/games/PlantPanicGame';
+import ToastEscapeGame from '@/components/games/ToastEscapeGame';
+import FlapNapGame from '@/components/games/FlapNapGame';
+import PixelJumperGame from '@/components/games/PixelJumperGame';
+import CloudHopGame from '@/components/games/CloudHopGame';
+import ColorRushGame from '@/components/games/ColorRushGame';
 import SnakeGame from '@/components/games/SnakeGame';
 import FlappyBirdGame from '@/components/games/FlappyBirdGame';
 import TicTacToeGame from '@/components/games/TicTacToeGame';
@@ -45,6 +49,11 @@ const WorkingGamesSection = () => {
       'jelly-stack': <JellyStackGame onClose={closeGameModal} />,
       'snail-sprint': <SnailSprintGame onClose={closeGameModal} />,
       'plant-panic': <PlantPanicGame onClose={closeGameModal} />,
+      'toast-escape': <ToastEscapeGame onClose={closeGameModal} />,
+      'flap-n-nap': <FlapNapGame onClose={closeGameModal} />,
+      'pixel-jumper': <PixelJumperGame onClose={closeGameModal} />,
+      'cloud-hop': <CloudHopGame onClose={closeGameModal} />,
+      'color-rush': <ColorRushGame onClose={closeGameModal} />,
       'snake': <SnakeGame onClose={closeGameModal} />,
       'flappy-bird': <FlappyBirdGame onClose={closeGameModal} />,
       'tic-tac-toe': <TicTacToeGame onClose={closeGameModal} />,

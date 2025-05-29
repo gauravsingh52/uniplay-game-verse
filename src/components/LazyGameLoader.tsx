@@ -1,4 +1,3 @@
-
 import { lazy, Suspense } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Gamepad2 } from 'lucide-react';
@@ -15,6 +14,11 @@ const gameComponentMap = {
   'jelly-stack': lazy(() => import('@/components/games/JellyStackGame')),
   'snail-sprint': lazy(() => import('@/components/games/SnailSprintGame')),
   'plant-panic': lazy(() => import('@/components/games/PlantPanicGame')),
+  'toast-escape': lazy(() => import('@/components/games/ToastEscapeGame')),
+  'flap-n-nap': lazy(() => import('@/components/games/FlapNapGame')),
+  'pixel-jumper': lazy(() => import('@/components/games/PixelJumperGame')),
+  'cloud-hop': lazy(() => import('@/components/games/CloudHopGame')),
+  'color-rush': lazy(() => import('@/components/games/ColorRushGame')),
   'snake': lazy(() => import('@/components/games/SnakeGame')),
   'flappy-bird': lazy(() => import('@/components/games/FlappyBirdGame')),
   'tic-tac-toe': lazy(() => import('@/components/games/TicTacToeGame')),
