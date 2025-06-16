@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from '@/components/AppSidebar';
 import { useAuth } from '@/hooks/useAuth';
+import AIHelpAssistant from '@/components/AIHelpAssistant';
 
 // Import game components
 import BubbleBopGame from '@/components/games/BubbleBopGame';
@@ -432,6 +433,9 @@ const Index = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* AI Help Assistant */}
+      <AIHelpAssistant />
     </SidebarProvider>
   );
 };
