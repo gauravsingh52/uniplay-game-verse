@@ -4,13 +4,14 @@ import EnhancedHeroSection from '@/components/EnhancedHeroSection';
 import ModernGameCard from '@/components/ModernGameCard';
 import EnhancedWorkingGamesSection from '@/components/EnhancedWorkingGamesSection';
 import { UserProfileSystem } from '@/components/UserProfileSystem';
+import SettingsModal from '@/components/SettingsModal';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { getFeaturedGames, getGamesByCategory, gamesData } from '@/data/gamesData';
 import { workingGames, WorkingGame } from '@/data/workingGamesData';
-import { ArrowRight, Gamepad, Star, Play, TrendingUp, X, Gift } from 'lucide-react';
+import { ArrowRight, Gamepad, Star, Play, TrendingUp, X, Gift, Settings, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from '@/components/AppSidebar';
@@ -41,6 +42,7 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const featuredGames = getFeaturedGames().slice(0, 6);
   const trendingGames = [...gamesData].sort((a, b) => b.rating - a.rating).slice(0, 6);
@@ -341,6 +343,26 @@ const Index = () => {
                     <p className="text-muted-foreground text-sm">
                       The ultimate browser gaming platform with 30+ premium games, achievements, and social features.
                     </p>
+                    <div className="flex items-center gap-3">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setIsSettingsOpen(true)}
+                        className="hover:bg-unigames-purple/10 hover:text-unigames-purple"
+                      >
+                        <Settings className="h-4 w-4 mr-2" />
+                        Settings
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => navigate('/support')}
+                        className="hover:bg-unigames-blue/10 hover:text-unigames-blue"
+                      >
+                        <MessageSquare className="h-4 w-4 mr-2" />
+                        Support
+                      </Button>
+                    </div>
                   </div>
                   
                   {[
@@ -350,25 +372,25 @@ const Index = () => {
                         { name: 'Browse All', path: '/browse' },
                         { name: 'Categories', path: '/categories' },
                         { name: 'Trending', path: '/trending' },
-                        { name: 'New Releases', path: '/games' }
+                        { name: 'All Games', path: '/games' }
                       ]
                     },
                     {
                       title: 'Features',
                       links: [
-                        { name: 'Achievements', path: '/' },
-                        { name: 'Leaderboards', path: '/' },
-                        { name: 'Social Gaming', path: '/' },
-                        { name: 'Progress Tracking', path: '/' }
+                        { name: 'Platform Features', path: '/features' },
+                        { name: 'Achievements', path: '/dashboard' },
+                        { name: 'Leaderboards', path: '/trending' },
+                        { name: 'AI Assistant', path: '/support' }
                       ]
                     },
                     {
                       title: 'Support',
                       links: [
-                        { name: 'Help Center', path: '/' },
-                        { name: 'Contact Us', path: '/' },
-                        { name: 'Privacy Policy', path: '/' },
-                        { name: 'Terms of Service', path: '/' }
+                        { name: 'Help Center', path: '/support' },
+                        { name: 'AI Chat Support', path: '/support' },
+                        { name: 'Contact Us', path: '/support' },
+                        { name: 'Report Issue', path: '/support' }
                       ]
                     }
                   ].map((section) => (
@@ -433,6 +455,9 @@ const Index = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Settings Modal */}
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
 
       {/* AI Help Assistant */}
       <AIHelpAssistant />

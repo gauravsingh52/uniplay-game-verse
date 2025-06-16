@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -21,6 +20,8 @@ import Trending from "./pages/Trending";
 import CategoryGames from "./pages/CategoryGames";
 import Search from "./pages/Search";
 import Games from "./pages/Games";
+import Features from "./pages/Features";
+import Support from "./pages/Support";
 
 // Create QueryClient instance outside of component to ensure stability
 const queryClient = new QueryClient({
@@ -47,6 +48,8 @@ const AppRoutes = () => (
     <Route path="/category/:categoryName" element={<CategoryGames />} />
     <Route path="/search" element={<Search />} />
     <Route path="/games" element={<Games />} />
+    <Route path="/features" element={<Features />} />
+    <Route path="/support" element={<Support />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
 );
