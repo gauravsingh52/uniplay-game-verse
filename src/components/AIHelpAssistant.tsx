@@ -330,7 +330,7 @@ const AIHelpAssistant = () => {
                           variant="ghost"
                           size="sm"
                           className={`h-6 px-2 ${message.rating === 'up' ? 'text-green-600' : 'text-muted-foreground'}`}
-                          onClick={() => handleRating(message.id, '/' )}
+                          onClick={() => handleRating(message.id, 'up')}
                         >
                           <ThumbsUp className="h-3 w-3" />
                         </Button>
