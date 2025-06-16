@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Menu, X, Gamepad2, Sun, Moon, Search } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@/hooks/useTheme';
-import EnhancedSearchBar from '@/components/EnhancedSearchBar';
+import SearchBar from '@/components/SearchBar';
 
 const ResponsiveNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -77,7 +77,7 @@ const ResponsiveNavbar = () => {
 
             {/* Desktop Search Bar */}
             <div className="hidden md:block flex-1 max-w-md mx-8">
-              <EnhancedSearchBar fullWidth={true} showRecentSearches={false} />
+              <SearchBar fullWidth={true} />
             </div>
 
             {/* Theme Toggle & Mobile Menu */}
@@ -166,10 +166,9 @@ const ResponsiveNavbar = () => {
             <DialogTitle className="text-lg font-semibold">Search Games</DialogTitle>
           </DialogHeader>
           <div className="px-6 pb-6">
-            <EnhancedSearchBar 
+            <SearchBar 
               onClose={() => setIsSearchOpen(false)} 
               fullWidth={true}
-              showRecentSearches={true}
             />
           </div>
         </DialogContent>
