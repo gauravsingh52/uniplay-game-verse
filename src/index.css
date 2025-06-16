@@ -1,5 +1,7 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+@import './styles/animations.css';
+@import './styles/responsive.css';
 
 @tailwind base;
 @tailwind components;
@@ -7,64 +9,47 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 270 8% 10%;
-
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
-    --card-foreground: 270 8% 10%;
-
+    --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 270 8% 10%;
-
+    --popover-foreground: 222.2 84% 4.9%;
     --primary: 265 89% 60%;
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 210 100% 50%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 0 0% 90%;
-    --muted-foreground: 270 8% 40%;
-
-    --accent: 320 70% 55%;
-    --accent-foreground: 0 0% 100%;
-
+    --secondary: 210 40% 98%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 94%;
+    --accent-foreground: 222.2 84% 4.9%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 85%;
-    --input: 0 0% 85%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
     --ring: 265 89% 60%;
-
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 270 8% 7%;
-    --foreground: 0 0% 95%;
-
-    --card: 270 8% 10%;
-    --card-foreground: 0 0% 95%;
-
-    --popover: 270 8% 10%;
-    --popover-foreground: 0 0% 95%;
-
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
     --primary: 265 89% 70%;
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 210 100% 60%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 270 8% 20%;
-    --muted-foreground: 0 0% 70%;
-
-    --accent: 320 70% 60%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 270 8% 20%;
-    --input: 270 8% 20%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
     --ring: 265 89% 70%;
   }
 
@@ -73,61 +58,70 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-['Inter'];
     font-feature-settings: "rlig" 1, "calt" 1;
+    line-height: 1.6;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 @layer components {
-  .glow-effect {
-    @apply relative overflow-hidden;
+  /* Enhanced game card styles */
+  .game-card-modern {
+    @apply bg-card rounded-xl overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-2xl relative border border-border/50;
+    background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--card)/0.8));
   }
 
-  .glow-effect::after {
+  .game-card-modern::before {
     content: "";
-    @apply absolute -inset-1 rounded-lg opacity-0 transition-opacity duration-300 bg-gradient-to-r from-unigames-purple to-unigames-blue;
-    z-index: -1;
-    filter: blur(20px);
-  }
-
-  .glow-effect:hover::after {
-    @apply opacity-70;
-  }
-
-  .game-card {
-    @apply bg-card rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg relative;
-  }
-
-  .game-card::before {
-    content: "";
-    @apply absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity duration-300;
+    @apply absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-300;
     z-index: 1;
   }
 
-  .game-card:hover::before {
+  .game-card-modern:hover::before {
     @apply opacity-100;
   }
 
-  .hero-gradient {
-    @apply bg-gradient-to-br from-unigames-purple/20 via-unigames-dark to-unigames-blue/20;
+  /* Enhanced buttons */
+  .btn-primary-modern {
+    @apply bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
   }
 
-  .button-glow {
-    @apply relative overflow-hidden;
+  .btn-secondary-modern {
+    @apply glass-effect border-unigames-purple/50 text-unigames-purple hover:bg-unigames-purple/10 font-semibold rounded-xl transition-all duration-300 transform hover:scale-105;
   }
 
-  .button-glow::after {
-    content: "";
-    @apply absolute -inset-1 rounded-lg opacity-0 transition-opacity duration-300 bg-unigames-purple;
-    z-index: -1;
-    filter: blur(15px);
+  /* Section dividers */
+  .section-divider {
+    @apply w-24 h-1 bg-gradient-to-r from-unigames-purple to-unigames-blue rounded-full mx-auto;
   }
 
-  .button-glow:hover::after {
-    @apply opacity-70;
+  /* Modern containers */
+  .section-container {
+    @apply py-16 md:py-24 px-4 md:px-8;
   }
 
-  /* Enhanced responsive utilities */
+  /* Text utilities */
+  .text-gradient {
+    @apply bg-gradient-to-r from-unigames-purple to-unigames-blue bg-clip-text text-transparent;
+  }
+
+  /* Loading states */
+  .skeleton {
+    @apply animate-pulse bg-muted rounded;
+  }
+
+  /* Focus states */
+  .focus-modern {
+    @apply focus:outline-none focus:ring-2 focus:ring-unigames-purple focus:ring-offset-2 focus:ring-offset-background;
+  }
+}
+
+@layer utilities {
+  /* Line clamping */
   .line-clamp-1 {
     overflow: hidden;
     display: -webkit-box;
@@ -142,94 +136,30 @@
     -webkit-line-clamp: 2;
   }
 
-  /* Game modal responsive fixes */
-  .game-modal-content {
-    @apply w-full h-full;
-    max-height: calc(90vh - 120px);
-  }
-
-  /* Enhanced animations */
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-float.delay-300 {
-    animation-delay: 300ms;
-  }
-
-  .animate-float.delay-500 {
-    animation-delay: 500ms;
-  }
-
-  /* Mobile-first breakpoint system */
-  .xs\:grid-cols-2 {
-    @media (min-width: 475px) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  /* Touch-friendly sizing */
-  .touch-target {
-    @apply min-h-[44px] min-w-[44px];
-  }
-
-  /* Enhanced focus states for accessibility */
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-unigames-purple;
-  }
-
-  /* Smooth scroll behavior */
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /* Game container responsive sizing */
-  .game-container {
-    @apply w-full h-full;
-    min-height: 300px;
-  }
-
-  @media (min-width: 768px) {
-    .game-container {
-      min-height: 400px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .game-container {
-      min-height: 500px;
-    }
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 }
 
-/* Additional responsive utilities */
-@layer utilities {
-  .text-responsive {
-    @apply text-sm md:text-base;
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
+}
 
-  .text-responsive-lg {
-    @apply text-base md:text-lg lg:text-xl;
-  }
-
-  .text-responsive-xl {
-    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl;
-  }
-
-  .padding-responsive {
-    @apply p-2 sm:p-4 md:p-6;
-  }
-
-  .margin-responsive {
-    @apply m-2 sm:m-4 md:m-6;
-  }
-
-  .gap-responsive {
-    @apply gap-2 sm:gap-4 md:gap-6;
+/* Print styles */
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
 }
