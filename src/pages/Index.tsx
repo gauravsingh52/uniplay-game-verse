@@ -181,6 +181,8 @@ const Index = () => {
                         key={game.id} 
                         game={{
                           ...game,
+                          category: Array.isArray(game.category) ? game.category[0] : game.category,
+                          difficulty: 'Medium',
                           playTime: '5-15 min',
                           players: '1 player'
                         }} 
@@ -244,6 +246,8 @@ const Index = () => {
                         <ModernGameCard 
                           game={{
                             ...game,
+                            category: Array.isArray(game.category) ? game.category[0] : game.category,
+                            difficulty: 'Medium',
                             playTime: '5-15 min',
                             players: '1 player'
                           }} 

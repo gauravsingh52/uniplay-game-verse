@@ -40,11 +40,6 @@ const WorkingGamesSection = () => {
 
     const gameComponents: { [key: string]: JSX.Element } = {
       'bubble-bop': <BubbleBopGame onClose={closeGameModal} />,
-      'toast-escape': <ToastEscapeGame onClose={closeGameModal} />,
-      'flap-n-nap': <FlapNapGame onClose={closeGameModal} />,
-      'pixel-jumper': <PixelJumperGame onClose={closeGameModal} />,
-      'cloud-hop': <CloudHopGame onClose={closeGameModal} />,
-      'color-rush': <ColorRushGame onClose={closeGameModal} />,
       'zoo-zoom': <ZooZoomGame onClose={closeGameModal} />,
       'jelly-stack': <JellyStackGame onClose={closeGameModal} />,
       'snail-sprint': <SnailSprintGame onClose={closeGameModal} />,
