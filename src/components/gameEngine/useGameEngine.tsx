@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { GameState } from './GameEngine';
 
@@ -51,6 +50,12 @@ export const useGameEngine = ({
         }
       }
       
+      // Update high score and save to localStorage
+      if (updates.score !== undefined && updates.score > prev.highScore) {
+        newState.highScore = updates.score;
+        localStorage.setItem(`${gameId}_highScore`, updates.score.toString());
+      }
+      
       // Game over when lives reach 0
       if (updates.lives !== undefined && updates.lives <= 0) {
         newState.isGameOver = true;
@@ -60,7 +65,7 @@ export const useGameEngine = ({
       
       return newState;
     });
-  }, [levelUpScore, initialLevel]);
+  }, [levelUpScore, initialLevel, gameId]);
 
   const restartGame = useCallback(() => {
     setGameState(prev => ({
