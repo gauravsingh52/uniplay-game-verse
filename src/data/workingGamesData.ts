@@ -1,3 +1,4 @@
+
 export interface WorkingGame {
   id: string;
   title: string;
@@ -6,160 +7,166 @@ export interface WorkingGame {
   category: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   playTime: string;
-  isActive: boolean;
-  component: string;
+  rating: number;
+  controls: string[];
+  features: string[];
 }
 
 export const workingGames: WorkingGame[] = [
   {
     id: 'bubble-bop',
     title: 'Bubble Bop',
-    description: 'Pop the right colored bubbles before time runs out! Music speeds up as the timer gets low.',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPgo8ZGVmcz4KPGR pbW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjBBNUZBO3N0b3Atb3BhY2l0eToxIiAvPgo8c3RvcCBvZmZzZXQ9IjUwJSIgc3R5bGU9InN0b3AtY29sb3I6IzlCNTlCNjtzdG9wLW9wYWNpdHk6MSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRkY2QjZCO3N0b3Atb3BhY2l0eToxIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iMzAiIGZpbGw9IiNGRjZCNkIiIG9wYWNpdHk9IjAuOCIvPgo8Y2lyY2xlIGN4PSIzMDAiIGN5PSI4MCIgcj0iMjUiIGZpbGw9IiM0RUNEQzQiIG9wYWNpdHk9IjAuOCIvPgo8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjM1IiBmaWxsPSIjNDVCN0QxIiBvcGFjaXR5PSIwLjgiLz4KPGNpcmNsZSBjeD0iMTUwIiBjeT0iMjAwIiByPSIyMCIgZmlsbD0iIzk2Q0VCNCIgb3BhY2l0eT0iMC44Ii8+CjxjaXJjbGUgY3g9IjMyMCIgY3k9IjIyMCIgcj0iMjgiIGZpbGw9IiNGRkVBQTciIG9wYWNpdHk9IjAuOCIvPgo8Y2lyY2xlIGN4PSI4MCIgY3k9IjI0MCIgcj0iMjIiIGZpbGw9IiNEREEwREQiIG9wYWNpdHk9IjAuOCIvPgo8dGV4dCB4PSIyMDAiIHk9IjI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI0ZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QnViYmxlIEJvcDwvdGV4dD4KPC9zdmc+',
-    category: 'Arcade',
+    description: 'Pop colorful bubbles in this addictive puzzle game. Match colors and clear the board!',
+    thumbnail: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop&crop=center',
+    category: 'Puzzle',
     difficulty: 'Easy',
-    playTime: '1-3 min',
-    isActive: true,
-    component: 'BubbleBopGame'
+    playTime: '5-15 min',
+    rating: 4.6,
+    controls: ['Mouse', 'Touch'],
+    features: ['Score tracking', 'Sound effects', 'Responsive']
   },
   {
     id: 'snake',
     title: 'Snake Classic',
-    description: 'Control the snake to eat food and grow longer. Avoid hitting walls or yourself!',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUYyOTM3Ii8+CjxyZWN0IHg9IjUwIiB5PSI1MCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMTBCOTgxIi8+CjxyZWN0IHg9IjcwIiB5PSI1MCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMTBCOTgxIi8+CjxyZWN0IHg9IjkwIiB5PSI1MCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMTBCOTgxIi8+CjxyZWN0IHg9IjExMCIgeT0iNTAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iIzEwQjk4MSIvPgo8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjgiIGZpbGw9IiNGNTk4NDMiLz4KPHRleHQgeD0iMjAwIiB5PSIyNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iI0Y5RkFGQiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+U25ha2UgQ2xhc3NpYzwvdGV4dD4KPC9zdmc+',
+    description: 'The classic snake game! Eat food, grow longer, avoid walls and your own tail.',
+    thumbnail: 'https://images.unsplash.com/photo-1516975476649-0ca5b136f05e?w=400&h=300&fit=crop&crop=center',
     category: 'Arcade',
-    difficulty: 'Easy',
-    playTime: '5-15 min',
-    isActive: true,
-    component: 'SnakeGame'
+    difficulty: 'Medium',
+    playTime: '5-20 min',
+    rating: 4.8,
+    controls: ['Keyboard', 'Touch'],
+    features: ['Score tracking', 'Levels', 'Sound effects']
   },
   {
     id: 'flappy-bird',
     title: 'Flappy Bird',
-    description: 'Guide the bird through pipes by tapping or clicking. How far can you go?',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjODdDRUVCIi8+CjxyZWN0IHg9IjMwMCIgeT0iMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iIzIyQzU1RSIvPgo8cmVjdCB4PSIzMDAiIHk9IjE4MCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iIzIyQzU1RSIvPgo8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxNTAiIHI9IjI1IiBmaWxsPSIjRkJCRjI0Ii8+CjxjaXJjbGUgY3g9IjExMCIgY3k9IjE0MCIgcj0iNCIgZmlsbD0iIzAwMCIvPgo8cGF0aCBkPSJNMTIwIDEzNUwxMzUgMTQ1TDEyMCAxNTVaIiBmaWxsPSIjRjU5ODQzIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiMxRjI5MzciIHRleHQtYW5jaG9yPSJtaWRkbGUiPkZsYXBweSBCaXJkPC90ZXh0Pgo8L3N2Zz4=',
+    description: 'Navigate through pipes in this challenging endless runner. How far can you go?',
+    thumbnail: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center',
     category: 'Arcade',
-    difficulty: 'Medium',
+    difficulty: 'Hard',
     playTime: '2-10 min',
-    isActive: true,
-    component: 'FlappyBirdGame'
+    rating: 4.3,
+    controls: ['Keyboard', 'Touch', 'Mouse'],
+    features: ['Endless gameplay', 'Score tracking', 'Physics']
   },
   {
     id: 'tic-tac-toe',
     title: 'Tic Tac Toe',
-    description: 'Classic strategy game. Get three in a row to win against the computer!',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUYyOTM3Ii8+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyNSw1MCkiPgo8cmVjdCB4PSI1MCIgeT0iMCIgd2lkdGg9IjQiIGhlaWdodD0iMTUwIiBmaWxsPSIjRjlGQUZCIi8+CjxyZWN0IHg9IjEwMCIgeT0iMCIgd2lkdGg9IjQiIGhlaWdodD0iMTUwIiBmaWxsPSIjRjlGQUZCIi8+CjxyZWN0IHg9IjAiIHk9IjUwIiB3aWR0aD0iMTUwIiBoZWlnaHQ9IjQiIGZpbGw9IiNGOUZBRkIiLz4KPHJlY3QgeD0iMCIgeT0iMTAwIiB3aWR0aD0iMTUwIiBoZWlnaHQ9IjQiIGZpbGw9IiNGOUZBRkIiLz4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMTUiIHN0cm9rZT0iIzEwQjk4MSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIi8+CjxwYXRoIGQ9Ik0xNSA2NUwyNSA3NU0zNSA2NUwyNSA3NSIgc3Ryb2tlPSIjRjU5ODQzIiBzdHJva2Utd2lkdGg9IjMiLz4KPGNpcmNsZSBjeD0iMTI1IiBjeT0iMTI1IiByPSIxNSIgc3Ryb2tlPSIjMTBCOTgxIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiLz4KPC9nPgo8dGV4dCB4PSIyMDAiIHk9IjI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSIjRjlGQUZCIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UaWMgVGFjIFRvZTwvdGV4dD4KPC9zdmc+',
+    description: 'The classic strategy game. Play against AI or challenge a friend locally.',
+    thumbnail: 'https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=400&h=300&fit=crop&crop=center',
     category: 'Strategy',
     difficulty: 'Easy',
     playTime: '2-5 min',
-    isActive: true,
-    component: 'TicTacToeGame'
+    rating: 4.4,
+    controls: ['Mouse', 'Touch'],
+    features: ['AI opponent', 'Local multiplayer', 'Win detection']
   },
   {
     id: 'memory-match',
     title: 'Memory Match',
-    description: 'Flip cards and match pairs. Test your memory skills!',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUYyOTM3Ii8+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMCw3NSkiPgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI0IiBmaWxsPSIjMzczN0ZGIi8+CjxyZWN0IHg9IjUwIiB5PSIwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI0IiBmaWxsPSIjMzczN0ZGIi8+CjxyZWN0IHg9IjEwMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iNCIgZmlsbD0iIzEwQjk4MSIvPgo8cmVjdCB4PSIxNTAiIHk9IjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjQiIGZpbGw9IiMzNzM3RkYiLz4KPHJlY3QgeD0iMCIgeT0iNTAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjQiIGZpbGw9IiNGNTk4NDMiLz4KPHJlY3QgeD0iNTAiIHk9IjUwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI0IiBmaWxsPSIjMzczN0ZGIi8+CjxyZWN0IHg9IjEwMCIgeT0iNTAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjQiIGZpbGw9IiMzNzM3RkYiLz4KPHJlY3QgeD0iMTUwIiB5PSI1MCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iNCIgZmlsbD0iI0Y1OTg0MyIvPgo8Y2lyY2xlIGN4PSIxMjAiIGN5PSIyMCIgcj0iOCIgZmlsbD0iI0Y5RkFGQiIvPgo8Y2lyY2xlIGN4PSIyMCIgY3k9IjcwIiByPSI4IiBmaWxsPSIjRjlGQUZCIi8+CjxjaXJjbGUgY3g9IjE3MCIgY3k9IjcwIiByPSI4IiBmaWxsPSIjRjlGQUZCIi8+CjwvcGc+Cjx0ZXh0IHg9IjIwMCIgeT0iMjUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiNGOUZBRkIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1lbW9yeSBNYXRjaDwvdGV4dD4KPC9zdmc+',
+    description: 'Test your memory! Flip cards to find matching pairs in this brain-training game.',
+    thumbnail: 'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?w=400&h=300&fit=crop&crop=center',
     category: 'Puzzle',
-    difficulty: 'Easy',
-    playTime: '3-8 min',
-    isActive: true,
-    component: 'MemoryMatchGame'
+    difficulty: 'Medium',
+    playTime: '3-10 min',
+    rating: 4.5,
+    controls: ['Mouse', 'Touch'],
+    features: ['Memory training', 'Multiple levels', 'Timer']
   },
   {
     id: '2048',
     title: '2048',
-    description: 'Combine numbered tiles to reach 2048. Addictive puzzle game!',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRkFGOEVGIi8+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyNSw3NSkiPgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHJ4PSI0IiBmaWxsPSIjQ0RDMUJBIi8+CjxyZWN0IHg9IjQwIiB5PSIwIiB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHJ4PSI0IiBmaWxsPSIjRUVFNERBIi8+CjxyZWN0IHg9IjgwIiB5PSIwIiB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHJ4PSI0IiBmaWxsPSIjRURDQzYxIi8+CjxyZWN0IHg9IjEyMCIgeT0iMCIgd2lkdGg9IjM1IiBoZWlnaHQ9IjM1IiByeD0iNCIgZmlsbD0iI0VEQzA2MSIvPgo8cmVjdCB4PSIwIiB5PSI0MCIgd2lkdGg9IjM1IiBoZWlnaHQ9IjM1IiByeD0iNCIgZmlsbD0iI0VEQzA2MSIvPgo8cmVjdCB4PSI0MCIgeT0iNDAiIHdpZHRoPSIzNSIgaGVpZ2h0PSIzNSIgcng9IjQiIGZpbGw9IiNFREM4NzMiLz4KPHJlY3QgeD0iODAiIHk9IjQwIiB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHJ4PSI0IiBmaWxsPSIjRjJCMTc5Ii8+CjxyZWN0IHg9IjEyMCIgeT0iNDAiIHdpZHRoPSIzNSIgaGVpZ2h0PSIzNSIgcng9IjQiIGZpbGw9IiNGMjk1NjMiLz4KPHJlY3QgeD0iMCIgeT0iODAiIHdpZHRoPSIzNSIgaGVpZ2h0PSIzNSIgcng9IjQiIGZpbGw9IiNGMjc3NjYiLz4KPHJlY3QgeD0iNDAiIHk9IjgwIiB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHJ4PSI0IiBmaWxsPSIjRjY1RTNBIi8+CjxyZWN0IHg9IjgwIiB5PSI4MCIgd2lkdGg9IjM1IiBoZWlnaHQ9IjM1IiByeD0iNCIgZmlsbD0iI0VEQ0Y3MiIvPgo8cmVjdCB4PSIxMjAiIHk9IjgwIiB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHJ4PSI0IiBmaWxsPSIjRURDRjcyIi8+Cjx0ZXh0IHg9IjU3LjUiIHk9IjI1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjNzc2RTY1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4yPC90ZXh0Pgo8dGV4dCB4PSI5Ny41IiB5PSIyNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI0Y5RkFGQiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+NDwvdGV4dD4KPHR leHQgeD0iNTcuNSIgeT0iNjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNGOUZBRkIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjg8L3RleHQ+Cjx0ZXh0IHg9IjU3LjUiIHk9IjEwNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI0Y5RkFGQiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+NjQ8L3RleHQ+CjwvZz4KPHR leHQgeD0iMjAwIiB5PSIyNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iI0Y5RkFGQiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QnJpY2sgQnJlYWtlcjwvdGV4dD4KPC9zdmc+',
+    description: 'Combine numbered tiles to reach 2048! Strategic thinking meets addictive gameplay.',
+    thumbnail: 'https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=400&h=300&fit=crop&crop=center',
     category: 'Puzzle',
     difficulty: 'Medium',
     playTime: '10-30 min',
-    isActive: true,
-    component: 'Game2048'
+    rating: 4.7,
+    controls: ['Keyboard', 'Touch', 'Mouse'],
+    features: ['Score tracking', 'Undo moves', 'Save progress']
   },
   {
     id: 'pong',
     title: 'Pong Classic',
-    description: 'The original arcade game! Beat the AI in this classic paddle game.',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMDAwIi8+CjxyZWN0IHg9IjE5OCIgeT0iMCIgd2lkdGg9IjQiIGhlaWdodD0iMzAwIiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIwLjUiLz4KPHJlY3QgeD0iMjAiIHk9IjEyMCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjRkZGIi8+CjxyZWN0IHg9IjM3MCIgeT0iMTIwIiB3aWR0aD0iMTAiIGhlaWdodD0iNjAiIGZpbGw9IiNGRkYiLz4KPGNpcmNsZSBjeD0iMjAwIiBjeT0iMTUwIiByPSI4IiBmaWxsPSIjRkZGIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIzNiIgZmlsbD0iI0ZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+MDwvdGV4dD4KPHR leHQgeD0iMzAwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjM2IiBmaWxsPSIjRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4wPC90ZXh0Pgo8dGV4dCB4PSIyMDAiIHk9IjI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSIjRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Qb25nIENsYXNzaWM8L3RleHQ+Cjwvc3ZnPg==',
-    category: 'Sports',
-    difficulty: 'Medium',
+    description: 'The original arcade game! Control your paddle and beat the AI opponent.',
+    thumbnail: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=300&fit=crop&crop=center',
+    category: 'Arcade',
+    difficulty: 'Easy',
     playTime: '5-15 min',
-    isActive: true,
-    component: 'PongGame'
+    rating: 4.2,
+    controls: ['Keyboard', 'Mouse'],
+    features: ['AI opponent', 'Score tracking', 'Retro graphics']
   },
   {
     id: 'brick-breaker',
     title: 'Brick Breaker',
-    description: 'Break all the bricks with your ball and paddle. Classic arcade action!',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMUYyOTM3Ii8+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUwLDUwKSI+CjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI0NSIgaGVpZ2h0PSIyMCIgZmlsbD0iI0Y1OTg0MyIvPgo8cmVjdCB4PSI1MCIgeT0iMCIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjRjU5ODQzIi8+CjxyZWN0IHg9IjEwMCIgeT0iMCIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjRjU5ODQzIi8+CjxyZWN0IHg9IjE1MCIgeT0iMCIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjRjU5ODQzIi8+CjxyZWN0IHg9IjIwMCIgeT0iMCIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjRjU5ODQzIi8+CjxyZWN0IHg9IjI1MCIgeT0iMCIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjRjU5ODQzIi8+CjxyZWN0IHg9IjAiIHk9IjI1IiB3aWR0aD0iNDUiIGhlaWdodD0iMjAiIGZpbGw9IiNGQkJGMjQiLz4KPHJlY3QgeD0iNTAiIHk9IjI1IiB3aWR0aD0iNDUiIGhlaWdodD0iMjAiIGZpbGw9IiNGQkJGMjQiLz4KPHJlY3QgeD0iMTAwIiB5PSIyNSIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjRkJCRjI0Ii8+CjxyZWN0IHg9IjE1MCIgeT0iMjUiIHdpZHRoPSI0NSIgaGVpZ2h0PSIyMCIgZmlsbD0iI0ZCQkYyNCIvPgo8cmVjdCB4PSIyMDAiIHk9IjI1IiB3aWR0aD0iNDUiIGhlaWdodD0iMjAiIGZpbGw9IiNGQkJGMjQiLz4KPHJlY3QgeD0iMjUwIiB5PSIyNSIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjRkJCRjI0Ii8+CjxyZWN0IHg9IjAiIHk9IjUwIiB3aWR0aD0iNDUiIGhlaWdodD0iMjAiIGZpbGw9IiMxMEI5ODEiLz4KPHJlY3QgeD0iNTAiIHk9IjUwIiB3aWR0aD0iNDUiIGhlaWdodD0iMjAiIGZpbGw9IiMxMEI5ODEiLz4KPHJlY3QgeD0iMTAwIiB5PSI1MCIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjMTBCOTgxIi8+CjxyZWN0IHg9IjE1MCIgeT0iNTAiIHdpZHRoPSI0NSIgaGVpZ2h0PSIyMCIgZmlsbD0iIzEwQjk4MSIvPgo8cmVjdCB4PSIyMDAiIHk9IjUwIiB3aWR0aD0iNDUiIGhlaWdodD0iMjAiIGZpbGw9IiMxMEI5ODEiLz4KPHJlY3QgeD0iMjUwIiB5PSI1MCIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjMTBCOTgxIi8+CjxyZWN0IHg9IjEyNSIgeT0iMTgwIiB3aWR0aD0iNTAiIGhlaWdodD0iMTAiIGZpbGw9IiNGOUZBRkIiLz4KPGNpcmNsZSBjeD0iMTUwIiBjeT0iMTUwIiByPSI2IiBmaWxsPSIjRjlGQUZCIi8+CjwvZz4KPHR leHQgeD0iMjAwIiB5PSIyNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iI0Y5RkFGQiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QnJpY2sgQnJlYWtlcjwvdGV4dD4KPC9zdmc+',
+    description: 'Break all the bricks with your ball! Classic arcade action with power-ups.',
+    thumbnail: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center',
     category: 'Arcade',
     difficulty: 'Medium',
-    playTime: '10-20 min',
-    isActive: true,
-    component: 'BrickBreakerGame'
+    playTime: '10-25 min',
+    rating: 4.6,
+    controls: ['Keyboard', 'Mouse', 'Touch'],
+    features: ['Power-ups', 'Multiple levels', 'Physics']
   },
   {
     id: 'tetris',
     title: 'Tetris',
-    description: 'Arrange falling blocks to clear lines. The ultimate puzzle challenge!',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMDAwIi8+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0MCw1MCkiPgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMEZGRkYiIHN0cm9rZT0iIzAwNzc3NyIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxyZWN0IHg9IjIwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMEZGRkYiIHN0cm9rZT0iIzAwNzc3NyIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxyZWN0IHg9IjQwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMEZGRkYiIHN0cm9rZT0iIzAwNzc3NyIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxyZWN0IHg9IjYwIiB5PSIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiMwMEZGRkYiIHN0cm9rZT0iIzAwNzc3NyIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxyZWN0IHg9IjIwIiB5PSI0MCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjRkYwMEZGIiBzdHJva2U9IiM3NzAwNzciIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSI0MCIgeT0iNDAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI0ZGMDBGRiIgc3Ryb2tlPSIjNzcwMDc3IiBzdHJva2Utd2lkdGg9IjEiLz4KPHJlY3QgeD0iNDAiIHk9IjYwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNGRjAwRkYiIHN0cm9rZT0iIzc3MDA3NyIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxyZWN0IHg9IjYwIiB5PSI2MCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjRkYwMEZGIiBzdHJva2U9IiM3NzAwNzciIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSIwIiB5PSIxMDAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI0ZGRkYwMCIgc3Ryb2tlPSIjNzc3NzAwIiBzdHJva2Utd2lkdGg9IjEiLz4KPHJlY3QgeD0iMjAiIHk9IjEwMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjRkZGRjAwIiBzdHJva2U9IiM3Nzc3MDAiIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSI0MCIgeT0iMTAwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNGRkZGMDAiIHN0cm9rZT0iIzc3NzcwMCIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxyZWN0IHg9IjYwIiB5PSIxMDAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI0ZGMDBGRiIgc3Ryb2tlPSIjNzcwMDc3IiBzdHJva2Utd2lkdGg9IjEiLz4KPHJlY3QgeD0iODAiIHk9IjEwMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjRkYwMEZGIiBzdHJva2U9IiM3NzAwNzciIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSIxMDAiIHk9IjEwMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMDBGRjAwIiBzdHJva2U9IiMwMDc3MDAiIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSIxMjAiIHk9IjEwMCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMDBGRjAwIiBzdHJva2U9IiMwMDc3MDAiIHN0cm9rZS13aWR0aD0iMSIvPgo8L2c+Cjx0ZXh0IHg9IjIwMCIgeT0iMjUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5URVRSSVM8L3RleHQ+Cjwvc3ZnPg==',
+    description: 'The legendary puzzle game! Clear lines by fitting falling blocks together.',
+    thumbnail: 'https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=400&h=300&fit=crop&crop=center',
     category: 'Puzzle',
-    difficulty: 'Hard',
-    playTime: '15-60 min',
-    isActive: true,
-    component: 'TetrisGame'
+    difficulty: 'Medium',
+    playTime: '10-60 min',
+    rating: 4.9,
+    controls: ['Keyboard', 'Touch'],
+    features: ['Line clearing', 'Speed increase', 'Score tracking']
   },
   {
     id: 'zoo-zoom',
     title: 'Zoo Zoom',
-    description: 'Race animals through fun obstacle tracks. Each animal has unique skills - cheetah speed, elephant strength!',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI2p1bmdsZSkiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0ianVuZ2xlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzY4RDM5MTtzdG9wLW9wYWNpdHk6MSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRkJCRjI0O3N0b3Atb3BhY2l0eToxIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxyZWN0IHg9IjUwIiB5PSIyMDAiIHdpZHRoPSI4MCIgaGVpZ2h0PSIyMCIgZmlsbD0iIzhCNDUxMyIvPgo8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxODAiIHI9IjIwIiBmaWxsPSIjRkZBNTAwIi8+CjxjaXJjbGUgY3g9IjI1MCIgY3k9IjE3MCIgcj0iMjUiIGZpbGw9IiM4MDgwODAiLz4KPGNpcmNsZSBjeD0iMzIwIiBjeT0iMTkwIiByPSIxOCIgZmlsbD0iIzhCNDUxMyIvPgo8cGF0aCBkPSJNNTAgMjUwaDMwMCIgc3Ryb2tlPSIjRkJCRjI0IiBzdHJva2Utd2lkdGg9IjQiLz4KPHR leHQgeD0iMjAwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzIyNzc0QyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Wm9vIFpvb208L3RleHQ+Cjwvc3ZnPg==',
-    category: 'Racing',
-    difficulty: 'Easy',
-    playTime: '3-7 min',
-    isActive: true,
-    component: 'ZooZoomGame'
+    description: 'Help animals escape the zoo in this fast-paced adventure game!',
+    thumbnail: 'https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?w=400&h=300&fit=crop&crop=center',
+    category: 'Adventure',
+    difficulty: 'Medium',
+    playTime: '8-20 min',
+    rating: 4.4,
+    controls: ['Keyboard', 'Touch'],
+    features: ['Multiple characters', 'Power-ups', 'Adventure mode']
   },
   {
     id: 'jelly-stack',
     title: 'Jelly Stack',
-    description: 'Stack jelly blocks as tall as you can! Physics makes them bounce and wobble if not aligned perfectly.',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI2plbGx5KSIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJqZWxseSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRkY5RkYzO3N0b3Atb3BhY2l0eToxIiAvPgo8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNEOEI0RkU7c3RvcC1vcGFjaXR5OjEiIC8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHJlY3QgeD0iMTUwIiB5PSIyMDAiIHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIHJ4PSIyMCIgZmlsbD0iI0ZGNkI2QiIgb3BhY2l0eT0iMC44Ii8+CjxyZWN0IHg9IjE2MCIgeT0iMTYwIiB3aWR0aD0iODAiIGhlaWdodD0iNDAiIHJ4PSIyMCIgZmlsbD0iIzRFQ0RDNCIgb3BhY2l0eT0iMC44Ii8+CjxyZWN0IHg9IjE3MCIgeT0iMTIwIiB3aWR0aD0iNjAiIGhlaWdodD0iNDAiIHJ4PSIyMCIgZmlsbD0iIzQ1QjdEMSIgb3BhY2l0eT0iMC44IiB0cmFuc2Zvcm09InJvdGF0ZSgtNSAyMDAgMTQwKSIvPgo8cmVjdCB4PSIxODAiIHk9IjgwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSIyMCIgZmlsbD0iIzk2Q0VCNCIgb3BhY2l0eT0iMC44IiB0cmFuc2Zvcm09InJvdGF0ZSgxMCAyMDAgMTAwKSIvPgo8dGV4dCB4PSIyMDAiIHk9IjI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSIjNzc0OEZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5KZWxseSBTdGFjazwvdGV4dD4KPC9zdmc+',
-    category: 'Puzzle',
-    difficulty: 'Medium',
+    description: 'Stack colorful jelly blocks as high as you can without toppling over!',
+    thumbnail: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=400&h=300&fit=crop&crop=center',
+    category: 'Arcade',
+    difficulty: 'Easy',
     playTime: '5-15 min',
-    isActive: true,
-    component: 'JellyStackGame'
+    rating: 4.3,
+    controls: ['Mouse', 'Touch'],
+    features: ['Physics simulation', 'High scores', 'Colorful graphics']
   },
   {
     id: 'snail-sprint',
     title: 'Snail Sprint',
-    description: 'Race slowly but smartly through a garden path. Hide in your shell to avoid traps, time slows when danger is near!',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI2dhcmRlbikiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ2FyZGVuIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM2OEQzOTE7c3RvcC1vcGFjaXR5OjEiIC8+CjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I0ZCQkYyNDtzdG9wLW9wYWNpdHk6MSIgLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8Y2lyY2xlIGN4PSI4MCIgY3k9IjE1MCIgcj0iMjAiIGZpbGw9IiNBMzY3NjciLz4KPGNpcmNsZSBjeD0iNzAiIGN5PSIxNDAiIHI9IjE1IiBmaWxsPSIjOEI0NTEzIi8+CjxwYXRoIGQ9Ik01MCAyNTBoMzAwIiBzdHJva2U9IiNGQkJGMjQiIHN0cm9rZS13aWR0aD0iOCIgb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjEwMCIgcj0iOCIgZmlsbD0iI0Y1OTg0MyIvPgo8Y2lyY2xlIGN4PSIzMDAiIGN5PSIxMjAiIHI9IjEwIiBmaWxsPSIjRkY2NTY1Ii8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjIwMCIgcj0iMTIiIGZpbGw9IiNGRkY1RjUiLz4KPHR leHQgeD0iMjAwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzIyNzc0QyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+U25haWwgU3ByaW50PC90ZXh0Pgo8L3N2Zz4=',
+    description: 'Race your snail through obstacle courses in this surprisingly fast-paced game!',
+    thumbnail: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=300&fit=crop&crop=center',
     category: 'Racing',
-    difficulty: 'Easy',
-    playTime: '3-8 min',
-    isActive: true,
-    component: 'SnailSprintGame'
+    difficulty: 'Medium',
+    playTime: '5-12 min',
+    rating: 4.2,
+    controls: ['Keyboard', 'Touch'],
+    features: ['Racing mechanics', 'Obstacles', 'Time trials']
   },
   {
     id: 'plant-panic',
     title: 'Plant Panic',
-    description: 'Defend your houseplants from sneaky pests! Flick bugs with quick gestures, but watch out - some fake death!',
-    thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI2luZG9vcikiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iaW5kb29yIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I0Y3RkFFNztzdG9wLW9wYWNpdHk6MSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRTVGMEU1O3N0b3Atb3BhY2l0eToxIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxyZWN0IHg9IjUwIiB5PSIxODAiIHdpZHRoPSI4MCIgaGVpZ2h0PSI2MCIgZmlsbD0iIzhCNDUxMyIvPgo8Y2lyY2xlIGN4PSI5MCIgY3k9IjE2MCIgcj0iMjAiIGZpbGw9IiNGQkJGMjQiLz4KPGNpcmNsZSBjeD0iMjUwIiBjeT0iMTcwIiByPSIyNSIgZmlsbD0iI0Y1OTg0MyIvPgo8Y2lyY2xlIGN4PSIzMDAiIGN5PSIyMDAiIHI9IjE1IiBmaWxsPSIjMTBCOTgxIi8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjEyMCIgcj0iOCIgZmlsbD0iIzgwODA4MCIvPgo8Y2lyY2xlIGN4PSIzMjAiIGN5PSIxMDAiIHI9IjEwIiBmaWxsPSIjNjE2MTYxIi8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjEwMCIgcj0iNiIgZmlsbD0iIzAwNzc3NyIvPgo8dGV4dCB4PSIyMDAiIHk9IjI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSIjMjI3NzRDIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QbGFudCBQYW5pYzwvdGV4dD4KPC9zdmc+',
-    category: 'Action',
-    difficulty: 'Medium',
-    playTime: '5-12 min',
-    isActive: true,
-    component: 'PlantPanicGame'
+    description: 'Defend your garden from invading pests in this tower defense style game!',
+    thumbnail: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop&crop=center',
+    category: 'Strategy',
+    difficulty: 'Hard',
+    playTime: '15-30 min',
+    rating: 4.5,
+    controls: ['Mouse', 'Touch'],
+    features: ['Tower defense', 'Strategy gameplay', 'Multiple waves']
   }
 ];
-
-export const getWorkingGameById = (id: string): WorkingGame | undefined => {
-  return workingGames.find(game => game.id === id);
-};
-
-export const getWorkingGamesByCategory = (category: string): WorkingGame[] => {
-  return workingGames.filter(game => game.category.toLowerCase() === category.toLowerCase());
-};

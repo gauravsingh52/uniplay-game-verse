@@ -1,179 +1,277 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Menu, X, Gamepad2, Sun, Moon, Search } from "lucide-react";
-import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@/hooks/useTheme';
-import SearchBar from '@/components/SearchBar';
+import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Gamepad, Menu, User, Settings, LogOut, LogIn, UserPlus, Star, TrendingUp, Grid3X3, Search, Zap } from "lucide-react";
+import { useAuth } from '@/hooks/useAuth';
 
 const ResponsiveNavbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
-
-  const navigationItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Games', path: '/games' },
-    { name: 'Browse', path: '/browse' },
-    { name: 'Categories', path: '/categories' },
-    { name: 'Trending', path: '/trending' },
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const location = useLocation();
+  const { user, signOut, isAuthenticated, isLoading } = useAuth();
 
   const handleNavigation = (path: string) => {
     navigate(path);
-    setIsMobileMenuOpen(false);
+    setIsOpen(false);
   };
 
+  const handleSignOut = async () => {
+    await signOut();
+    setIsOpen(false);
+  };
+
+  const navItems = [
+    { label: 'Home', path: '/', icon: Gamepad },
+    { label: 'All Games', path: '/games', icon: Grid3X3 },
+    { label: 'Categories', path: '/categories', icon: Grid3X3 },
+    { label: 'Trending', path: '/trending', icon: TrendingUp },
+    { label: 'Browse', path: '/browse', icon: Search },
+    { label: 'Features', path: '/features', icon: Star },
+    { label: 'Support', path: '/support', icon: Zap },
+  ];
+
+  const isActivePath = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(path);
+  };
+
+  const UserAvatar = () => (
+    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-unigames-purple to-unigames-blue flex items-center justify-center text-white font-medium text-sm">
+      {user?.user_metadata?.full_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
+    </div>
+  );
+
   return (
-    <>
-      <nav className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-background/80 backdrop-blur-lg border-b border-border shadow-lg' 
-          : 'bg-transparent'
-      }`}>
-        <div className="container-responsive">
-          <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo */}
-            <div 
-              className="flex items-center space-x-2 cursor-pointer group animate-slideInLeft"
-              onClick={() => handleNavigation('/')}
-            >
-              <div className="relative">
-                <Gamepad2 className="h-8 w-8 md:h-10 md:w-10 text-unigames-purple group-hover:text-unigames-blue transition-colors duration-300" />
-                <div className="absolute -inset-1 bg-unigames-purple/20 rounded-full blur-sm group-hover:bg-unigames-blue/20 transition-colors duration-300 -z-10"></div>
-              </div>
-              <span className="text-xl md:text-2xl font-bold font-['Poppins'] bg-gradient-to-r from-unigames-purple to-unigames-blue bg-clip-text text-transparent">
-                UNIGAMES
-              </span>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/40">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div 
+            className="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => handleNavigation('/')}
+          >
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-unigames-purple to-unigames-blue flex items-center justify-center">
+              <Gamepad className="h-5 w-5 text-white" />
             </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-unigames-purple to-unigames-blue bg-clip-text text-transparent">
+              UNIGAMES
+            </span>
+            <Badge variant="secondary" className="hidden sm:inline-flex text-xs bg-unigames-purple/10 text-unigames-purple">
+              13 Games
+            </Badge>
+          </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8">
-              {navigationItems.map((item, index) => (
-                <Button
-                  key={item.name}
-                  variant="ghost"
-                  className="text-base font-medium hover:text-unigames-purple transition-colors duration-300 hover:bg-unigames-purple/10 animate-fadeIn"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                  onClick={() => handleNavigation(item.path)}
-                >
-                  {item.name}
-                </Button>
-              ))}
-            </div>
-
-            {/* Desktop Search Bar */}
-            <div className="hidden md:block flex-1 max-w-md mx-8">
-              <SearchBar fullWidth={true} />
-            </div>
-
-            {/* Theme Toggle & Mobile Menu */}
-            <div className="flex items-center space-x-4">
-              {/* Mobile Search Button */}
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-1">
+            {navItems.map((item) => (
               <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsSearchOpen(true)}
-                className="md:hidden w-10 h-10 rounded-full hover:bg-unigames-purple/10 transition-all duration-300"
+                key={item.path}
+                variant={isActivePath(item.path) ? "default" : "ghost"}
+                size="sm"
+                className={`${
+                  isActivePath(item.path) 
+                    ? "bg-unigames-purple text-white hover:bg-unigames-purple/80" 
+                    : "hover:bg-unigames-purple/10 hover:text-unigames-purple"
+                } transition-all duration-200`}
+                onClick={() => handleNavigation(item.path)}
               >
-                <Search className="h-5 w-5 text-unigames-purple" />
+                <item.icon className="h-4 w-4 mr-2" />
+                {item.label}
               </Button>
+            ))}
+          </div>
 
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                className="w-10 h-10 rounded-full hover:bg-unigames-purple/10 transition-all duration-300 animate-slideInRight"
-              >
-                {theme === 'dark' ? 
-                  <Sun className="h-5 w-5 text-yellow-500" /> : 
-                  <Moon className="h-5 w-5 text-unigames-purple" />
-                }
-              </Button>
-
-              {/* Mobile Menu */}
-              <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-                <SheetTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="lg:hidden w-10 h-10 rounded-full hover:bg-unigames-purple/10 transition-all duration-300 animate-slideInRight"
-                  >
-                    <Menu className="h-6 w-6" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="right" className="w-80 glass-effect">
-                  <div className="flex flex-col space-y-6 mt-8">
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-semibold">Menu</span>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="w-8 h-8"
-                      >
-                        <X className="h-5 w-5" />
+          {/* Desktop Auth Buttons */}
+          <div className="hidden lg:flex items-center space-x-3">
+            {!isLoading && (
+              <>
+                {isAuthenticated ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-10 w-10 rounded-full p-0 hover:bg-unigames-purple/10">
+                        <UserAvatar />
                       </Button>
-                    </div>
-                    
-                    <div className="flex flex-col space-y-4">
-                      {navigationItems.map((item, index) => (
-                        <Button
-                          key={item.name}
-                          variant="ghost"
-                          className="justify-start text-base font-medium h-12 hover:bg-unigames-purple/10 hover:text-unigames-purple transition-all duration-300 animate-slideInRight"
-                          style={{ animationDelay: `${index * 0.1}s` }}
-                          onClick={() => handleNavigation(item.path)}
-                        >
-                          {item.name}
-                        </Button>
-                      ))}
-                    </div>
-
-                    <div className="pt-6 border-t border-border">
-                      <Button
-                        className="w-full bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80 text-white font-semibold h-12 rounded-xl ripple-effect"
-                        onClick={() => handleNavigation('/games')}
-                      >
-                        Start Playing
-                      </Button>
-                    </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                      <div className="flex items-center justify-start gap-2 p-2">
+                        <UserAvatar />
+                        <div className="flex flex-col space-y-1 leading-none">
+                          <p className="font-medium text-sm">
+                            {user?.user_metadata?.full_name || 'User'}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {user?.email}
+                          </p>
+                        </div>
+                      </div>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => handleNavigation('/dashboard')}>
+                        <User className="mr-2 h-4 w-4" />
+                        Dashboard
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleNavigation('/settings')}>
+                        <Settings className="mr-2 h-4 w-4" />
+                        Settings
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handleSignOut} className="text-red-600">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sign out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <div className="flex items-center space-x-2">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => handleNavigation('/login')}
+                      className="hover:bg-unigames-purple/10 hover:text-unigames-purple"
+                    >
+                      <LogIn className="h-4 w-4 mr-2" />
+                      Login
+                    </Button>
+                    <Button 
+                      size="sm"
+                      onClick={() => handleNavigation('/signup')}
+                      className="bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80 text-white"
+                    >
+                      <UserPlus className="h-4 w-4 mr-2" />
+                      Sign Up
+                    </Button>
                   </div>
-                </SheetContent>
-              </Sheet>
-            </div>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Mobile Menu */}
+          <div className="lg:hidden">
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" className="hover:bg-unigames-purple/10">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2 text-left">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-unigames-purple to-unigames-blue flex items-center justify-center">
+                      <Gamepad className="h-5 w-5 text-white" />
+                    </div>
+                    UNIGAMES
+                  </SheetTitle>
+                </SheetHeader>
+                
+                <div className="mt-6 space-y-1">
+                  {/* User info for mobile */}
+                  {!isLoading && isAuthenticated && (
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg mb-4">
+                      <UserAvatar />
+                      <div>
+                        <p className="font-medium text-sm">
+                          {user?.user_metadata?.full_name || 'User'}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {user?.email}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Navigation items */}
+                  {navItems.map((item) => (
+                    <Button
+                      key={item.path}
+                      variant={isActivePath(item.path) ? "default" : "ghost"}
+                      className={`w-full justify-start ${
+                        isActivePath(item.path) 
+                          ? "bg-unigames-purple text-white" 
+                          : "hover:bg-unigames-purple/10 hover:text-unigames-purple"
+                      }`}
+                      onClick={() => handleNavigation(item.path)}
+                    >
+                      <item.icon className="h-4 w-4 mr-3" />
+                      {item.label}
+                    </Button>
+                  ))}
+
+                  {/* Auth buttons for mobile */}
+                  {!isLoading && (
+                    <div className="pt-4 space-y-2">
+                      {isAuthenticated ? (
+                        <>
+                          <Button
+                            variant="ghost"
+                            className="w-full justify-start hover:bg-unigames-purple/10"
+                            onClick={() => handleNavigation('/dashboard')}
+                          >
+                            <User className="h-4 w-4 mr-3" />
+                            Dashboard
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            className="w-full justify-start hover:bg-unigames-purple/10"
+                            onClick={() => handleNavigation('/settings')}
+                          >
+                            <Settings className="h-4 w-4 mr-3" />
+                            Settings
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700"
+                            onClick={handleSignOut}
+                          >
+                            <LogOut className="h-4 w-4 mr-3" />
+                            Sign out
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            variant="ghost"
+                            className="w-full justify-start hover:bg-unigames-purple/10"
+                            onClick={() => handleNavigation('/login')}
+                          >
+                            <LogIn className="h-4 w-4 mr-3" />
+                            Login
+                          </Button>
+                          <Button
+                            className="w-full justify-start bg-gradient-to-r from-unigames-purple to-unigames-blue text-white"
+                            onClick={() => handleNavigation('/signup')}
+                          >
+                            <UserPlus className="h-4 w-4 mr-3" />
+                            Sign Up
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
-      </nav>
-
-      {/* Mobile Search Modal */}
-      <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-        <DialogContent className="max-w-lg mx-4 p-0 bg-background/95 backdrop-blur-lg">
-          <DialogHeader className="p-6 pb-4">
-            <DialogTitle className="text-lg font-semibold">Search Games</DialogTitle>
-          </DialogHeader>
-          <div className="px-6 pb-6">
-            <SearchBar 
-              onClose={() => setIsSearchOpen(false)} 
-              fullWidth={true}
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+      </div>
+    </nav>
   );
 };
 

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import ResponsiveNavbar from '@/components/ResponsiveNavbar';
 import EnhancedHeroSection from '@/components/EnhancedHeroSection';
@@ -125,7 +126,7 @@ const Index = () => {
                     <Gift className="h-5 w-5 text-unigames-purple" />
                     <div>
                       <p className="font-semibold text-gradient">Welcome to UNIGAMES!</p>
-                      <p className="text-sm text-muted-foreground">Discover 30+ games with achievements!</p>
+                      <p className="text-sm text-muted-foreground">Discover {workingGames.length} games with achievements!</p>
                     </div>
                     <Button 
                       variant="ghost" 
@@ -149,119 +150,13 @@ const Index = () => {
             </section>
             
             {/* User Profile Section */}
-            <section className="section-container">
-              <div className="container-responsive max-w-4xl">
-                <UserProfileSystem />
-              </div>
-            </section>
-            
-            {/* Featured Games Section */}
-            <section className="section-container bg-muted/30">
-              <div className="container-responsive">
-                <div className="text-center mb-12 animate-fadeIn">
-                  <Badge className="mb-4 bg-unigames-purple/20 text-unigames-purple border-unigames-purple/30">
-                    Featured Collection
-                  </Badge>
-                  <h2 className="text-responsive-2xl font-bold mb-4">
-                    <span className="text-gradient">Premium Games</span>
-                  </h2>
-                  <p className="text-responsive-base text-muted-foreground max-w-2xl mx-auto">
-                    Hand-picked games offering the best gaming experience
-                  </p>
-                  <div className="section-divider mt-6"></div>
+            {isAuthenticated && (
+              <section className="section-container">
+                <div className="container-responsive max-w-4xl">
+                  <UserProfileSystem />
                 </div>
-                
-                {loading ? (
-                  <div className="grid grid-responsive grid-responsive-2 grid-responsive-3 gap-6">
-                    {[...Array(6)].map((_, index) => (
-                      <div key={index} className="skeleton h-80 rounded-xl"></div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="grid grid-responsive grid-responsive-2 grid-responsive-3 gap-6 stagger-children">
-                    {featuredGames.map((game) => (
-                      <ModernGameCard 
-                        key={game.id} 
-                        game={{
-                          ...game,
-                          category: Array.isArray(game.category) ? game.category[0] : game.category,
-                          difficulty: 'Medium',
-                          playTime: '5-15 min',
-                          players: '1 player'
-                        }} 
-                        onPlay={() => navigate(`/game/${game.id}`)}
-                      />
-                    ))}
-                  </div>
-                )}
-                
-                <div className="text-center mt-12">
-                  <Button 
-                    size="lg"
-                    className="btn-primary-modern"
-                    onClick={() => navigate('/browse')}
-                  >
-                    Explore All Games
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </div>
-              </div>
-            </section>
-            
-            {/* Trending Games Section */}
-            <section className="section-container">
-              <div className="container-responsive">
-                <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-4 animate-fadeIn">
-                  <div className="text-center md:text-left">
-                    <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                      <TrendingUp className="h-5 w-5 text-unigames-purple" />
-                      <Badge className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-600 border-amber-500/30">
-                        Hot This Week
-                      </Badge>
-                    </div>
-                    <h2 className="text-responsive-2xl font-bold mb-2">Trending Now</h2>
-                    <p className="text-muted-foreground">Most popular games this week</p>
-                  </div>
-                  <Button 
-                    variant="outline" 
-                    className="btn-secondary-modern"
-                    onClick={() => navigate('/trending')}
-                  >
-                    View All Trending
-                  </Button>
-                </div>
-                
-                {loading ? (
-                  <div className="grid grid-responsive grid-responsive-2 grid-responsive-3 gap-6">
-                    {[...Array(6)].map((_, index) => (
-                      <div key={index} className="skeleton h-80 rounded-xl"></div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="grid grid-responsive grid-responsive-2 grid-responsive-3 gap-6 stagger-children">
-                    {trendingGames.map((game, index) => (
-                      <div key={game.id} className="relative">
-                        {index < 3 && (
-                          <Badge className="absolute -top-2 -right-2 z-20 bg-gradient-to-r from-amber-500 to-orange-500 text-white animate-pulse-custom">
-                            #{index + 1}
-                          </Badge>
-                        )}
-                        <ModernGameCard 
-                          game={{
-                            ...game,
-                            category: Array.isArray(game.category) ? game.category[0] : game.category,
-                            difficulty: 'Medium',
-                            playTime: '5-15 min',
-                            players: '1 player'
-                          }} 
-                          onPlay={() => navigate(`/game/${game.id}`)}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </section>
+              </section>
+            )}
             
             {/* Quick Play Section */}
             <section className="section-container bg-muted/30">
@@ -341,7 +236,7 @@ const Index = () => {
                       </span>
                     </div>
                     <p className="text-muted-foreground text-sm">
-                      The ultimate browser gaming platform with 30+ premium games, achievements, and social features.
+                      The ultimate browser gaming platform with {workingGames.length} premium games, achievements, and social features.
                     </p>
                     <div className="flex items-center gap-3">
                       <Button 
@@ -419,7 +314,7 @@ const Index = () => {
                   </p>
                   <div className="flex items-center gap-6">
                     <Badge variant="outline" className="border-green-500/30 text-green-600">
-                      100% Working Games
+                      {workingGames.length} Working Games
                     </Badge>
                     <Badge variant="outline" className="border-blue-500/30 text-blue-600">
                       No Downloads Required

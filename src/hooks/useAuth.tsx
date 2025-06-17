@@ -37,11 +37,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           
           if (event === 'SIGNED_IN' && currentSession) {
             toast({
-              title: "Welcome!",
-              description: `You've successfully signed in as ${currentSession.user.email}`,
+              title: "Welcome back!",
+              description: `Successfully signed in as ${currentSession.user.email}`,
             });
             
-            // Only navigate if we're not already on dashboard
+            // Only navigate if we're on auth pages
             if (location.pathname === '/login' || location.pathname === '/signup') {
               navigate('/dashboard');
             }
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               title: "Signed out",
               description: "You've been successfully signed out",
             });
-            navigate('/');
+            // Don't auto-navigate on signout, let user stay on current page
           }
           
           setIsLoading(false);
@@ -63,11 +63,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const { data: { session: initialSession }, error } = await supabase.auth.getSession();
       if (error) {
         console.error('Error getting session:', error);
-        toast({
-          title: "Session Error",
-          description: "There was a problem retrieving your session",
-          variant: "destructive",
-        });
       } else {
         console.log('Initial session check:', initialSession?.user?.email || 'No session');
         setSession(initialSession);
@@ -81,38 +76,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     handleAuthChange();
   }, [navigate, toast, location.pathname]);
 
-  // Check for OAuth redirect response
-  useEffect(() => {
-    const handleOAuthResponse = async () => {
-      // Check for hash fragment from OAuth redirect
-      const hashParams = new URLSearchParams(window.location.hash.substring(1));
-      const accessToken = hashParams.get('access_token');
-      
-      if (accessToken) {
-        console.log('OAuth redirect detected');
-        // Manually process OAuth redirect if needed
-        const { data, error } = await supabase.auth.getUser(accessToken);
-        if (data?.user && !error) {
-          // Successfully authenticated
-          console.log('OAuth user retrieved:', data.user.email);
-        } else if (error) {
-          console.error('OAuth error:', error);
-          toast({
-            title: "Authentication Failed",
-            description: error.message || "Could not complete the authentication process",
-            variant: "destructive",
-          });
-        }
-      }
-    };
-
-    handleOAuthResponse();
-  }, [toast]);
-
   const signIn = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({ 
+        email, 
+        password 
+      });
       
       if (error) throw error;
       
@@ -134,15 +104,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         email,
         password,
         options: {
-          data: { full_name: name }
+          data: { 
+            full_name: name 
+          },
+          emailRedirectTo: `${window.location.origin}/`
         }
       });
       
       if (error) throw error;
       
       toast({
-        title: "Account created",
-        description: "Welcome to UNIGAMES!",
+        title: "Account created!",
+        description: "Welcome to UNIGAMES! Please check your email to verify your account.",
       });
       
       // If email confirmation is required

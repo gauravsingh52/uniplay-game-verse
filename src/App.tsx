@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -22,6 +23,7 @@ import Search from "./pages/Search";
 import Games from "./pages/Games";
 import Features from "./pages/Features";
 import Support from "./pages/Support";
+import AIHelpAssistant from "./components/AIHelpAssistant";
 
 // Create QueryClient instance outside of component to ensure stability
 const queryClient = new QueryClient({
@@ -34,24 +36,31 @@ const queryClient = new QueryClient({
 });
 
 const AppRoutes = () => (
-  <Routes>
-    <Route path="/" element={<Index />} />
-    <Route path="/game/:id" element={<GameDetails />} />
-    <Route path="/login" element={<Login />} />
-    <Route path="/signup" element={<Signup />} />
-    <Route path="/dashboard" element={<Dashboard />} />
-    <Route path="/settings" element={<Settings />} />
-    <Route path="/reset-password" element={<ResetPassword />} />
-    <Route path="/browse" element={<Browse />} />
-    <Route path="/categories" element={<Categories />} />
-    <Route path="/trending" element={<Trending />} />
-    <Route path="/category/:categoryName" element={<CategoryGames />} />
-    <Route path="/search" element={<Search />} />
-    <Route path="/games" element={<Games />} />
-    <Route path="/features" element={<Features />} />
-    <Route path="/support" element={<Support />} />
-    <Route path="*" element={<NotFound />} />
-  </Routes>
+  <div className="relative">
+    <Routes>
+      <Route path="/" element={<Index />} />
+      <Route path="/game/:id" element={<GameDetails />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/settings" element={<Settings />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/browse" element={<Browse />} />
+      <Route path="/categories" element={<Categories />} />
+      <Route path="/trending" element={<Trending />} />
+      <Route path="/category/:categoryName" element={<CategoryGames />} />
+      <Route path="/search" element={<Search />} />
+      <Route path="/games" element={<Games />} />
+      <Route path="/features" element={<Features />} />
+      <Route path="/support" element={<Support />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+    {/* AI Assistant appears on all pages except Index (which has its own) */}
+    <Routes>
+      <Route path="/" element={null} />
+      <Route path="*" element={<AIHelpAssistant />} />
+    </Routes>
+  </div>
 );
 
 const App: React.FC = () => {

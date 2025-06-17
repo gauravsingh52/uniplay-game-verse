@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, X, Send, Mic, MicOff, Bot, User, Star, ThumbsUp, ThumbsDown, Sparkles } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
+import { workingGames } from '@/data/workingGamesData';
 
 interface Message {
   id: string;
@@ -28,9 +29,19 @@ const faqs: FAQ[] = [
     category: "gameplay"
   },
   {
-    question: "Where can I find puzzle games?",
-    answer: "You can find puzzle games by going to Categories > Puzzle, or search for 'puzzle' in the search bar at the top of the page.",
+    question: "Where can I find racing games?",
+    answer: "You can find racing games by going to Categories > Racing, or search for 'racing' in the search bar. Try Snail Sprint for a fun racing experience!",
     category: "navigation"
+  },
+  {
+    question: "Show racing games",
+    answer: "Here are our racing games: Snail Sprint - Race your snail through obstacle courses! You can find it in the Racing category or by searching 'snail sprint'.",
+    category: "search"
+  },
+  {
+    question: "How to play Nitro Drift",
+    answer: "I don't see Nitro Drift in our current game collection, but you might enjoy Snail Sprint which has racing mechanics! Use keyboard or touch controls to navigate through courses.",
+    category: "specific"
   },
   {
     question: "Are the games free?",
@@ -39,13 +50,18 @@ const faqs: FAQ[] = [
   },
   {
     question: "Can I play on mobile?",
-    answer: "Absolutely! All our games are optimized for mobile devices and work great on phones and tablets.",
+    answer: "Absolutely! All our games are optimized for mobile devices and work great on phones and tablets with touch controls.",
     category: "technical"
   },
   {
     question: "How do I save my progress?",
-    answer: "Game progress is automatically saved in your browser. For persistent saves across devices, create an account.",
+    answer: "Game progress is automatically saved in your browser. For persistent saves across devices, create an account by clicking the Login button.",
     category: "account"
+  },
+  {
+    question: "I can't log in",
+    answer: "Try refreshing the page and make sure you're using the correct email and password. If you don't have an account, click 'Sign Up' instead. Contact support if issues persist.",
+    category: "login"
   }
 ];
 
@@ -121,12 +137,20 @@ const AIHelpAssistant = () => {
   const findBestFAQMatch = (query: string): FAQ | null => {
     const normalizedQuery = query.toLowerCase();
     
-    // Direct keyword matching
+    // Direct question matching
     for (const faq of faqs) {
-      const keywords = faq.question.toLowerCase();
-      const words = normalizedQuery.split(' ');
+      if (normalizedQuery.includes(faq.question.toLowerCase()) || 
+          faq.question.toLowerCase().includes(normalizedQuery)) {
+        return faq;
+      }
+    }
+    
+    // Keyword matching
+    for (const faq of faqs) {
+      const keywords = faq.question.toLowerCase().split(' ');
+      const queryWords = normalizedQuery.split(' ');
       
-      if (words.some(word => keywords.includes(word) && word.length > 2)) {
+      if (queryWords.some(word => keywords.includes(word) && word.length > 2)) {
         return faq;
       }
     }
@@ -134,9 +158,54 @@ const AIHelpAssistant = () => {
     return null;
   };
 
+  const findGameByName = (query: string) => {
+    const normalizedQuery = query.toLowerCase();
+    return workingGames.find(game => 
+      game.title.toLowerCase().includes(normalizedQuery) ||
+      normalizedQuery.includes(game.title.toLowerCase())
+    );
+  };
+
+  const getGamesByCategory = (category: string) => {
+    return workingGames.filter(game => 
+      game.category.toLowerCase().includes(category.toLowerCase())
+    );
+  };
+
   const generateContextualResponse = (query: string): string => {
     const normalizedQuery = query.toLowerCase();
     const currentPath = location.pathname;
+    
+    // Handle specific game queries
+    if (normalizedQuery.includes('how to play') || normalizedQuery.includes('how do i play')) {
+      const gameMatch = findGameByName(normalizedQuery);
+      if (gameMatch) {
+        return `To play ${gameMatch.title}: ${gameMatch.description} Controls: ${gameMatch.controls.join(', ')}. Click the "Play Now" button on the game card to start!`;
+      }
+    }
+    
+    // Handle game search queries
+    if (normalizedQuery.includes('show') && normalizedQuery.includes('games')) {
+      if (normalizedQuery.includes('racing')) {
+        const racingGames = getGamesByCategory('racing');
+        if (racingGames.length > 0) {
+          return `Here are our racing games: ${racingGames.map(g => g.title).join(', ')}. You can find them in the Racing category or by clicking Games in the menu!`;
+        }
+      }
+      if (normalizedQuery.includes('puzzle')) {
+        const puzzleGames = getGamesByCategory('puzzle');
+        return `Our puzzle games include: ${puzzleGames.map(g => g.title).join(', ')}. Great for brain training!`;
+      }
+      if (normalizedQuery.includes('arcade')) {
+        const arcadeGames = getGamesByCategory('arcade');
+        return `Our arcade games include: ${arcadeGames.map(g => g.title).join(', ')}. Perfect for quick fun!`;
+      }
+    }
+
+    // Handle login issues
+    if (normalizedQuery.includes("can't log in") || normalizedQuery.includes("login") || normalizedQuery.includes("sign in")) {
+      return "If you're having trouble logging in: 1) Make sure you're using the correct email/password, 2) Try refreshing the page, 3) If you don't have an account, click 'Sign Up' instead. The login button is in the top right corner of the page.";
+    }
     
     // Context-aware responses based on current page
     if (currentPath.includes('/games') && (normalizedQuery.includes('recommend') || normalizedQuery.includes('suggest'))) {
@@ -145,13 +214,13 @@ const AIHelpAssistant = () => {
     
     // Game recommendations
     if (normalizedQuery.includes('recommend') || normalizedQuery.includes('suggest')) {
-      if (normalizedQuery.includes('action')) {
-        return "For action games, I recommend trying Brick Breaker, Snake, or Tetris. You can find more in the Action category by clicking 'Categories' in the menu!";
+      if (normalizedQuery.includes('action') || normalizedQuery.includes('arcade')) {
+        return "For action/arcade games, I recommend trying Snake Classic, Flappy Bird, or Brick Breaker. You can find more in the Arcade category!";
       }
       if (normalizedQuery.includes('puzzle')) {
-        return "Great puzzle games include 2048, Memory Match, and Tic Tac Toe. Check out our Puzzle section for more brain teasers!";
+        return "Great puzzle games include 2048, Memory Match, and Tetris. Check out our Puzzle section for more brain teasers!";
       }
-      return "I'd recommend starting with our featured games on the homepage or checking out our trending section. Popular choices include Snake, Tetris, and 2048!";
+      return "I'd recommend starting with our featured games on the homepage or checking out Snake Classic, Tetris, and 2048 - they're very popular!";
     }
     
     // Navigation help
@@ -159,15 +228,16 @@ const AIHelpAssistant = () => {
       if (normalizedQuery.includes('category') || normalizedQuery.includes('categories')) {
         return "You can browse game categories by clicking 'Categories' in the main menu, or use the search bar at the top to find specific types of games.";
       }
-      return "Use the search bar at the top to find specific games, or browse by categories in the main menu. What type of games are you looking for?";
+      return "Use the search bar at the top to find specific games, or browse by categories in the main menu. The Games page shows all available games. What type of games are you looking for?";
     }
     
     // Technical support
     if (normalizedQuery.includes('not working') || normalizedQuery.includes('error') || normalizedQuery.includes('problem')) {
-      return "If you're experiencing issues, try refreshing the page or clearing your browser cache. All games are tested and should work on modern browsers. If the problem persists, let me know which specific game is having issues!";
+      return "If you're experiencing issues: 1) Try refreshing the page, 2) Clear your browser cache, 3) Make sure JavaScript is enabled. All our games are tested and should work on modern browsers. Which specific game is having issues?";
     }
     
-    return "I'm here to help! You can ask me about finding games, how to play, technical issues, or navigating the site. Based on your current page, I can provide more specific guidance. What would you like to know?";
+    // Fallback with helpful suggestions
+    return "I didn't quite understand that. I can help you with:\n• Finding games ('show puzzle games')\n• Learning how to play ('how to play Snake')\n• Technical issues ('game not working')\n• Account help ('can't log in')\n• Navigation ('where are categories')\n\nTry asking about a game or browse our collection!";
   };
 
   const handleSendMessage = async () => {
@@ -283,144 +353,157 @@ const AIHelpAssistant = () => {
           <CardHeader className="pb-3 border-b border-border/50 bg-gradient-to-r from-unigames-purple/10 to-unigames-blue/10">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-unigames-purple to-unigames-blue flex items-center justify-center relative">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-unigames-purple to-unigames-blue flex items-center justify-center">
                   <Bot className="h-5 w-5 text-white" />
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
                 </div>
                 <div>
-                  <CardTitle className="text-sm">UNIGAMES Assistant</CardTitle>
-                  <Badge variant="secondary" className="text-xs bg-green-500/20 text-green-600 border-green-500/30">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mr-1 animate-pulse"></div>
-                    Online
-                  </Badge>
+                  <CardTitle className="text-lg">AI Assistant</CardTitle>
+                  <p className="text-xs text-muted-foreground">Gaming Helper</p>
                 </div>
               </div>
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setIsOpen(false)}
-                className="h-8 w-8 hover:bg-red-500/10 hover:text-red-500"
+                className="hover:bg-destructive/10 hover:text-destructive"
               >
                 <X className="h-4 w-4" />
               </Button>
             </div>
           </CardHeader>
 
-          <CardContent className="flex-1 overflow-hidden p-0 flex flex-col">
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
-              {messages.map((message) => (
-                <div key={message.id} className={`flex gap-3 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex gap-2 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                {message.type === 'assistant' && (
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-unigames-purple to-unigames-blue flex items-center justify-center flex-shrink-0 mt-1">
+                    <Bot className="h-3 w-3 text-white" />
+                  </div>
+                )}
+                <div
+                  className={`max-w-[80%] p-3 rounded-lg ${
+                    message.type === 'user'
+                      ? 'bg-unigames-purple text-white'
+                      : 'bg-muted'
+                  }`}
+                >
+                  <p className="text-sm whitespace-pre-line">{message.content}</p>
                   {message.type === 'assistant' && (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-unigames-purple to-unigames-blue flex items-center justify-center flex-shrink-0 mt-1">
-                      <Bot className="h-4 w-4 text-white" />
-                    </div>
-                  )}
-                  <div className={`max-w-[80%] ${message.type === 'user' ? 'order-first' : ''}`}>
-                    <div className={`p-3 rounded-lg ${
-                      message.type === 'user' 
-                        ? 'bg-gradient-to-r from-unigames-purple to-unigames-blue text-white ml-auto' 
-                        : 'bg-muted/50 border border-border/50'
-                    }`}>
-                      <p className="text-sm leading-relaxed">{message.content}</p>
-                    </div>
-                    {message.type === 'assistant' && (
-                      <div className="flex items-center gap-1 mt-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className={`h-6 px-2 ${message.rating === 'up' ? 'text-green-600' : 'text-muted-foreground'}`}
-                          onClick={() => handleRating(message.id, 'up')}
-                        >
-                          <ThumbsUp className="h-3 w-3" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className={`h-6 px-2 ${message.rating === 'down' ? 'text-red-600' : 'text-muted-foreground'}`}
-                          onClick={() => handleRating(message.id, 'down')}
-                        >
-                          <ThumbsDown className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                  {message.type === 'user' && (
-                    <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-1">
-                      <User className="h-4 w-4" />
+                    <div className="flex items-center gap-2 mt-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0"
+                        onClick={() => handleRating(message.id, 'up')}
+                      >
+                        <ThumbsUp className={`h-3 w-3 ${message.rating === 'up' ? 'text-green-500' : 'text-muted-foreground'}`} />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0"
+                        onClick={() => handleRating(message.id, 'down')}
+                      >
+                        <ThumbsDown className={`h-3 w-3 ${message.rating === 'down' ? 'text-red-500' : 'text-muted-foreground'}`} />
+                      </Button>
                     </div>
                   )}
                 </div>
-              ))}
-              
-              {isTyping && (
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-unigames-purple to-unigames-blue flex items-center justify-center flex-shrink-0">
-                    <Bot className="h-4 w-4 text-white" />
+                {message.type === 'user' && (
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0 mt-1">
+                    <User className="h-3 w-3 text-white" />
                   </div>
-                  <div className="bg-muted/50 p-3 rounded-lg border border-border/50">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-unigames-purple rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-unigames-purple rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-unigames-purple rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    </div>
+                )}
+              </div>
+            ))}
+            
+            {isTyping && (
+              <div className="flex gap-2 justify-start">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-unigames-purple to-unigames-blue flex items-center justify-center flex-shrink-0 mt-1">
+                  <Bot className="h-3 w-3 text-white" />
+                </div>
+                <div className="bg-muted p-3 rounded-lg">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                   </div>
                 </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
 
-            {/* Quick Actions */}
-            <div className="p-4 border-t border-border/50 bg-muted/20">
-              <div className="text-xs text-muted-foreground mb-3">Quick Actions:</div>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { label: 'Browse Games', action: 'browse-games' },
-                  { label: 'Categories', action: 'categories' },
-                  { label: 'Trending', action: 'trending' }
-                ].map((item) => (
-                  <Button
-                    key={item.action}
-                    variant="outline"
-                    size="sm"
-                    className="h-7 text-xs hover:bg-unigames-purple/10 hover:text-unigames-purple hover:border-unigames-purple/50"
-                    onClick={() => handleQuickAction(item.action)}
-                  >
-                    {item.label}
-                  </Button>
-                ))}
+          {/* Quick Actions */}
+          {messages.length <= 1 && (
+            <div className="px-4 py-2 border-t border-border/50">
+              <p className="text-xs text-muted-foreground mb-2">Quick actions:</p>
+              <div className="flex flex-wrap gap-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-xs h-7"
+                  onClick={() => handleQuickAction('browse-games')}
+                >
+                  Browse Games
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-xs h-7"
+                  onClick={() => handleQuickAction('categories')}
+                >
+                  Categories
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-xs h-7"
+                  onClick={() => handleQuickAction('trending')}
+                >
+                  Trending
+                </Button>
               </div>
             </div>
+          )}
 
-            {/* Input */}
-            <div className="p-4 border-t border-border/50">
-              <div className="flex gap-2">
+          {/* Input */}
+          <div className="p-4 border-t border-border/50">
+            <div className="flex gap-2">
+              <div className="flex-1 relative">
                 <Input
+                  placeholder="Ask about games, help, or features..."
                   value={currentMessage}
                   onChange={(e) => setCurrentMessage(e.target.value)}
-                  placeholder="Ask me anything..."
-                  onKeyPress={(e) => { if (e.key === 'Enter') handleSendMessage(); }}
-                  className="flex-1 focus-within:border-unigames-purple"
+                  onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage()}
+                  className="pr-10"
                 />
                 <Button
                   variant="ghost"
-                  size="icon"
+                  size="sm"
+                  className="absolute right-1 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0"
                   onClick={toggleVoiceInput}
-                  className={`${isListening ? 'text-red-500 animate-pulse bg-red-500/10' : 'text-muted-foreground hover:text-unigames-purple'}`}
                 >
-                  {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                </Button>
-                <Button 
-                  onClick={handleSendMessage}
-                  disabled={!currentMessage.trim()}
-                  size="icon"
-                  className="bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80 disabled:opacity-50"
-                >
-                  <Send className="h-4 w-4" />
+                  {isListening ? (
+                    <MicOff className="h-4 w-4 text-red-500" />
+                  ) : (
+                    <Mic className="h-4 w-4" />
+                  )}
                 </Button>
               </div>
+              <Button
+                onClick={handleSendMessage}
+                disabled={!currentMessage.trim() || isTyping}
+                className="bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
             </div>
-          </CardContent>
+          </div>
         </Card>
       )}
     </>
