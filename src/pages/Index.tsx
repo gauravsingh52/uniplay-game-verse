@@ -14,8 +14,6 @@ import { getFeaturedGames, getGamesByCategory, gamesData } from '@/data/gamesDat
 import { workingGames, WorkingGame } from '@/data/workingGamesData';
 import { ArrowRight, Gamepad, Star, Play, TrendingUp, X, Gift, Settings, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
-import { AppSidebar } from '@/components/AppSidebar';
 import { useAuth } from '@/hooks/useAuth';
 import AIHelpAssistant from '@/components/AIHelpAssistant';
 
@@ -106,231 +104,218 @@ const Index = () => {
   };
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
-        <SidebarInset className="flex-1">
-          <div className="flex flex-col min-h-screen">
-            {isAuthenticated && (
-              <div className="flex items-center justify-between gap-2 px-4 py-2 border-b border-border">
-                <SidebarTrigger className="-mr-1" />
+    <div className="min-h-screen bg-background">
+      <ResponsiveNavbar />
+      
+      {/* Welcome Notification */}
+      {showNotification && (
+        <div className="fixed top-20 right-4 z-50 animate-slideInRight">
+          <Card className="glass-effect shadow-2xl border border-unigames-purple/30">
+            <CardContent className="p-4 flex items-center gap-3">
+              <Gift className="h-5 w-5 text-unigames-purple" />
+              <div>
+                <p className="font-semibold text-gradient">Welcome to UNIGAMES!</p>
+                <p className="text-sm text-muted-foreground">Discover {workingGames.length} games with achievements!</p>
               </div>
-            )}
-            
-            <ResponsiveNavbar />
-            
-            {/* Welcome Notification */}
-            {showNotification && (
-              <div className="fixed top-20 right-4 z-50 animate-slideInRight">
-                <Card className="glass-effect shadow-2xl border border-unigames-purple/30">
-                  <CardContent className="p-4 flex items-center gap-3">
-                    <Gift className="h-5 w-5 text-unigames-purple" />
-                    <div>
-                      <p className="font-semibold text-gradient">Welcome to UNIGAMES!</p>
-                      <p className="text-sm text-muted-foreground">Discover {workingGames.length} games with achievements!</p>
-                    </div>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="hover:bg-unigames-purple/10"
-                      onClick={() => setShowNotification(false)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-            
-            {/* Enhanced Hero Section */}
-            <EnhancedHeroSection />
-            
-            {/* Enhanced Working Games Section */}
-            <section className="section-container bg-muted/30">
-              <EnhancedWorkingGamesSection />
-            </section>
-            
-            {/* User Profile Section */}
-            {isAuthenticated && (
-              <section className="section-container">
-                <div className="container-responsive max-w-4xl">
-                  <UserProfileSystem />
-                </div>
-              </section>
-            )}
-            
-            {/* Quick Play Section */}
-            <section className="section-container bg-muted/30">
-              <div className="container-responsive">
-                <div className="text-center mb-12 animate-fadeIn">
-                  <h2 className="text-responsive-2xl font-bold mb-4">Quick Play Classics</h2>
-                  <p className="text-muted-foreground mb-6">Jump right into these timeless favorites</p>
-                  <div className="section-divider"></div>
-                </div>
-                
-                <div className="grid grid-responsive grid-responsive-2 grid-responsive-4 gap-6 stagger-children">
-                  {[
-                    { name: 'Snake Classic', emoji: '🐍', desc: 'Eat food, grow longer!', id: 'snake' },
-                    { name: 'Flappy Bird', emoji: '🐦', desc: 'Navigate through pipes', id: 'flappy-bird' },
-                    { name: 'Tic Tac Toe', emoji: '⭕', desc: 'Classic 3x3 strategy', id: 'tic-tac-toe' },
-                    { name: 'Memory Match', emoji: '🧠', desc: 'Find matching pairs', id: 'memory-match' }
-                  ].map((game) => (
-                    <Card key={game.id} className="card-responsive hover-lift cursor-pointer group" onClick={() => {
-                      const workingGame = workingGames.find(g => g.id === game.id);
-                      if (workingGame) handlePlayGame(workingGame);
-                    }}>
-                      <CardContent className="p-6 text-center">
-                        <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                          {game.emoji}
-                        </div>
-                        <h3 className="font-semibold mb-2">{game.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-4">{game.desc}</p>
-                        <Button size="sm" className="btn-primary-modern">
-                          <Play className="h-3 w-3 mr-1" />
-                          Play Now
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </section>
-            
-            {/* CTA Section */}
-            <section className="section-container bg-gradient-to-r from-unigames-purple/10 via-unigames-blue/10 to-unigames-cyan/10">
-              <div className="container-responsive text-center">
-                <div className="max-w-3xl mx-auto animate-fadeIn">
-                  <h2 className="text-responsive-2xl font-bold mb-6">Ready to Start Your Gaming Journey?</h2>
-                  <p className="text-responsive-lg text-muted-foreground mb-8">
-                    Join thousands of players enjoying premium browser games with achievements, social features, and more.
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button 
-                      size="lg" 
-                      className="btn-primary-modern text-lg px-12 py-6"
-                      onClick={() => navigate('/games')}
-                    >
-                      Start Playing Free
-                    </Button>
-                    <Button 
-                      variant="outline"
-                      size="lg" 
-                      className="btn-secondary-modern text-lg px-12 py-6"
-                      onClick={() => navigate('/browse')}
-                    >
-                      Browse All Games
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </section>
-            
-            {/* Enhanced Footer */}
-            <footer className="py-16 px-4 md:px-8 bg-card border-t border-border">
-              <div className="container-responsive">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-2">
-                      <Gamepad className="h-8 w-8 text-unigames-purple" />
-                      <span className="text-xl font-bold text-gradient font-['Poppins']">
-                        UNIGAMES
-                      </span>
-                    </div>
-                    <p className="text-muted-foreground text-sm">
-                      The ultimate browser gaming platform with {workingGames.length} premium games, achievements, and social features.
-                    </p>
-                    <div className="flex items-center gap-3">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => setIsSettingsOpen(true)}
-                        className="hover:bg-unigames-purple/10 hover:text-unigames-purple"
-                      >
-                        <Settings className="h-4 w-4 mr-2" />
-                        Settings
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => navigate('/support')}
-                        className="hover:bg-unigames-blue/10 hover:text-unigames-blue"
-                      >
-                        <MessageSquare className="h-4 w-4 mr-2" />
-                        Support
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  {[
-                    {
-                      title: 'Games',
-                      links: [
-                        { name: 'Browse All', path: '/browse' },
-                        { name: 'Categories', path: '/categories' },
-                        { name: 'Trending', path: '/trending' },
-                        { name: 'All Games', path: '/games' }
-                      ]
-                    },
-                    {
-                      title: 'Features',
-                      links: [
-                        { name: 'Platform Features', path: '/features' },
-                        { name: 'Achievements', path: '/dashboard' },
-                        { name: 'Leaderboards', path: '/trending' },
-                        { name: 'AI Assistant', path: '/support' }
-                      ]
-                    },
-                    {
-                      title: 'Support',
-                      links: [
-                        { name: 'Help Center', path: '/support' },
-                        { name: 'AI Chat Support', path: '/support' },
-                        { name: 'Contact Us', path: '/support' },
-                        { name: 'Report Issue', path: '/support' }
-                      ]
-                    }
-                  ].map((section) => (
-                    <div key={section.title}>
-                      <h3 className="font-semibold mb-4 text-foreground">{section.title}</h3>
-                      <ul className="space-y-2">
-                        {section.links.map((link) => (
-                          <li key={link.name}>
-                            <Button 
-                              variant="link" 
-                              className="p-0 h-auto text-muted-foreground hover:text-unigames-purple transition-colors"
-                              onClick={() => navigate(link.path)}
-                            >
-                              {link.name}
-                            </Button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                  <p className="text-muted-foreground text-sm">
-                    © 2025 UNIGAMES. All rights reserved.
-                  </p>
-                  <div className="flex items-center gap-6">
-                    <Badge variant="outline" className="border-green-500/30 text-green-600">
-                      {workingGames.length} Working Games
-                    </Badge>
-                    <Badge variant="outline" className="border-blue-500/30 text-blue-600">
-                      No Downloads Required
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-            </footer>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="hover:bg-unigames-purple/10"
+                onClick={() => setShowNotification(false)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+      
+      {/* Enhanced Hero Section */}
+      <EnhancedHeroSection />
+      
+      {/* Enhanced Working Games Section */}
+      <section className="section-container bg-muted/30">
+        <EnhancedWorkingGamesSection />
+      </section>
+      
+      {/* User Profile Section - Only show if authenticated */}
+      {isAuthenticated && (
+        <section className="section-container">
+          <div className="container-responsive max-w-4xl">
+            <UserProfileSystem />
           </div>
-        </SidebarInset>
-        <AppSidebar />
-      </div>
+        </section>
+      )}
+      
+      {/* Quick Play Section */}
+      <section className="section-container bg-muted/30">
+        <div className="container-responsive">
+          <div className="text-center mb-12 animate-fadeIn">
+            <h2 className="text-responsive-2xl font-bold mb-4">Quick Play Classics</h2>
+            <p className="text-muted-foreground mb-6">Jump right into these timeless favorites</p>
+            <div className="section-divider"></div>
+          </div>
+          
+          <div className="grid grid-responsive grid-responsive-2 grid-responsive-4 gap-6 stagger-children">
+            {[
+              { name: 'Snake Classic', emoji: '🐍', desc: 'Eat food, grow longer!', id: 'snake' },
+              { name: 'Flappy Bird', emoji: '🐦', desc: 'Navigate through pipes', id: 'flappy-bird' },
+              { name: 'Tic Tac Toe', emoji: '⭕', desc: 'Classic 3x3 strategy', id: 'tic-tac-toe' },
+              { name: 'Memory Match', emoji: '🧠', desc: 'Find matching pairs', id: 'memory-match' }
+            ].map((game) => (
+              <Card key={game.id} className="card-responsive hover-lift cursor-pointer group" onClick={() => {
+                const workingGame = workingGames.find(g => g.id === game.id);
+                if (workingGame) handlePlayGame(workingGame);
+              }}>
+                <CardContent className="p-6 text-center">
+                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                    {game.emoji}
+                  </div>
+                  <h3 className="font-semibold mb-2">{game.name}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{game.desc}</p>
+                  <Button size="sm" className="btn-primary-modern">
+                    <Play className="h-3 w-3 mr-1" />
+                    Play Now
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* CTA Section */}
+      <section className="section-container bg-gradient-to-r from-unigames-purple/10 via-unigames-blue/10 to-unigames-cyan/10">
+        <div className="container-responsive text-center">
+          <div className="max-w-3xl mx-auto animate-fadeIn">
+            <h2 className="text-responsive-2xl font-bold mb-6">Ready to Start Your Gaming Journey?</h2>
+            <p className="text-responsive-lg text-muted-foreground mb-8">
+              Join thousands of players enjoying premium browser games with achievements, social features, and more.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg" 
+                className="btn-primary-modern text-lg px-12 py-6"
+                onClick={() => navigate('/games')}
+              >
+                Start Playing Free
+              </Button>
+              <Button 
+                variant="outline"
+                size="lg" 
+                className="btn-secondary-modern text-lg px-12 py-6"
+                onClick={() => navigate('/browse')}
+              >
+                Browse All Games
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Enhanced Footer */}
+      <footer className="py-16 px-4 md:px-8 bg-card border-t border-border">
+        <div className="container-responsive">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Gamepad className="h-8 w-8 text-unigames-purple" />
+                <span className="text-xl font-bold text-gradient font-['Poppins']">
+                  UNIGAMES
+                </span>
+              </div>
+              <p className="text-muted-foreground text-sm">
+                The ultimate browser gaming platform with {workingGames.length} premium games, achievements, and social features.
+              </p>
+              <div className="flex items-center gap-3">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setIsSettingsOpen(true)}
+                  className="hover:bg-unigames-purple/10 hover:text-unigames-purple"
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  Settings
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate('/support')}
+                  className="hover:bg-unigames-blue/10 hover:text-unigames-blue"
+                >
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Support
+                </Button>
+              </div>
+            </div>
+            
+            {[
+              {
+                title: 'Games',
+                links: [
+                  { name: 'Browse All', path: '/browse' },
+                  { name: 'Categories', path: '/categories' },
+                  { name: 'Trending', path: '/trending' },
+                  { name: 'All Games', path: '/games' }
+                ]
+              },
+              {
+                title: 'Features',
+                links: [
+                  { name: 'Platform Features', path: '/features' },
+                  { name: 'Achievements', path: '/dashboard' },
+                  { name: 'Leaderboards', path: '/trending' },
+                  { name: 'AI Assistant', path: '/support' }
+                ]
+              },
+              {
+                title: 'Support',
+                links: [
+                  { name: 'Help Center', path: '/help-center' },
+                  { name: 'AI Chat Support', path: '/support' },
+                  { name: 'Contact Us', path: '/support' },
+                  { name: 'Report Issue', path: '/support' }
+                ]
+              }
+            ].map((section) => (
+              <div key={section.title}>
+                <h3 className="font-semibold mb-4 text-foreground">{section.title}</h3>
+                <ul className="space-y-2">
+                  {section.links.map((link) => (
+                    <li key={link.name}>
+                      <Button 
+                        variant="link" 
+                        className="p-0 h-auto text-muted-foreground hover:text-unigames-purple transition-colors"
+                        onClick={() => navigate(link.path)}
+                      >
+                        {link.name}
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          
+          <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-muted-foreground text-sm">
+              © 2025 UNIGAMES. All rights reserved.
+            </p>
+            <div className="flex items-center gap-6">
+              <Badge variant="outline" className="border-green-500/30 text-green-600">
+                {workingGames.length} Working Games
+              </Badge>
+              <Badge variant="outline" className="border-blue-500/30 text-blue-600">
+                No Downloads Required
+              </Badge>
+            </div>
+          </div>
+        </div>
+      </footer>
 
       {/* Game Modal */}
       <Dialog open={isGameModalOpen} onOpenChange={setIsGameModalOpen}>
-        <DialogContent className="max-w-[95vw] md:max-w-6xl h-[90vh] p-0 overflow-hidden glass-effect">
+        <DialogContent className="max-w-[95vw] md:max-w-6xl h-[90vh] p-0 overflow-hidden glass-effect z-50">
           <DialogHeader className="p-4 md:p-6 pb-0 flex-shrink-0">
             <div className="flex items-center justify-between">
               <DialogTitle className="text-xl md:text-2xl font-bold flex items-center gap-2">
@@ -356,7 +341,7 @@ const Index = () => {
 
       {/* AI Help Assistant */}
       <AIHelpAssistant />
-    </SidebarProvider>
+    </div>
   );
 };
 
