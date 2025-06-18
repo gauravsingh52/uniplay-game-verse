@@ -39,8 +39,8 @@ const faqs: FAQ[] = [
     category: "search"
   },
   {
-    question: "How to play Nitro Drift",
-    answer: "I don't see Nitro Drift in our current game collection, but you might enjoy Snail Sprint which has racing mechanics! Use keyboard or touch controls to navigate through courses.",
+    question: "How to play Fruit Blast",
+    answer: "I don't see Fruit Blast in our current game collection, but you might enjoy Bubble Bop which has similar bubble-popping mechanics! Click on Bubble Bop and use mouse or touch controls to pop colorful bubbles.",
     category: "specific"
   },
   {
@@ -102,6 +102,16 @@ const AIHelpAssistant = () => {
   }, []);
 
   useEffect(() => {
+    // Listen for custom event to open assistant
+    const handleOpenAssistant = () => {
+      setIsOpen(true);
+    };
+
+    window.addEventListener('openAIAssistant', handleOpenAssistant);
+    return () => window.removeEventListener('openAIAssistant', handleOpenAssistant);
+  }, []);
+
+  useEffect(() => {
     // Show context-aware welcome message when opening
     if (isOpen && showWelcome) {
       const contextMessage = getContextAwareWelcome();
@@ -125,6 +135,10 @@ const AIHelpAssistant = () => {
       return "Welcome! I see you're exploring game categories. I can help you find games in specific categories, explain the differences between them, or suggest new categories to try. How can I assist?";
     } else if (path.includes('/trending')) {
       return "Hello! You're checking out our trending games. I can tell you why these games are popular, suggest similar trending games, or help you find games that match your interests. What would you like to explore?";
+    } else if (path.includes('/features')) {
+      return "Hi there! I see you're learning about our features. I can explain any feature in detail, help you understand how to use them, or answer questions about our gaming platform. What interests you most?";
+    } else if (path.includes('/support')) {
+      return "Hello! I'm here to provide immediate support. I can help with login issues, game problems, account questions, or guide you to the right resources. What do you need help with?";
     } else {
       return "Hi there! 👋 Welcome to UNIGAMES! I'm your gaming assistant and I'm here to help you navigate our platform, find amazing games, and answer any questions you might have. What can I help you with today?";
     }

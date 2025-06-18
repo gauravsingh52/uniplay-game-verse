@@ -26,54 +26,73 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const handleAuthChange = async () => {
-      // First set up auth state listener
-      const { data: { subscription } } = supabase.auth.onAuthStateChange(
-        async (event, currentSession) => {
-          console.log('Auth state changed:', event, currentSession?.user?.email);
-          
-          setSession(currentSession);
-          setUser(currentSession?.user ?? null);
-          
-          if (event === 'SIGNED_IN' && currentSession) {
-            toast({
-              title: "Welcome back!",
-              description: `Successfully signed in as ${currentSession.user.email}`,
-            });
+    let mounted = true;
+
+    const initializeAuth = async () => {
+      try {
+        // Get initial session
+        const { data: { session: initialSession }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Error getting session:', error);
+        } else if (mounted) {
+          console.log('Initial session check:', initialSession?.user?.email || 'No session');
+          setSession(initialSession);
+          setUser(initialSession?.user ?? null);
+        }
+
+        // Set up auth state listener
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+          (event, currentSession) => {
+            if (!mounted) return;
             
-            // Only navigate if we're on auth pages
-            if (location.pathname === '/login' || location.pathname === '/signup') {
-              navigate('/dashboard');
+            console.log('Auth state changed:', event, currentSession?.user?.email);
+            
+            setSession(currentSession);
+            setUser(currentSession?.user ?? null);
+            
+            if (event === 'SIGNED_IN' && currentSession) {
+              toast({
+                title: "Welcome back!",
+                description: `Successfully signed in as ${currentSession.user.email}`,
+              });
+              
+              // Only navigate if we're on auth pages
+              if (location.pathname === '/login' || location.pathname === '/signup') {
+                navigate('/dashboard');
+              }
+            }
+            
+            if (event === 'SIGNED_OUT') {
+              toast({
+                title: "Signed out",
+                description: "You've been successfully signed out",
+              });
             }
           }
-          
-          if (event === 'SIGNED_OUT') {
-            toast({
-              title: "Signed out",
-              description: "You've been successfully signed out",
-            });
-            // Don't auto-navigate on signout, let user stay on current page
-          }
-          
+        );
+
+        if (mounted) {
           setIsLoading(false);
         }
-      );
 
-      // Then get the current session
-      const { data: { session: initialSession }, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error('Error getting session:', error);
-      } else {
-        console.log('Initial session check:', initialSession?.user?.email || 'No session');
-        setSession(initialSession);
-        setUser(initialSession?.user ?? null);
+        return () => {
+          mounted = false;
+          subscription.unsubscribe();
+        };
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+        if (mounted) {
+          setIsLoading(false);
+        }
       }
-      
-      setIsLoading(false);
-      return () => subscription.unsubscribe();
     };
 
-    handleAuthChange();
+    initializeAuth();
+
+    return () => {
+      mounted = false;
+    };
   }, [navigate, toast, location.pathname]);
 
   const signIn = async (email: string, password: string) => {
@@ -86,13 +105,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       if (error) throw error;
       
-      // The session handling will be done by the onAuthStateChange listener
     } catch (error: any) {
       toast({
         title: "Login failed",
         description: error.message || "Could not log in with those credentials",
         variant: "destructive",
       });
+    } finally {
       setIsLoading(false);
     }
   };
@@ -118,7 +137,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         description: "Welcome to UNIGAMES! Please check your email to verify your account.",
       });
       
-      // If email confirmation is required
       if (data?.user?.identities?.length === 0) {
         toast({
           title: "Verification email sent",
@@ -126,13 +144,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         });
         navigate('/login');
       }
-      // The session handling will be done by the onAuthStateChange listener
     } catch (error: any) {
       toast({
         title: "Signup failed",
         description: error.message || "Could not create your account",
         variant: "destructive",
       });
+    } finally {
       setIsLoading(false);
     }
   };
@@ -144,13 +162,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       if (error) throw error;
       
-      // The session handling will be done by the onAuthStateChange listener
     } catch (error: any) {
       toast({
         title: "Error",
         description: "There was a problem signing out",
         variant: "destructive",
       });
+    } finally {
       setIsLoading(false);
     }
   };
@@ -162,7 +180,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signIn,
     signUp,
     signOut,
-    isAuthenticated: !!user,
+    isAuthenticated: !!user && !!session,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

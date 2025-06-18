@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import SearchBar from './SearchBar';
+import { VoiceCommands } from './VoiceCommands';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "@/hooks/useTheme";
@@ -168,6 +170,8 @@ const Navbar = () => {
         )}
 
         <div className="flex items-center space-x-4">
+          <VoiceCommands />
+          
           <Button 
             variant="ghost" 
             size="icon" 
