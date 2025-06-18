@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/sheet";
 import { Gamepad, Menu, User, Settings, LogOut, LogIn, UserPlus, Star, TrendingUp, Grid3X3, Search, Zap } from "lucide-react";
 import { useAuth } from '@/hooks/useAuth';
+import { VoiceCommands } from '@/components/VoiceCommands';
 
 const ResponsiveNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -99,8 +100,9 @@ const ResponsiveNavbar = () => {
             ))}
           </div>
 
-          {/* Desktop Auth Buttons */}
+          {/* Desktop Auth Buttons & Voice Commands */}
           <div className="hidden lg:flex items-center space-x-3">
+            <VoiceCommands />
             {!isLoading && (
               <>
                 {isAuthenticated ? (
@@ -110,7 +112,7 @@ const ResponsiveNavbar = () => {
                         <UserAvatar />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuContent align="end" className="w-56 bg-background border-border">
                       <div className="flex items-center justify-start gap-2 p-2">
                         <UserAvatar />
                         <div className="flex flex-col space-y-1 leading-none">
@@ -164,14 +166,15 @@ const ResponsiveNavbar = () => {
           </div>
 
           {/* Mobile Menu */}
-          <div className="lg:hidden">
+          <div className="lg:hidden flex items-center space-x-2">
+            <VoiceCommands />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm" className="hover:bg-unigames-purple/10">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80">
+              <SheetContent side="right" className="w-80 bg-background">
                 <SheetHeader>
                   <SheetTitle className="flex items-center gap-2 text-left">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-unigames-purple to-unigames-blue flex items-center justify-center">

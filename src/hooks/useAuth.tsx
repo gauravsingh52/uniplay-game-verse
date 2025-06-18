@@ -57,9 +57,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 description: `Successfully signed in as ${currentSession.user.email}`,
               });
               
-              // Only navigate from auth pages, preserve current location otherwise
+              // Stay on current page to maintain UI consistency
+              // Only navigate if on auth pages
               if (location.pathname === '/login' || location.pathname === '/signup') {
-                navigate('/games');
+                navigate('/', { replace: true });
               }
             }
             
@@ -126,7 +127,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           data: { 
             full_name: name 
           },
-          emailRedirectTo: `${window.location.origin}/games`
+          emailRedirectTo: `${window.location.origin}/`
         }
       });
       
@@ -162,7 +163,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       if (error) throw error;
       
-      // Don't force navigate on logout to maintain current page
+      // Don't force navigate - stay on current page for UI consistency
     } catch (error: any) {
       toast({
         title: "Error",
