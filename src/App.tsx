@@ -23,6 +23,7 @@ import Search from "./pages/Search";
 import Games from "./pages/Games";
 import Features from "./pages/Features";
 import Support from "./pages/Support";
+import HelpCenter from "./pages/HelpCenter";
 import AIHelpAssistant from "./components/AIHelpAssistant";
 
 // Create QueryClient instance outside of component to ensure stability
@@ -53,6 +54,7 @@ const AppRoutes = () => (
       <Route path="/games" element={<Games />} />
       <Route path="/features" element={<Features />} />
       <Route path="/support" element={<Support />} />
+      <Route path="/help-center" element={<HelpCenter />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
     {/* AI Assistant appears on all pages except Index (which has its own) */}

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, X, Send, Mic, MicOff, Bot, User, Star, ThumbsUp, ThumbsDown, Sparkles } from "lucide-react";
+import { MessageSquare, X, Send, Mic, MicOff, Bot, User, Star, ThumbsUp, ThumbsDown, Sparkles, Gamepad2, Search, HelpCircle, MessageCircle } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { workingGames } from '@/data/workingGamesData';
 
@@ -35,13 +35,23 @@ const faqs: FAQ[] = [
   },
   {
     question: "Show racing games",
-    answer: "Here are our racing games: Snail Sprint - Race your snail through obstacle courses! You can find it in the Racing category or by searching 'snail sprint'.",
+    answer: "Here are our racing games: Snail Sprint - Race your snail through obstacle courses! You can find it in the Racing category or Games page.",
     category: "search"
   },
   {
     question: "How to play Fruit Blast",
-    answer: "I don't see Fruit Blast in our current game collection, but you might enjoy Bubble Bop which has similar bubble-popping mechanics! Click on Bubble Bop and use mouse or touch controls to pop colorful bubbles.",
+    answer: "I don't see Fruit Blast in our current game collection, but you might enjoy Bubble Bop which has similar bubble-popping mechanics! Click on Bubble Bop and use mouse/touch controls to pop colorful bubbles.",
     category: "specific"
+  },
+  {
+    question: "top games",
+    answer: "Our most popular games include: Snake Classic (retro arcade), Tetris (puzzle strategy), 2048 (number puzzle), Flappy Bird (skill challenge), and Pong (classic arcade). All are available on the Games page!",
+    category: "recommendations"
+  },
+  {
+    question: "puzzle games",
+    answer: "Great puzzle games include: 2048 (number merging), Memory Match (card matching), Tic Tac Toe (strategy), and Tetris (block fitting). Perfect for brain training!",
+    category: "recommendations"
   },
   {
     question: "Are the games free?",
@@ -62,6 +72,16 @@ const faqs: FAQ[] = [
     question: "I can't log in",
     answer: "Try refreshing the page and make sure you're using the correct email and password. If you don't have an account, click 'Sign Up' instead. Contact support if issues persist.",
     category: "login"
+  },
+  {
+    question: "how to play snake",
+    answer: "Snake Classic: Use arrow keys or swipe to move your snake. Eat food to grow longer, but don't hit walls or yourself! Try to beat your high score.",
+    category: "how-to-play"
+  },
+  {
+    question: "how to play tetris",
+    answer: "Tetris: Use arrow keys to move/rotate falling blocks. Fill complete horizontal lines to clear them. Game speeds up as you progress - aim for high scores!",
+    category: "how-to-play"
   }
 ];
 
@@ -130,17 +150,13 @@ const AIHelpAssistant = () => {
     const path = location.pathname;
     
     if (path.includes('/games')) {
-      return "Hi! I see you're browsing our games collection. I can help you find specific games, explain how to play, or recommend games based on your preferences. What would you like to know?";
+      return "Hi! I see you're browsing our games collection. I can help you find specific games, explain how to play, or recommend games based on your preferences. Try asking 'show puzzle games' or 'how to play Snake'!";
     } else if (path.includes('/categories')) {
       return "Welcome! I see you're exploring game categories. I can help you find games in specific categories, explain the differences between them, or suggest new categories to try. How can I assist?";
-    } else if (path.includes('/trending')) {
-      return "Hello! You're checking out our trending games. I can tell you why these games are popular, suggest similar trending games, or help you find games that match your interests. What would you like to explore?";
-    } else if (path.includes('/features')) {
-      return "Hi there! I see you're learning about our features. I can explain any feature in detail, help you understand how to use them, or answer questions about our gaming platform. What interests you most?";
     } else if (path.includes('/support')) {
       return "Hello! I'm here to provide immediate support. I can help with login issues, game problems, account questions, or guide you to the right resources. What do you need help with?";
     } else {
-      return "Hi there! 👋 Welcome to UNIGAMES! I'm your gaming assistant and I'm here to help you navigate our platform, find amazing games, and answer any questions you might have. What can I help you with today?";
+      return "Hi there! 👋 Welcome to UNIGAMES! I'm your gaming assistant and I'm here to help you navigate our platform, find amazing games, and answer any questions you might have. Try asking 'show top games' or 'how do I play'!";
     }
   };
 
@@ -194,7 +210,7 @@ const AIHelpAssistant = () => {
     if (normalizedQuery.includes('how to play') || normalizedQuery.includes('how do i play')) {
       const gameMatch = findGameByName(normalizedQuery);
       if (gameMatch) {
-        return `To play ${gameMatch.title}: ${gameMatch.description} Controls: ${gameMatch.controls.join(', ')}. Click the "Play Now" button on the game card to start!`;
+        return `To play ${gameMatch.title}: ${gameMatch.description} \n\nControls: ${gameMatch.controls.join(', ')}.\n\nClick the "Play Now" button on the game card to start playing!`;
       }
     }
     
@@ -203,55 +219,55 @@ const AIHelpAssistant = () => {
       if (normalizedQuery.includes('racing')) {
         const racingGames = getGamesByCategory('racing');
         if (racingGames.length > 0) {
-          return `Here are our racing games: ${racingGames.map(g => g.title).join(', ')}. You can find them in the Racing category or by clicking Games in the menu!`;
+          return `🏁 Here are our racing games:\n\n${racingGames.map(g => `• ${g.title} - ${g.description}`).join('\n')}\n\nYou can find them in the Games section or by clicking the race car category!`;
         }
       }
       if (normalizedQuery.includes('puzzle')) {
         const puzzleGames = getGamesByCategory('puzzle');
-        return `Our puzzle games include: ${puzzleGames.map(g => g.title).join(', ')}. Great for brain training!`;
+        return `🧩 Our puzzle games include:\n\n${puzzleGames.map(g => `• ${g.title} - ${g.description}`).join('\n')}\n\nGreat for brain training and logical thinking!`;
       }
       if (normalizedQuery.includes('arcade')) {
         const arcadeGames = getGamesByCategory('arcade');
-        return `Our arcade games include: ${arcadeGames.map(g => g.title).join(', ')}. Perfect for quick fun!`;
+        return `🕹️ Our arcade games include:\n\n${arcadeGames.map(g => `• ${g.title} - ${g.description}`).join('\n')}\n\nPerfect for quick fun and high scores!`;
       }
     }
 
     // Handle login issues
     if (normalizedQuery.includes("can't log in") || normalizedQuery.includes("login") || normalizedQuery.includes("sign in")) {
-      return "If you're having trouble logging in: 1) Make sure you're using the correct email/password, 2) Try refreshing the page, 3) If you don't have an account, click 'Sign Up' instead. The login button is in the top right corner of the page.";
+      return "🔐 If you're having trouble logging in:\n\n1) Make sure you're using the correct email/password\n2) Try refreshing the page\n3) Clear your browser cache\n4) If you don't have an account, click 'Sign Up' instead\n\nThe login button is in the top right corner. Need more help? Contact our support team!";
     }
     
     // Context-aware responses based on current page
     if (currentPath.includes('/games') && (normalizedQuery.includes('recommend') || normalizedQuery.includes('suggest'))) {
-      return "Since you're on our games page, I'd recommend checking out our featured section at the top, or use the category filters to find games that match your interests. Popular choices include Snake, Tetris, and 2048!";
+      return "🎮 Since you're on our games page, I'd recommend:\n\n• **Snake Classic** - Retro arcade fun\n• **Tetris** - Strategic puzzle challenge\n• **2048** - Number merging brain teaser\n• **Flappy Bird** - Skill-based challenge\n\nUse the category filters to find games that match your interests!";
     }
     
     // Game recommendations
-    if (normalizedQuery.includes('recommend') || normalizedQuery.includes('suggest')) {
+    if (normalizedQuery.includes('recommend') || normalizedQuery.includes('suggest') || normalizedQuery.includes('best') || normalizedQuery.includes('top')) {
       if (normalizedQuery.includes('action') || normalizedQuery.includes('arcade')) {
-        return "For action/arcade games, I recommend trying Snake Classic, Flappy Bird, or Brick Breaker. You can find more in the Arcade category!";
+        return "🕹️ For action/arcade games, I recommend:\n\n• **Snake Classic** - Eat, grow, survive!\n• **Flappy Bird** - Precision timing challenge\n• **Pong** - Classic paddle action\n• **Brick Breaker** - Satisfying block destruction\n\nCheck out our Arcade category for more!";
       }
-      if (normalizedQuery.includes('puzzle')) {
-        return "Great puzzle games include 2048, Memory Match, and Tetris. Check out our Puzzle section for more brain teasers!";
+      if (normalizedQuery.includes('puzzle') || normalizedQuery.includes('brain')) {
+        return "🧩 Great puzzle games for brain training:\n\n• **2048** - Number merging strategy\n• **Memory Match** - Card matching challenge\n• **Tetris** - Spatial reasoning master\n• **Tic Tac Toe** - Classic strategy\n\nPerfect for improving cognitive skills!";
       }
-      return "I'd recommend starting with our featured games on the homepage or checking out Snake Classic, Tetris, and 2048 - they're very popular!";
+      return "⭐ Our top recommended games:\n\n• **Snake Classic** - Timeless arcade fun\n• **Tetris** - Strategic puzzle challenge\n• **2048** - Addictive number game\n• **Memory Match** - Brain training\n• **Flappy Bird** - Skill challenge\n\nAll games are free and work on mobile & desktop!";
     }
     
     // Navigation help
     if (normalizedQuery.includes('find') || normalizedQuery.includes('where')) {
       if (normalizedQuery.includes('category') || normalizedQuery.includes('categories')) {
-        return "You can browse game categories by clicking 'Categories' in the main menu, or use the search bar at the top to find specific types of games.";
+        return "📂 You can browse game categories by:\n\n• Clicking 'Categories' in the main menu\n• Using the search bar to find specific game types\n• Browsing the Games page with category filters\n\nWhat type of games are you looking for?";
       }
-      return "Use the search bar at the top to find specific games, or browse by categories in the main menu. The Games page shows all available games. What type of games are you looking for?";
+      return "🧭 Navigation help:\n\n• **Search bar** - Find specific games at the top\n• **Categories** - Browse by game type in the menu\n• **Games page** - View all available games\n• **Trending** - See what's popular\n\nWhat would you like to find?";
     }
     
     // Technical support
-    if (normalizedQuery.includes('not working') || normalizedQuery.includes('error') || normalizedQuery.includes('problem')) {
-      return "If you're experiencing issues: 1) Try refreshing the page, 2) Clear your browser cache, 3) Make sure JavaScript is enabled. All our games are tested and should work on modern browsers. Which specific game is having issues?";
+    if (normalizedQuery.includes('not working') || normalizedQuery.includes('error') || normalizedQuery.includes('problem') || normalizedQuery.includes('broken')) {
+      return "🔧 Troubleshooting steps:\n\n1) **Refresh the page** - Often fixes loading issues\n2) **Clear browser cache** - Removes old data conflicts\n3) **Check JavaScript** - Must be enabled for games\n4) **Try different browser** - Chrome, Firefox, Safari all work\n5) **Disable ad blockers** - May interfere with games\n\nWhich specific game is having issues? I can provide targeted help!";
     }
     
     // Fallback with helpful suggestions
-    return "I didn't quite understand that. I can help you with:\n• Finding games ('show puzzle games')\n• Learning how to play ('how to play Snake')\n• Technical issues ('game not working')\n• Account help ('can't log in')\n• Navigation ('where are categories')\n\nTry asking about a game or browse our collection!";
+    return "🤖 I didn't quite understand that, but I can help you with:\n\n• **Finding games** - 'show puzzle games'\n• **Learning to play** - 'how to play Snake'\n• **Technical issues** - 'game not working'\n• **Account help** - 'can't log in'\n• **Navigation** - 'where are categories'\n• **Recommendations** - 'show top games'\n\nTry asking about a specific game or browse our collection! What would you like to know?";
   };
 
   const handleSendMessage = async () => {
@@ -314,8 +330,11 @@ const AIHelpAssistant = () => {
       case 'trending':
         navigate('/trending');
         break;
-      case 'featured':
-        navigate('/browse');
+      case 'support':
+        navigate('/support');
+        break;
+      case 'help-center':
+        navigate('/help-center');
         break;
     }
     setIsOpen(false);
@@ -371,8 +390,8 @@ const AIHelpAssistant = () => {
                   <Bot className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-lg">AI Assistant</CardTitle>
-                  <p className="text-xs text-muted-foreground">Gaming Helper</p>
+                  <CardTitle className="text-lg">Gaming Assistant</CardTitle>
+                  <p className="text-xs text-muted-foreground">Always here to help!</p>
                 </div>
               </div>
               <Button
@@ -463,7 +482,17 @@ const AIHelpAssistant = () => {
                   className="text-xs h-7"
                   onClick={() => handleQuickAction('browse-games')}
                 >
-                  Browse Games
+                  <Gamepad2 className="h-3 w-3 mr-1" />
+                  Games
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-xs h-7"
+                  onClick={() => handleQuickAction('support')}
+                >
+                  <HelpCircle className="h-3 w-3 mr-1" />
+                  Help
                 </Button>
                 <Button
                   variant="outline"
@@ -471,15 +500,17 @@ const AIHelpAssistant = () => {
                   className="text-xs h-7"
                   onClick={() => handleQuickAction('categories')}
                 >
-                  Categories
+                  <Search className="h-3 w-3 mr-1" />
+                  Search
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   className="text-xs h-7"
-                  onClick={() => handleQuickAction('trending')}
+                  onClick={() => handleQuickAction('help-center')}
                 >
-                  Trending
+                  <MessageCircle className="h-3 w-3 mr-1" />
+                  Feedback
                 </Button>
               </div>
             </div>
