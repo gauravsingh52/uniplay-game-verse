@@ -1,6 +1,6 @@
 
 import ResponsiveNavbar from '@/components/ResponsiveNavbar';
-import EnhancedWorkingGamesSection from '@/components/EnhancedWorkingGamesSection';
+import { EnhancedGamesPage } from '@/components/EnhancedGamesPage';
 
 const Games = () => {
   return (
@@ -9,7 +9,7 @@ const Games = () => {
       
       <div className="pt-20 pb-16 px-2 sm:px-4 md:px-8">
         <div className="container mx-auto max-w-7xl">
-          <EnhancedWorkingGamesSection />
+          <EnhancedGamesPage />
         </div>
       </div>
     </div>

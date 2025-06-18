@@ -30,7 +30,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const initializeAuth = async () => {
       try {
-        // Set up auth state listener FIRST
+        // Get initial session first
+        const { data: { session: initialSession }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Error getting session:', error);
+        } else if (mounted) {
+          console.log('Initial session check:', initialSession?.user?.email || 'No session');
+          setSession(initialSession);
+          setUser(initialSession?.user ?? null);
+        }
+
+        // Set up auth state listener
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
           (event, currentSession) => {
             if (!mounted) return;
@@ -46,9 +57,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 description: `Successfully signed in as ${currentSession.user.email}`,
               });
               
-              // Only navigate if we're on auth pages
+              // Only navigate from auth pages, preserve current location otherwise
               if (location.pathname === '/login' || location.pathname === '/signup') {
-                navigate('/');
+                navigate('/games');
               }
             }
             
@@ -57,21 +68,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 title: "Signed out",
                 description: "You've been successfully signed out",
               });
-              // Don't force navigate on logout to maintain UI consistency
             }
           }
         );
-
-        // THEN get initial session
-        const { data: { session: initialSession }, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          console.error('Error getting session:', error);
-        } else if (mounted) {
-          console.log('Initial session check:', initialSession?.user?.email || 'No session');
-          setSession(initialSession);
-          setUser(initialSession?.user ?? null);
-        }
 
         if (mounted) {
           setIsLoading(false);
@@ -127,7 +126,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           data: { 
             full_name: name 
           },
-          emailRedirectTo: `${window.location.origin}/`
+          emailRedirectTo: `${window.location.origin}/games`
         }
       });
       
@@ -163,6 +162,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       if (error) throw error;
       
+      // Don't force navigate on logout to maintain current page
     } catch (error: any) {
       toast({
         title: "Error",
