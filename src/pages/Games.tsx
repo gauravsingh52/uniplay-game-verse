@@ -1,6 +1,6 @@
 
 import ResponsiveNavbar from '@/components/ResponsiveNavbar';
-import { EnhancedWorkingGamesSection } from '@/components/EnhancedWorkingGamesSection';
+import EnhancedWorkingGamesSection from '@/components/EnhancedWorkingGamesSection';
 
 const Games = () => {
   return (
