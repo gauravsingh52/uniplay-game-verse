@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
 @import './styles/animations.css';
 @import './styles/responsive.css';
 
@@ -91,7 +91,12 @@
   }
 
   .btn-secondary-modern {
-    @apply glass-effect border-unigames-purple/50 text-unigames-purple hover:bg-unigames-purple/10 font-semibold rounded-xl transition-all duration-300 transform hover:scale-105;
+    @apply bg-white/10 backdrop-blur-sm border-unigames-purple/50 text-unigames-purple hover:bg-unigames-purple/10 font-semibold rounded-xl transition-all duration-300 transform hover:scale-105;
+  }
+
+  /* Glass effect utility */
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-sm border border-white/20;
   }
 
   /* Section dividers */
