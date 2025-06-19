@@ -30,24 +30,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const initializeAuth = async () => {
       try {
-        // Get initial session first
-        const { data: { session: initialSession }, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          console.error('Error getting session:', error);
-        } else if (mounted) {
-          console.log('Initial session check:', initialSession?.user?.email || 'No session');
-          setSession(initialSession);
-          setUser(initialSession?.user ?? null);
-        }
-
-        // Set up auth state listener
+        // Set up auth state listener FIRST
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
           (event, currentSession) => {
             if (!mounted) return;
             
             console.log('Auth state changed:', event, currentSession?.user?.email);
             
+            // Update session and user state
             setSession(currentSession);
             setUser(currentSession?.user ?? null);
             
@@ -57,12 +47,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 description: `Successfully signed in as ${currentSession.user.email}`,
               });
               
-              // CRITICAL: Only navigate from auth pages to prevent layout switching
-              const currentPath = location.pathname;
-              if (currentPath === '/login' || currentPath === '/signup') {
+              // Only navigate from auth pages to prevent layout switching
+              if (location.pathname === '/login' || location.pathname === '/signup') {
                 navigate('/', { replace: true });
               }
-              // DO NOT navigate from other pages to preserve layout consistency
+              // Stay on current page for other routes to maintain UI consistency
             }
             
             if (event === 'SIGNED_OUT') {
@@ -70,10 +59,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 title: "Signed out",
                 description: "You've been successfully signed out",
               });
-              // DO NOT force navigation to preserve UI consistency
+              // Don't force navigation - stay on current page
             }
           }
         );
+
+        // THEN get initial session
+        const { data: { session: initialSession }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Error getting session:', error);
+        } else if (mounted) {
+          console.log('Initial session check:', initialSession?.user?.email || 'No session');
+          setSession(initialSession);
+          setUser(initialSession?.user ?? null);
+        }
 
         if (mounted) {
           setIsLoading(false);
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       mounted = false;
     };
-  }, [navigate, toast, location.pathname]);
+  }, [toast]); // Removed navigate and location.pathname from dependencies to prevent re-initialization
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -165,7 +165,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       if (error) throw error;
       
-      // DO NOT force navigate - stay on current page for UI consistency
+      // Stay on current page for UI consistency
     } catch (error: any) {
       toast({
         title: "Error",

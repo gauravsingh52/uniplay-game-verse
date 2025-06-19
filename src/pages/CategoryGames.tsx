@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
 import { getGamesByCategory, getAllCategories } from '@/data/gamesData';
 import GameCard from '@/components/GameCard';
 import { Button } from '@/components/ui/button';
@@ -38,10 +37,8 @@ const CategoryGames = () => {
   };
   
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
-      <div className="container mx-auto pt-24 pb-12 px-4 md:px-8">
+    <div className="pt-20 pb-16 px-4 md:px-8 min-h-screen">
+      <div className="container mx-auto max-w-7xl">
         <div className="flex items-center mb-2 text-sm">
           <Link to="/categories" className="text-muted-foreground hover:text-foreground transition-colors">
             Categories
