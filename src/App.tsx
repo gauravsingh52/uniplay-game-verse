@@ -7,7 +7,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
 import { ThemeProvider } from "./hooks/useTheme";
-import ResponsiveNavbar from "./components/ResponsiveNavbar";
+import UnifiedLayout from "./components/UnifiedLayout";
+import EnhancedAIAssistant from "./components/EnhancedAIAssistant";
 import Index from "./pages/Index";
 import GameDetails from "./pages/GameDetails";
 import Login from "./pages/Login";
@@ -25,7 +26,6 @@ import Games from "./pages/Games";
 import Features from "./pages/Features";
 import Support from "./pages/Support";
 import HelpCenter from "./pages/HelpCenter";
-import AIHelpAssistant from "./components/AIHelpAssistant";
 
 // Create QueryClient instance outside of component to ensure stability
 const queryClient = new QueryClient({
@@ -37,41 +37,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Single layout wrapper that persists across all routes
-const AppLayout = ({ children }: { children: React.ReactNode }) => (
-  <div className="min-h-screen bg-background">
-    <ResponsiveNavbar />
-    <main className="relative">
-      {children}
-    </main>
-    <AIHelpAssistant />
-  </div>
-);
-
-const AppRoutes = () => (
-  <AppLayout>
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/game/:id" element={<GameDetails />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/settings" element={<Settings />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/browse" element={<Browse />} />
-      <Route path="/categories" element={<Categories />} />
-      <Route path="/trending" element={<Trending />} />
-      <Route path="/category/:categoryName" element={<CategoryGames />} />
-      <Route path="/search" element={<Search />} />
-      <Route path="/games" element={<Games />} />
-      <Route path="/features" element={<Features />} />
-      <Route path="/support" element={<Support />} />
-      <Route path="/help-center" element={<HelpCenter />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-  </AppLayout>
-);
-
 const App: React.FC = () => {
   return (
     <React.StrictMode>
@@ -82,7 +47,28 @@ const App: React.FC = () => {
             <Sonner />
             <BrowserRouter>
               <AuthProvider>
-                <AppRoutes />
+                <UnifiedLayout>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/game/:id" element={<GameDetails />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="/browse" element={<Browse />} />
+                    <Route path="/categories" element={<Categories />} />
+                    <Route path="/trending" element={<Trending />} />
+                    <Route path="/category/:categoryName" element={<CategoryGames />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route path="/games" element={<Games />} />
+                    <Route path="/features" element={<Features />} />
+                    <Route path="/support" element={<Support />} />
+                    <Route path="/help-center" element={<HelpCenter />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                  <EnhancedAIAssistant />
+                </UnifiedLayout>
               </AuthProvider>
             </BrowserRouter>
           </TooltipProvider>
