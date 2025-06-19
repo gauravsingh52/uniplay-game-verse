@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
 import { ThemeProvider } from "./hooks/useTheme";
+import ResponsiveNavbar from "./components/ResponsiveNavbar";
 import Index from "./pages/Index";
 import GameDetails from "./pages/GameDetails";
 import Login from "./pages/Login";
@@ -36,8 +37,19 @@ const queryClient = new QueryClient({
   },
 });
 
+// Single layout wrapper that persists across all routes
+const AppLayout = ({ children }: { children: React.ReactNode }) => (
+  <div className="min-h-screen bg-background">
+    <ResponsiveNavbar />
+    <main className="relative">
+      {children}
+    </main>
+    <AIHelpAssistant />
+  </div>
+);
+
 const AppRoutes = () => (
-  <div className="relative">
+  <AppLayout>
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/game/:id" element={<GameDetails />} />
@@ -57,12 +69,7 @@ const AppRoutes = () => (
       <Route path="/help-center" element={<HelpCenter />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
-    {/* AI Assistant appears on all pages except Index (which has its own) */}
-    <Routes>
-      <Route path="/" element={null} />
-      <Route path="*" element={<AIHelpAssistant />} />
-    </Routes>
-  </div>
+  </AppLayout>
 );
 
 const App: React.FC = () => {

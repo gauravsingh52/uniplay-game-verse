@@ -1,209 +1,183 @@
 
-import { useState, useEffect } from 'react';
-import Navbar from '@/components/Navbar';
+import { useState } from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import { gamesData, getAllCategories } from '@/data/gamesData';
-import GameCard from '@/components/GameCard';
-import { Search } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { workingGames } from '@/data/workingGamesData';
+import { Search, Filter, Star, Play, Clock, Users } from 'lucide-react';
 
 const Browse = () => {
-  const [games, setGames] = useState(gamesData);
-  const [filteredGames, setFilteredGames] = useState(gamesData);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [sortOption, setSortOption] = useState("newest");
-  const [ratingFilter, setRatingFilter] = useState([0, 5]);
-  const [loading, setLoading] = useState(true);
-  const categories = ['All', ...getAllCategories()];
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [sortBy, setSortBy] = useState('popular');
 
-  useEffect(() => {
-    // Simulating data loading
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+  const categories = ['All', ...Array.from(new Set(workingGames.map(game => game.category)))];
 
-  useEffect(() => {
-    let result = [...games];
-    
-    // Apply search filter
-    if (searchQuery) {
-      result = result.filter(game => 
-        game.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        game.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    
-    // Apply category filter
-    if (selectedCategory !== "All") {
-      result = result.filter(game => game.category.includes(selectedCategory));
-    }
-    
-    // Apply rating filter
-    result = result.filter(game => 
-      game.rating >= ratingFilter[0] && game.rating <= ratingFilter[1]
-    );
-    
-    // Apply sorting
-    switch (sortOption) {
-      case "newest":
-        result.sort((a, b) => b.releaseYear - a.releaseYear);
-        break;
-      case "oldest":
-        result.sort((a, b) => a.releaseYear - b.releaseYear);
-        break;
-      case "nameAsc":
-        result.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case "nameDesc":
-        result.sort((a, b) => b.title.localeCompare(a.title));
-        break;
-      case "ratingAsc":
-        result.sort((a, b) => a.rating - b.rating);
-        break;
-      case "ratingDesc":
-        result.sort((a, b) => b.rating - a.rating);
-        break;
-      default:
-        break;
-    }
-    
-    setFilteredGames(result);
-  }, [games, searchQuery, selectedCategory, sortOption, ratingFilter]);
-
-  const handleRatingChange = (values: number[]) => {
-    setRatingFilter(values);
-  };
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // The search is already applied via the useEffect
-  };
-
-  const handleReset = () => {
-    setSearchQuery("");
-    setSelectedCategory("All");
-    setSortOption("newest");
-    setRatingFilter([0, 5]);
-  };
+  const filteredGames = workingGames
+    .filter(game => {
+      const matchesSearch = game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           game.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === 'All' || game.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'newest':
+          return b.id.localeCompare(a.id);
+        case 'rating':
+          return (b.rating || 4.5) - (a.rating || 4.5);
+        case 'name':
+          return a.title.localeCompare(b.title);
+        default:
+          return 0;
+      }
+    });
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
-      <div className="container mx-auto pt-24 pb-12 px-4 md:px-8">
-        <h1 className="text-3xl font-bold mb-2">Browse All Games</h1>
-        <p className="text-muted-foreground mb-8">Discover and play our collection of browser games</p>
-        
-        <Card className="mb-8">
-          <CardContent className="p-4 md:p-6">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-              <div className="md:col-span-4">
-                <form onSubmit={handleSearch} className="relative">
-                  <Input
-                    type="text"
-                    placeholder="Search games..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                </form>
-              </div>
-              
-              <div className="md:col-span-2">
-                <Select
-                  value={selectedCategory}
-                  onValueChange={setSelectedCategory}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="md:col-span-3">
-                <Select
-                  value={sortOption}
-                  onValueChange={setSortOption}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="newest">Newest</SelectItem>
-                    <SelectItem value="oldest">Oldest</SelectItem>
-                    <SelectItem value="nameAsc">Name (A-Z)</SelectItem>
-                    <SelectItem value="nameDesc">Name (Z-A)</SelectItem>
-                    <SelectItem value="ratingDesc">Rating (High-Low)</SelectItem>
-                    <SelectItem value="ratingAsc">Rating (Low-High)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="md:col-span-2">
-                <span className="block text-sm font-medium mb-1">Rating: {ratingFilter[0]} - {ratingFilter[1]}</span>
-                <Slider
-                  defaultValue={[0, 5]}
-                  value={ratingFilter}
-                  onValueChange={handleRatingChange}
-                  min={0}
-                  max={5}
-                  step={0.5}
-                  className="w-full"
-                />
-              </div>
-              
-              <div className="md:col-span-1">
-                <Button 
-                  variant="outline" 
-                  onClick={handleReset}
-                  className="w-full"
-                >
-                  Reset
-                </Button>
-              </div>
+    <div className="pt-20 pb-16 px-4 md:px-8">
+      <div className="container mx-auto max-w-7xl">
+        {/* Header */}
+        <div className="text-center mb-12 animate-fadeIn">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-unigames-purple to-unigames-blue bg-clip-text text-transparent">
+            Browse Games
+          </h1>
+          <p className="text-xl text-muted-foreground mb-6">
+            Discover and play from our collection of {workingGames.length} premium browser games
+          </p>
+        </div>
+
+        {/* Search and Filters */}
+        <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 mb-8 border border-border/50">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="md:col-span-2 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search games..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 bg-background/50"
+              />
             </div>
-          </CardContent>
-        </Card>
-        
-        {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {[...Array(10)].map((_, index) => (
-              <div key={index} className="bg-muted rounded-lg animate-pulse" style={{height: '260px'}}></div>
-            ))}
+            
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="px-3 py-2 bg-background/50 border border-border rounded-md text-foreground"
+            >
+              {categories.map(category => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
+            
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-2 bg-background/50 border border-border rounded-md text-foreground"
+            >
+              <option value="popular">Popular</option>
+              <option value="newest">Newest</option>
+              <option value="rating">Highest Rated</option>
+              <option value="name">A-Z</option>
+            </select>
           </div>
-        ) : (
-          <>
-            {filteredGames.length === 0 ? (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-bold mb-2">No games found</h2>
-                <p className="text-muted-foreground mb-4">Try different search terms or filters</p>
-                <Button variant="outline" onClick={handleReset}>Reset Filters</Button>
-              </div>
-            ) : (
-              <>
-                <p className="mb-4 text-muted-foreground">{filteredGames.length} games found</p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                  {filteredGames.map((game) => (
-                    <GameCard key={game.id} game={game} />
-                  ))}
+          
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/30">
+            <span className="text-sm text-muted-foreground">
+              {filteredGames.length} games found
+            </span>
+            <div className="flex items-center gap-2">
+              <Filter className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Filters applied</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Games Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredGames.map((game) => (
+            <Card key={game.id} className="hover-lift cursor-pointer group bg-card/80 backdrop-blur-sm border-border/50 overflow-hidden">
+              <div className="relative aspect-video bg-gradient-to-br from-unigames-purple/20 to-unigames-blue/20">
+                <img
+                  src={game.thumbnail || "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop"}
+                  alt={game.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
+                <div className="absolute top-2 right-2">
+                  <Badge className="bg-green-500 hover:bg-green-500">
+                    <div className="w-2 h-2 bg-white rounded-full mr-1"></div>
+                    LIVE
+                  </Badge>
                 </div>
-              </>
-            )}
-          </>
+                <div className="absolute bottom-2 left-2">
+                  <Badge variant="secondary" className="text-xs">
+                    {game.category}
+                  </Badge>
+                </div>
+              </div>
+              
+              <CardContent className="p-4">
+                <h3 className="font-bold text-lg mb-2 group-hover:text-unigames-purple transition-colors">
+                  {game.title}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                  {game.description}
+                </p>
+                
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3 text-xs text-muted-foreground">
+                    <div className="flex items-center space-x-1">
+                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                      <span>{game.rating || '4.5'}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Users className="h-3 w-3" />
+                      <span>Online</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-3 w-3" />
+                      <span>Quick</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <Button 
+                  className="w-full bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80 text-white"
+                  onClick={() => {
+                    // Game play logic would go here
+                    console.log(`Playing ${game.title}`);
+                  }}
+                >
+                  <Play className="h-4 w-4 mr-2" />
+                  Play Now
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* No Results */}
+        {filteredGames.length === 0 && (
+          <div className="text-center py-16">
+            <div className="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Search className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">No games found</h3>
+            <p className="text-muted-foreground mb-4">
+              Try adjusting your search terms or filters
+            </p>
+            <Button 
+              variant="outline"
+              onClick={() => {
+                setSearchTerm('');
+                setSelectedCategory('All');
+                setSortBy('popular');
+              }}
+            >
+              Clear Filters
+            </Button>
+          </div>
         )}
       </div>
     </div>

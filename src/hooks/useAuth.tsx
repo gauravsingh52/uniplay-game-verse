@@ -57,13 +57,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 description: `Successfully signed in as ${currentSession.user.email}`,
               });
               
-              // Don't navigate if already on the home page or games-related pages
-              // This prevents UI disruption
+              // Only navigate from auth pages, preserve UI state everywhere else
               const currentPath = location.pathname;
               if (currentPath === '/login' || currentPath === '/signup') {
                 navigate('/', { replace: true });
               }
-              // Stay on current page for all other routes to maintain UI consistency
+              // DO NOT navigate from other pages to preserve layout consistency
             }
             
             if (event === 'SIGNED_OUT') {
@@ -71,7 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 title: "Signed out",
                 description: "You've been successfully signed out",
               });
-              // Don't force navigation on logout to maintain UI consistency
+              // DO NOT force navigation to preserve UI consistency
             }
           }
         );
@@ -166,7 +165,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       if (error) throw error;
       
-      // Don't force navigate - stay on current page for UI consistency
+      // DO NOT force navigate - stay on current page for UI consistency
     } catch (error: any) {
       toast({
         title: "Error",

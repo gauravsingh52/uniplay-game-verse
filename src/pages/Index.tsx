@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import ResponsiveNavbar from '@/components/ResponsiveNavbar';
 import EnhancedHeroSection from '@/components/EnhancedHeroSection';
 import ModernGameCard from '@/components/ModernGameCard';
 import EnhancedWorkingGamesSection from '@/components/EnhancedWorkingGamesSection';
@@ -15,7 +14,6 @@ import { workingGames, WorkingGame } from '@/data/workingGamesData';
 import { ArrowRight, Gamepad, Star, Play, TrendingUp, X, Gift, Settings, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import AIHelpAssistant from '@/components/AIHelpAssistant';
 
 // Import game components
 import BubbleBopGame from '@/components/games/BubbleBopGame';
@@ -104,9 +102,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <ResponsiveNavbar />
-      
+    <div className="pt-16">
       {/* Welcome Notification */}
       {showNotification && (
         <div className="fixed top-20 right-4 z-50 animate-slideInRight">
@@ -338,9 +334,6 @@ const Index = () => {
 
       {/* Settings Modal */}
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
-
-      {/* AI Help Assistant */}
-      <AIHelpAssistant />
     </div>
   );
 };
