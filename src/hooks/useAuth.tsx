@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 description: `Successfully signed in as ${currentSession.user.email}`,
               });
               
-              // Only navigate from auth pages, preserve UI state everywhere else
+              // CRITICAL: Only navigate from auth pages to prevent layout switching
               const currentPath = location.pathname;
               if (currentPath === '/login' || currentPath === '/signup') {
                 navigate('/', { replace: true });

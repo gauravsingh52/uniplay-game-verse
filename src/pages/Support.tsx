@@ -53,8 +53,9 @@ const Support = () => {
       color: "text-blue-500",
       bgColor: "bg-blue-500/10",
       onClick: () => {
-        // The AI assistant is always available via the floating button
-        window.dispatchEvent(new CustomEvent('openAIChat'));
+        // Trigger AI assistant opening
+        const aiButton = document.querySelector('[role="button"]') as HTMLButtonElement;
+        if (aiButton) aiButton.click();
       }
     },
     {
@@ -82,7 +83,7 @@ const Support = () => {
   ];
 
   return (
-    <div className="pt-20 pb-16 px-4 md:px-8 animate-fadeIn">
+    <div className="pt-20 pb-16 px-4 md:px-8 animate-fadeIn min-h-screen">
       <div className="container mx-auto max-w-6xl">
         {/* Hero Section */}
         <div className="text-center mb-16">
@@ -100,12 +101,12 @@ const Support = () => {
           </p>
         </div>
 
-        {/* Support Options */}
+        {/* Support Options - Fixed functionality */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {supportOptions.map((option, index) => (
             <Card 
               key={index} 
-              className={`${option.bgColor} border-2 hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer`}
+              className={`${option.bgColor} border-2 hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer card-responsive`}
               onClick={option.onClick}
             >
               <CardHeader className="text-center">
@@ -119,7 +120,7 @@ const Support = () => {
               </CardHeader>
               <CardContent className="text-center">
                 <Button 
-                  className="w-full bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80"
+                  className="w-full bg-gradient-to-r from-unigames-purple to-unigames-blue hover:from-unigames-purple/80 hover:to-unigames-blue/80 touch-target"
                   onClick={(e) => {
                     e.stopPropagation();
                     option.onClick();
@@ -133,8 +134,8 @@ const Support = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <Card id="contact-form">
+          {/* Contact Form - Fixed functionality */}
+          <Card id="contact-form" className="card-responsive">
             <CardHeader>
               <CardTitle className="text-2xl flex items-center gap-2">
                 <Mail className="h-6 w-6 text-unigames-purple" />
@@ -177,7 +178,7 @@ const Support = () => {
         </div>
 
         {/* Support Hours */}
-        <Card className="mt-16 bg-gradient-to-r from-unigames-purple/5 to-unigames-blue/5 border-unigames-purple/20">
+        <Card className="mt-16 bg-gradient-to-r from-unigames-purple/5 to-unigames-blue/5 border-unigames-purple/20 card-responsive">
           <CardContent className="p-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div>

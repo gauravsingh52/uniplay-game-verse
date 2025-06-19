@@ -8,7 +8,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
 import { ThemeProvider } from "./hooks/useTheme";
 import UnifiedLayout from "./components/UnifiedLayout";
-import EnhancedAIAssistant from "./components/EnhancedAIAssistant";
 import Index from "./pages/Index";
 import GameDetails from "./pages/GameDetails";
 import Login from "./pages/Login";
@@ -67,7 +66,6 @@ const App: React.FC = () => {
                     <Route path="/help-center" element={<HelpCenter />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
-                  <EnhancedAIAssistant />
                 </UnifiedLayout>
               </AuthProvider>
             </BrowserRouter>

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import ResponsiveNavbar from './ResponsiveNavbar';
-import AIHelpAssistant from './AIHelpAssistant';
+import EnhancedAIAssistant from './EnhancedAIAssistant';
 
 interface UnifiedLayoutProps {
   children: React.ReactNode;
@@ -10,11 +10,16 @@ interface UnifiedLayoutProps {
 export const UnifiedLayout: React.FC<UnifiedLayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen bg-background relative">
+      {/* Global Navigation - always visible */}
       <ResponsiveNavbar />
-      <main className="relative">
+      
+      {/* Main content area with consistent styling */}
+      <main className="relative min-h-screen">
         {children}
       </main>
-      <AIHelpAssistant />
+      
+      {/* Global AI Assistant - always available */}
+      <EnhancedAIAssistant />
     </div>
   );
 };

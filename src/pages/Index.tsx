@@ -102,7 +102,7 @@ const Index = () => {
   };
 
   return (
-    <div className="pt-16">
+    <div className="min-h-screen">
       {/* Welcome Notification */}
       {showNotification && (
         <div className="fixed top-20 right-4 z-50 animate-slideInRight">
@@ -116,7 +116,7 @@ const Index = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="hover:bg-unigames-purple/10"
+                className="hover:bg-unigames-purple/10 touch-target"
                 onClick={() => setShowNotification(false)}
               >
                 <X className="h-4 w-4" />
@@ -126,7 +126,7 @@ const Index = () => {
         </div>
       )}
       
-      {/* Enhanced Hero Section */}
+      {/* Enhanced Hero Section - with animations */}
       <EnhancedHeroSection />
       
       {/* Enhanced Working Games Section */}
@@ -143,7 +143,7 @@ const Index = () => {
         </section>
       )}
       
-      {/* Quick Play Section */}
+      {/* Quick Play Section - with animations */}
       <section className="section-container bg-muted/30">
         <div className="container-responsive">
           <div className="text-center mb-12 animate-fadeIn">
@@ -169,7 +169,7 @@ const Index = () => {
                   </div>
                   <h3 className="font-semibold mb-2">{game.name}</h3>
                   <p className="text-sm text-muted-foreground mb-4">{game.desc}</p>
-                  <Button size="sm" className="btn-primary-modern">
+                  <Button size="sm" className="btn-primary-modern touch-target">
                     <Play className="h-3 w-3 mr-1" />
                     Play Now
                   </Button>
@@ -180,7 +180,7 @@ const Index = () => {
         </div>
       </section>
       
-      {/* CTA Section */}
+      {/* CTA Section - with animations */}
       <section className="section-container bg-gradient-to-r from-unigames-purple/10 via-unigames-blue/10 to-unigames-cyan/10">
         <div className="container-responsive text-center">
           <div className="max-w-3xl mx-auto animate-fadeIn">
@@ -191,7 +191,7 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg" 
-                className="btn-primary-modern text-lg px-12 py-6"
+                className="btn-primary-modern text-lg px-12 py-6 touch-target"
                 onClick={() => navigate('/games')}
               >
                 Start Playing Free
@@ -199,7 +199,7 @@ const Index = () => {
               <Button 
                 variant="outline"
                 size="lg" 
-                className="btn-secondary-modern text-lg px-12 py-6"
+                className="btn-secondary-modern text-lg px-12 py-6 touch-target"
                 onClick={() => navigate('/browse')}
               >
                 Browse All Games
@@ -228,7 +228,7 @@ const Index = () => {
                   variant="outline" 
                   size="sm"
                   onClick={() => setIsSettingsOpen(true)}
-                  className="hover:bg-unigames-purple/10 hover:text-unigames-purple"
+                  className="hover:bg-unigames-purple/10 hover:text-unigames-purple touch-target"
                 >
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
@@ -237,7 +237,7 @@ const Index = () => {
                   variant="outline" 
                   size="sm"
                   onClick={() => navigate('/support')}
-                  className="hover:bg-unigames-blue/10 hover:text-unigames-blue"
+                  className="hover:bg-unigames-blue/10 hover:text-unigames-blue touch-target"
                 >
                   <MessageSquare className="h-4 w-4 mr-2" />
                   Support
@@ -281,7 +281,7 @@ const Index = () => {
                     <li key={link.name}>
                       <Button 
                         variant="link" 
-                        className="p-0 h-auto text-muted-foreground hover:text-unigames-purple transition-colors"
+                        className="p-0 h-auto text-muted-foreground hover:text-unigames-purple transition-colors touch-target"
                         onClick={() => navigate(link.path)}
                       >
                         {link.name}
@@ -321,7 +321,7 @@ const Index = () => {
                   LIVE
                 </Badge>
               </DialogTitle>
-              <Button variant="ghost" size="icon" onClick={closeGameModal} className="hover:bg-destructive/10 hover:text-destructive">
+              <Button variant="ghost" size="icon" onClick={closeGameModal} className="hover:bg-destructive/10 hover:text-destructive touch-target">
                 <X className="h-4 w-4" />
               </Button>
             </div>

@@ -44,9 +44,9 @@ const Categories = () => {
   };
 
   return (
-    <div className="pt-20 pb-16 px-4 md:px-8">
+    <div className="pt-20 pb-16 px-4 md:px-8 min-h-screen">
       <div className="container mx-auto max-w-7xl">
-        {/* Header */}
+        {/* Header with animations */}
         <div className="text-center mb-12 animate-fadeIn">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-unigames-purple to-unigames-blue bg-clip-text text-transparent">
             Game Categories
@@ -57,8 +57,8 @@ const Categories = () => {
           <div className="w-24 h-1 bg-gradient-to-r from-unigames-purple to-unigames-blue mx-auto rounded-full"></div>
         </div>
 
-        {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
+        {/* Categories Grid with responsive design */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 stagger-children">
           {Object.entries(categorizedGames).map(([category, games]) => {
             const IconComponent = getCategoryIcon(category);
             const colorGradient = getCategoryColor(category);
@@ -66,14 +66,14 @@ const Categories = () => {
             return (
               <Card 
                 key={category} 
-                className="hover-lift cursor-pointer group bg-card/80 backdrop-blur-sm border-border/50"
+                className="hover-lift cursor-pointer group bg-card/80 backdrop-blur-sm border-border/50 card-responsive"
                 onClick={() => navigate(`/category/${category.toLowerCase()}`)}
               >
                 <CardHeader className="pb-4">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorGradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <IconComponent className="h-8 w-8 text-white" />
+                  <div className={`w-12 md:w-16 h-12 md:h-16 rounded-2xl bg-gradient-to-br ${colorGradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <IconComponent className="h-6 w-6 md:h-8 md:w-8 text-white" />
                   </div>
-                  <CardTitle className="text-2xl font-bold text-foreground group-hover:text-unigames-purple transition-colors">
+                  <CardTitle className="text-xl md:text-2xl font-bold text-foreground group-hover:text-unigames-purple transition-colors">
                     {category}
                   </CardTitle>
                 </CardHeader>
@@ -123,7 +123,7 @@ const Categories = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-16 bg-gradient-to-r from-unigames-purple/10 to-unigames-blue/10 rounded-2xl p-8">
+        <div className="mt-16 bg-gradient-to-r from-unigames-purple/10 to-unigames-blue/10 rounded-2xl p-6 md:p-8">
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">Why Choose Our Game Categories?</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
